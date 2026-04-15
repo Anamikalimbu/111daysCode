@@ -10,5 +10,4 @@
 - Asynchronous and Event Driven
 - Single Threaded but Highly Scalable
 - Fast and Lightweight
-
-# 111daysCode
+- used to build: API, real time apps, micro-services
