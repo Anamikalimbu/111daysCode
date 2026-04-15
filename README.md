@@ -1,0 +1,14 @@
+# Node with Express API
+
+## Node.Js
+- Node.js is an open-source, cross-platform JavaScript runtime environment that executes JavaScript code outside of a web browser. It allows developers to build server-side applications using JavaScript, which was traditionally used only for client-side scripting in web browsers.
+- Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. It allows developers to run JavaScript on the server side, enabling the creation of scalable and high-performance applications.
+- Node.js uses an event-driven, non-blocking I/O model, making it efficient and suitable for real-time applications.
+- Node.js has a vast ecosystem of libraries and frameworks, such as Express.js, which simplifies the development of web applications and APIs.
+- Built on C++
+- Powered by Google Chrome v8 engine
+- Asynchronous and Event Driven
+- Single Threaded but Highly Scalable
+- Fast and Lightweight
+
+# 111daysCode
