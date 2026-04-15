@@ -11,3 +11,10 @@
 - Single Threaded but Highly Scalable
 - Fast and Lightweight
 - used to build: API, real time apps, micro-services
+
+## Architecture
+- built on a single-threaded event loop architecture, which allows it to handle multiple concurrent connections efficiently without blocking the execution of code. This design makes Node.js particularly well-suited for building scalable and high-performance applications, especially those that require real-time interactions or handle a large number of simultaneous requests.
+- single-threaded 
+- Event loop
+- non-blocking I/O operations
+- Node.js uses an event-driven, non-blocking I/O model, which allows it to handle multiple concurrent connections efficiently without blocking the execution of code. This design makes Node.js particularly well-suited for building scalable and high-performance applications, especially those that require real-time interactions or handle a large number of simultaneous requests.
