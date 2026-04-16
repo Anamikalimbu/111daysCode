@@ -1,19 +1,11 @@
 {
-  "name": "nodejs",
+  "name": "filesystem",
   "version": "1.0.0",
-  "description": "- Node.js is an open-source, cross-platform JavaScript runtime environment that executes JavaScript code outside of a web browser. It allows developers to build server-side applications using JavaScript, which was traditionally used only for client-side scripting in web browsers.\r - Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. It allows developers to run JavaScript on the server side, enabling the creation of scalable and high-performance applications.\r - Node.js uses an event-driven, non-blocking I/O model, making it efficient and suitable for real-time applications.\r - Node.js has a vast ecosystem of libraries and frameworks, such as Express.js, which simplifies the development of web applications and APIs.\r - Built on C++\r - Powered by Google Chrome v8 engine\r - Asynchronous and Event Driven\r - Single Threaded but Highly Scalable\r - Fast and Lightweight\r - used to build: API, real time apps, micro-services",
-  "homepage": "https://github.com/Anamikalimbu/111daysCode#readme",
-  "bugs": {
-    "url": "https://github.com/Anamikalimbu/111daysCode/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Anamikalimbu/111daysCode.git"
-  },
+  "description": "",
   "license": "ISC",
-  "author": "Anamika",
+  "author": "",
   "type": "module",
-  "main": "index.js",
+  "main": "fileSystem.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   }
