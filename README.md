@@ -21,3 +21,17 @@
 
 
 ## Core Modules
+
+- File System (fs): Provides an API for interacting with the file system, allowing you to read, write, and manipulate files and directories.
+
+- Type of File System Models:
+  - Synchronous: Blocking operations that halt the execution of code until the operation is complete. Example: fs.readFileSync(), fs.writeFileSync().
+  - Asynchronous: Non-blocking operations that allow the execution of code to continue while the operation is being performed. Example: fs.readFile(), fs.writeFile().
+  
+- Type of file system operations:
+  - fs.readFile() - Reads the contents of a file asynchronously.
+  - fs.writeFile() - Writes data to a file asynchronously.
+  - fs.appendFile() - Appends data to a file asynchronously.
+  - fs.unlink() - Deletes a file asynchronously.
+  - fs.mkdir() - Creates a new directory asynchronously.
+  - fs.readdir() - Reads the contents of a directory asynchronously.
