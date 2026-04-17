@@ -35,3 +35,55 @@
   - fs.unlink() - Deletes a file asynchronously.
   - fs.mkdir() - Creates a new directory asynchronously.
   - fs.readdir() - Reads the contents of a directory asynchronously.
+
+  # HTTP module:
+- The HTTP module in Node.js allows you to create web servers and handle HTTP requests and responses. It provides a simple and efficient way to build web applications and APIs.
+- The HTTP module provides methods for creating a server, handling incoming requests, and sending responses back to the client. It also supports features like routing, middleware, and handling different HTTP methods (GET, POST, PUT, DELETE, etc.).
+- Example of creating a simple HTTP server using the HTTP module:
+```javascript
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello, World!');
+});
+
+server.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
+```
+# OS module:
+- The OS module in Node.js provides a way to interact with the operating system. It allows you to access information about the system, such as CPU architecture, memory usage, and network interfaces. It also provides methods for performing operations like creating temporary files, getting user information, and managing processes.
+- Example of using the OS module to get system information:
+```javascript
+const os = require('os');
+
+console.log('Platform:', os.platform());
+console.log('Architecture:', os.arch());
+console.log('Total Memory:', os.totalmem());
+console.log('Free Memory:', os.freemem());
+``` 
+# Path module:
+- The Path module in Node.js provides utilities for working with file and directory paths. It allows you to manipulate and resolve file paths in a platform-independent way. The Path module provides methods for joining, resolving, and normalizing paths, as well as extracting information from paths such as the directory name, base name, and file extension.
+- Example of using the Path module to manipulate file paths:
+```javascript
+const path = require('path');
+const filePath = '/users/anmi/documents/file.txt';
+console.log('Directory Name:', path.dirname(filePath));
+console.log('Base Name:', path.basename(filePath));
+console.log('File Extension:', path.extname(filePath));
+```
+
+# url module:
+- The URL module in Node.js provides utilities for URL resolution and parsing. It allows you to work with URLs, including parsing, formatting, and resolving them. The URL module provides methods for extracting components of a URL, such as the protocol, hostname, pathname, query string, and more. It also allows you to construct URLs from individual components.
+- Example of using the URL module to parse a URL:
+```javascript
+const url = require('url');
+const myURL = new URL('https://www.example.com:8080/path/name?search=query#hash');
+console.log('Protocol:', myURL.protocol);
+console.log('Hostname:', myURL.hostname);
+console.log('Port:', myURL.port);
+console.log('Pathname:', myURL.pathname);
+console.log('Query String:', myURL.search);
+console.log('Hash:', myURL.hash);
+```
