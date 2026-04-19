@@ -87,3 +87,69 @@ console.log('Pathname:', myURL.pathname);
 console.log('Query String:', myURL.search);
 console.log('Hash:', myURL.hash);
 ```
+
+
+## Events module:
+- The Events module in Node.js provides a way to create and handle custom events. It allows you to define your own events and attach listeners to them. The Events module provides methods for emitting events, adding event listeners, and removing event listeners. It is commonly used in Node.js applications to handle asynchronous operations and create event-driven architectures.
+- Example of using the Events module to create and handle custom events:
+```javascript
+const EventEmitter = require('events');
+const eventEmitter = new EventEmitter();
+```
+```javascript
+// Define a custom event
+eventEmitter.on('greet', (name) => {
+  console.log(`Hello, ${name}!`);
+});
+// Emit the custom event
+eventEmitter.emit('greet', 'Alice');
+```
+## Async module / Asynchronous Programming:
+- The Async module in Node.js provides utilities for working with asynchronous operations. It allows you to manage and control the flow of asynchronous code, making it easier to handle complex asynchronous tasks. The Async module provides methods for handling asynchronous functions, such as parallel execution, series execution, and waterfall execution. It also provides utilities for handling errors and managing callbacks in asynchronous code.
+- Example of using the Async module to execute asynchronous functions in parallel:
+```javascript
+const async = require('async');
+``````javascript
+async.parallel([
+  (callback) => {
+    setTimeout(() => {
+      console.log('Task 1 completed');
+      callback(null, 'Result of Task 1');
+    }, 1000);
+  },
+  (callback) => {
+    setTimeout(() => {
+      console.log('Task 2 completed');
+      callback(null, 'Result of Task 2');
+    }, 500);
+  }
+], (err, results) => {
+  if (err) {
+    console.error('Error:', err);
+  } else {
+    console.log('All tasks completed. Results:', results);
+  }
+});
+``` 
+Types of asynchronous programming:
+- Callbacks: A callback is a function that is passed as an argument to another function and is executed after the completion of an asynchronous operation. It allows you to handle the result of the asynchronous operation once it is completed.
+- Promises: A promise is an object that represents the eventual completion (or failure) of an asynchronous operation and its resulting value. It provides a more structured way to handle asynchronous code, allowing you to chain multiple asynchronous operations together and handle errors more effectively.
+- Async/Await: Async/await is a syntactic sugar built on top of promises that allows you to write asynchronous code in a more synchronous and readable manner. It uses the async keyword to define an asynchronous function and the await keyword to pause the execution of the function until a promise is resolved or rejected.
+```javascript// Example of using async/await to handle asynchronous code
+const fetchData = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('Data fetched successfully');
+    }, 1000);
+  });
+};  
+const main = async () => {
+  try {
+    const result = await fetchData();
+    console.log(result);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+main();
+```
