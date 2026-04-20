@@ -158,5 +158,22 @@ main();
 - Express.js is a popular web application framework for Node.js. It provides a simple and flexible way to build web applications and APIs. Express.js is built on top of the HTTP module in Node.js and provides additional features and utilities for handling routing, middleware, and request/response handling. It allows developers to create robust and scalable web applications with ease.
 - It is a Node.js API/backend framework.
 - Used to build API (Application program interface) and web applications.
-- 
+- It simplifies the HTTP module of node.js
+- Minimalist, fast and unopinionated framework for building web applications and APIs in Node.js.
 - Express.js provides a routing system that allows you to define routes for different HTTP methods (GET, POST, PUT, DELETE, etc.) and handle requests to those routes. It also supports middleware, which are functions that can be executed before or after the route handlers to perform tasks such as authentication, logging, and error handling.
+
+## API (Application Programming Interface):
+- API format: JSON (JavaScript Object Notation)
+- REST API (Representationl State Transfer)
+- REST API is a type of web API that follows the principles of Representational State Transfer (REST). It is an architectural style for designing networked applications. REST APIs use HTTP methods (GET, POST, PUT, DELETE) to perform operations on resources, which are identified by URLs. REST APIs are stateless, meaning that each request from a client to the server must contain all the information needed to understand and process the request. REST APIs are widely used for building web services and are known for their simplicity and scalability.
+- Example of a simple REST API endpoint using Express.js:
+```javascriptconst express = require('express');
+const app = express();
+app.get('/api/greet', (req, res) => {
+  const name = req.query.name || 'World';
+  res.json({ message: `Hello, ${name}!` });
+});
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
+```
