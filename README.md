@@ -165,3 +165,15 @@ main();
 ## API (Application Programming Interface):
 - API format: JSON (JavaScript Object Notation)
 - REST API (Representationl State Transfer)
+- REST API is a type of web API that follows the principles of Representational State Transfer (REST). It is an architectural style for designing networked applications. REST APIs use HTTP methods (GET, POST, PUT, DELETE) to perform operations on resources, which are identified by URLs. REST APIs are stateless, meaning that each request from a client to the server must contain all the information needed to understand and process the request. REST APIs are widely used for building web services and are known for their simplicity and scalability.
+- Example of a simple REST API endpoint using Express.js:
+```javascriptconst express = require('express');
+const app = express();
+app.get('/api/greet', (req, res) => {
+  const name = req.query.name || 'World';
+  res.json({ message: `Hello, ${name}!` });
+});
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
+```
