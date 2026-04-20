@@ -153,3 +153,10 @@ const main = async () => {
 };
 main();
 ```
+
+## Express.js
+- Express.js is a popular web application framework for Node.js. It provides a simple and flexible way to build web applications and APIs. Express.js is built on top of the HTTP module in Node.js and provides additional features and utilities for handling routing, middleware, and request/response handling. It allows developers to create robust and scalable web applications with ease.
+- It is a Node.js API/backend framework.
+- Used to build API (Application program interface) and web applications.
+- 
+- Express.js provides a routing system that allows you to define routes for different HTTP methods (GET, POST, PUT, DELETE, etc.) and handle requests to those routes. It also supports middleware, which are functions that can be executed before or after the route handlers to perform tasks such as authentication, logging, and error handling.
