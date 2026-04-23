@@ -1,0 +1,93 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f4f6f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #fff;
+  padding: 25px 30px;
+  width: 380px;
+  border-radius: 12px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.input-group {
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.input-group label {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  margin-top: 6px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #6a5acd;
+}
+
+small {
+  color: red;
+  visibility: hidden;
+  position: absolute;
+  bottom: -18px;
+  left: 0;
+  font-size: 13px;
+}
+
+/* Error */
+.input-group.error input {
+  border-color: red;
+}
+
+.input-group.error small {
+  visibility: visible;
+}
+
+/* Success */
+.input-group.success input {
+  border-color: green;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #6a5acd;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.4s;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #5947d1;
+}
