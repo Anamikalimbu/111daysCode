@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atmosphere - Weather App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons for modern iconography -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="weather-card">
+            <div class="search-box">
+                <i class="ph ph-magnifying-glass"></i>
+                <input type="text" id="city-input" placeholder="Enter city name..." autocomplete="off">
+                <button id="search-btn">Search</button>
+            </div>
+
+            <div class="error-message" id="error-message">
+                City not found. Please try again.
+            </div>
+
+            <div class="weather-info" id="weather-info">
+                <h2 id="city-name" class="city-name">--</h2>
+                <div class="weather-main">
+                    <i id="weather-icon" class="ph ph-cloud-sun"></i>
+                    <h1 id="temperature" class="temp">--°C</h1>
+                </div>
+                <p id="weather-desc" class="desc">--</p>
+                
+                <div class="details">
+                    <div class="detail-box">
+                        <i class="ph ph-drop"></i>
+                        <div>
+                            <span id="humidity" class="value">--%</span>
+                            <span class="label">Humidity</span>
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <i class="ph ph-wind"></i>
+                        <div>
+                            <span id="wind-speed" class="value">-- km/h</span>
+                            <span class="label">Wind Speed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loader" id="loader">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
