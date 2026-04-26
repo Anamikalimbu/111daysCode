@@ -177,3 +177,117 @@ app.listen(3000, () => {
   console.log('Server running on port 3000');
 });
 ```
+## JSON (JavaScript Object Notation):
+- JSON is a lightweight data interchange format that is easy for humans to read and write, and
+easy for machines to parse and generate. It is based on a subset of the JavaScript programming language and is commonly used for transmitting data between a server and a web application as an alternative to XML. JSON represents data as key-value pairs, where keys are strings and values can be strings, numbers, arrays, objects, or boolean values. JSON is widely used in web development for APIs and data exchange due to its simplicity and compatibility with JavaScript.
+- Example of a JSON object:
+```json
+{
+  "name": "Smriti",
+  "age": 30,
+  "isStudent": false,
+  "hobbies": ["reading", "traveling", "coding"],
+  "address": {
+    "street": "123 Main St",
+    "city": "Anytown",
+    "country": "USA"
+  }
+}
+```
+- JS Object => JSON.stringify() => JSON 
+- JSON => JSON.parse() => JS Object 
+
+## HTTP Methods:
+- GET: Used to retrieve data from a server. It is a read-only operation and should not have any side effects on the server. Example: GET /api/users - Retrieves a list of users.
+- Get - Read/Fetch
+
+- POST: Used to send data to a server to create a new resource. It is a write operation and can have side effects on the server. Example: POST /api/users - Creates a new user with the provided data.
+- POST - Create
+
+- PUT: Used to update an existing resource on the server. It is a write operation and can have side effects on the server. Example: PUT /api/users/123 - Updates the user with ID 123 with the provided data.
+- PUT - Update
+
+- DELETE: Used to delete a resource from the server. It is a write operation and can have side effects on the server. Example: DELETE /api/users/123 - Deletes the user with ID 123.
+- DELETE - Delete
+
+- PATCH: Used to partially update an existing resource on the server. It is a write operation and can have side effects on the server. Example: PATCH /api/users/123 - Partially updates the user with ID 123 with the provided data.
+- PATCH - Partial Update
+
+## Layered Architecture:
+- Layered architecture is a software design pattern that organizes the components of an application into distinct layers, each with specific responsibilities. The layers are typically arranged in a hierarchical manner, with each layer depending on the layer below it. The common layers in a layered architecture include:
+- API Layer: This layer is responsible for handling incoming requests from clients and sending responses back to them. It defines the endpoints and routes for the application and interacts with the underlying layers to process the requests.
+   - Routes: Handle routed/endpoints
+   - Controllers: Handle rewquest and response
+   - Middleware: Handle request/response, Logging, Authentication, Error handling
+
+- Service Layer: This layer contains the business logic of the application. It processes the data received from the API layer and interacts with the data access layer to perform operations on the database or other external services.
+    - Bussiness logic layer - Handle the business logic of the application, such as processing data, performing calculations, and implementing the core functionality of the application.
+- Data Access Layer: This layer is responsible for interacting with the database or other data sources. It provides an abstraction over the underlying data storage and allows the service layer to perform CRUD (Create, Read, Update, Delete) operations on the data.
+    - Models - Handle the data structure and schema of the application, such as defining the database models and schemas for the application.
+
+- Database Layer: This layer is responsible for storing and retrieving data from the database. It can be implemented using various database technologies, such as relational databases (e.g., MySQL, PostgreSQL) or NoSQL databases (e.g., MongoDB).
+
+
+## MongoDB
+- MongoDB is a popular NoSQL database that uses a document-oriented data model. It is designed to be scalable, flexible, and easy to use. MongoDB stores data in JSON-like documents, which allows for dynamic schemas and makes it easy to work with complex data structures. It provides features such as high availability, horizontal scaling, and rich querying capabilities. MongoDB is commonly used in web applications, real-time analytics, and big data processing.
+- NoSQL database
+- Non-relational database
+- Document-oriented database
+- Data are stored in collections & documents
+- Database: Main container, all collections are stored here
+- Collection: Equivalent to table of relational database
+- Document: Equivalent to row of relational database, stored in JSON format
+- Field: Equivalent to column of relational database, stored as key-value pair in JSON format
+- MongoDB provides a powerful query language that allows you to perform complex queries on the data.
+
+## Tools used
+
+- Locally: MongoDB Compass (Shell included)
+- Cloud: MongoDB Atlas (Cloud database service provided by MongoDB)
+
+# Run mongoDB in compass
+1. Open MongoDB Compass
+2. Click on "New Connection"
+3. In the "Connection String" field, enter the connection string for your MongoDB instance. For example: `mongodb://localhost:27017` (if running locally) or the connection string provided by MongoDB Atlas (if using cloud).
+4. Click on "Connect" to establish a connection to the MongoDB database.
+
+## MongoDB Queries:
+`Show dbs` - Show all databases
+`Use <database_name>` - Switch to a specific database
+`Show collections` - Show all collections in the current database
+
+1. Create
+`db.users.insertOne({ name: "Anamika"})` -
+   Insert a single document into the "users" collection
+`db.users.insertMany([{ name: "Anamika"}, { name: "Smriti"}])` - Insert multiple documents into the "users" collection
+2. Read
+`db.users.find()` - Retrieve all documents from the "users" collection
+`db.users.find({ name: "Anamika"})` - Retrieve documents from the "users" collection where the name field is "Anamika"
+3. Update
+`db.users.updateOne({ name: "Anamika"}, { $set: { age: 18}})` - Update a single document in the "users" collection where the name field is "Anamika" and set the age field to 18
+4. Delete
+`db.users.deleteOne({ name: "Anamika"})` - Delete a single document from the "users" collection where the name field is "Anamika"
+`db.users.deleteMany({ name: "Anamika"})` - Delete multiple documents from the "users" collection where the name field is "Anamika"
+
+## Complex filters:
+1. $eq: db.users.find({name: {$eq:"Hari"}})
+2. $ne: db.users.find({name: {$ne:"Hari"}})
+3. $gt/gte: db.users.find({age: {$gt:50}})
+4. $lt/lte: db.users.find({age: {$lt:50}})
+5. $and: db.users.find({$and: [ {name:"Hari"}, {age:20} ]})
+6. $or: db.users.find({$or: [ {name:"Hari"}, {age:45} ]})
+7. $in: db.users.find({name: {$in: [ "Hari", "Rohan" ]}})
+
+a. limit: db.users.find().limit(2)
+b. skip: db.users.find().skip(1)
+c. sort: db.users.find().sort({name:1}) 1: ASC, -1: DESC
+
+## Mongoose
+- Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It provides a higher-level abstraction over the MongoDB native driver, making it easier to work with MongoDB in a Node.js application. Mongoose allows you to define schemas for your data models, which can include validation rules, default values, and custom methods. It also provides a powerful query API for performing CRUD operations on your MongoDB collections. With Mongoose, you can easily create and manage relationships between different data models, making it a popular choice for building applications that use MongoDB as the database.
+
+- ODM of MongoDB for Node.js
+- Create Schema
+- Validate Schema
+- Create models using Schema
+- Relationships
+

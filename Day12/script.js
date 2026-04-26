@@ -104,8 +104,150 @@ cells.forEach(cell => {
   });
 });
 
+// ---- Place a move ----
+function placeMove(idx, player) {
+  board[idx] = player;
+  const cell = cells[idx];
+  cell.textContent = player;
+  cell.classList.add('taken', player.toLowerCase());
 
+  const winner = checkWinner();
+  if (winner) {
+    endGame('win', player, winner.combo);
+    return;
+  }
+  if (board.every(Boolean)) {
+    endGame('draw');
+    return;
+  }
 
+  currentPlayer = player === 'X' ? 'O' : 'X';
+  updateStatus();
+  updateScoreHighlight();
+
+  // Trigger AI move
+  if (vsAI && currentPlayer === 'O' && !gameOver) {
+    scheduleAI();
+  }
+}
+
+// ---- AI scheduling ----
+function scheduleAI() {
+  aiThinking = true;
+  boardEl.classList.add('locked');
+  showThinking();
+
+  const delay = 420 + Math.random() * 300;
+  setTimeout(() => {
+    const move = getAIMove();
+    aiThinking = false;
+    boardEl.classList.remove('locked');
+    if (move !== -1) placeMove(move, 'O');
+  }, delay);
+}
+
+// ---- AI move selection ----
+function getAIMove() {
+  const empty = board.map((v, i) => v === null ? i : -1).filter(i => i !== -1);
+  if (!empty.length) return -1;
+
+  if (difficulty === 'easy') {
+    // 70% random, 30% smart
+    if (Math.random() < 0.70) return empty[Math.floor(Math.random() * empty.length)];
+    return bestMove(2);
+  }
+  if (difficulty === 'medium') {
+    // Always block immediate win; 50% otherwise random
+    const block = findBlockOrWin();
+    if (block !== -1) return block;
+    if (Math.random() < 0.50) return empty[Math.floor(Math.random() * empty.length)];
+    return bestMove(4);
+  }
+  // hard — full minimax
+  return bestMove(9);
+}
+
+// Block immediate wins / take immediate wins (medium shortcut)
+function findBlockOrWin() {
+  // First check if AI can win
+  for (const [a, b, c] of WINNING_COMBOS) {
+    const line = [board[a], board[b], board[c]];
+    if (line.filter(v => v === 'O').length === 2 && line.includes(null)) {
+      return [a, b, c][line.indexOf(null)];
+    }
+  }
+  // Then block human
+  for (const [a, b, c] of WINNING_COMBOS) {
+    const line = [board[a], board[b], board[c]];
+    if (line.filter(v => v === 'X').length === 2 && line.includes(null)) {
+      return [a, b, c][line.indexOf(null)];
+    }
+  }
+  return -1;
+}
+
+// ---- Minimax ----
+function bestMove(depth) {
+  let best = -Infinity, idx = -1;
+  for (let i = 0; i < 9; i++) {
+    if (board[i]) continue;
+    board[i] = 'O';
+    const score = minimax(board, depth - 1, false, -Infinity, Infinity);
+    board[i] = null;
+    if (score > best) { best = score; idx = i; }
+  }
+  return idx;
+}
+
+function minimax(b, depth, isMax, alpha, beta) {
+  const result = evalBoard(b);
+  if (result !== null || depth === 0) return result ?? 0;
+
+  if (isMax) {
+    let best = -Infinity;
+    for (let i = 0; i < 9; i++) {
+      if (b[i]) continue;
+      b[i] = 'O';
+      best = Math.max(best, minimax(b, depth - 1, false, alpha, beta));
+      b[i] = null;
+      alpha = Math.max(alpha, best);
+      if (beta <= alpha) break;
+    }
+    return best;
+  } else {
+    let best = Infinity;
+    for (let i = 0; i < 9; i++) {
+      if (b[i]) continue;
+      b[i] = 'X';
+      best = Math.min(best, minimax(b, depth - 1, true, alpha, beta));
+      b[i] = null;
+      beta = Math.min(beta, best);
+      if (beta <= alpha) break;
+    }
+    return best;
+  }
+}
+
+function evalBoard(b) {
+  for (const [a, c, d] of WINNING_COMBOS) {
+    if (b[a] && b[a] === b[c] && b[a] === b[d]) {
+      return b[a] === 'O' ? 10 : -10;
+    }
+  }
+  if (b.every(Boolean)) return 0;
+  return null; // game ongoing
+}
+
+// ---- Check winner on live board ----
+function checkWinner() {
+  for (const combo of WINNING_COMBOS) {
+    const [a, b, c] = combo;
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      return { player: board[a], combo };
+    }
+  }
+  return null;
+}
 
 // ---- End game ----
 function endGame(type, player, combo) {

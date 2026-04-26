@@ -1,0 +1,50 @@
+export const products = [
+  {
+    id: 1,
+    name: "Wireless Noise-Cancelling Headphones",
+    price: 299.99,
+    category: "Audio",
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop",
+    isNew: true,
+  },
+  {
+    id: 2,
+    name: "Mechanical Keyboard Pro",
+    price: 149.50,
+    category: "Accessories",
+    image: "https://images.unsplash.com/photo-1595225476474-87563907a212?q=80&w=1000&auto=format&fit=crop",
+    isNew: false,
+  },
+  {
+    id: 3,
+    name: "Smart Fitness Watch",
+    price: 199.00,
+    category: "Wearables",
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000&auto=format&fit=crop",
+    isNew: true,
+  },
+  {
+    id: 4,
+    name: "Ultra-Thin Laptop Stand",
+    price: 45.99,
+    category: "Accessories",
+    image: "https://images.unsplash.com/photo-1616423640778-28d1b53229bd?q=80&w=1000&auto=format&fit=crop",
+    isNew: false,
+  },
+  {
+    id: 5,
+    name: "4K Action Camera",
+    price: 349.00,
+    category: "Cameras",
+    image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=1000&auto=format&fit=crop",
+    isNew: false,
+  },
+  {
+    id: 6,
+    name: "Portable Bluetooth Speaker",
+    price: 89.99,
+    category: "Audio",
+    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?q=80&w=1000&auto=format&fit=crop",
+    isNew: true,
+  }
+];
