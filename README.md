@@ -291,3 +291,91 @@ c. sort: db.users.find().sort({name:1}) 1: ASC, -1: DESC
 - Create models using Schema
 - Relationships
 
+## Cryptography
+- Cryptography is the practice of securing communication and data through the use of mathematical algorithms and techniques. It involves the use of encryption and decryption methods to protect sensitive information from unauthorized access. Cryptography is used in various applications, including secure communication, data protection, authentication, and digital signatures. It plays a crucial role in ensuring the confidentiality, integrity, and authenticity of data in the digital world.
+
+# Encryption:
+- Encryption is the process of converting plain text into a coded form (ciphertext) using an encryption algorithm and a secret key. The purpose of encryption is to protect the confidentiality of data by making it unreadable to unauthorized parties. Only those who have the corresponding decryption key can convert the ciphertext back into its original plain text form.
+
+ - Encryption: Converting readable text to unreadable/cipher text
+ - for e.g: hello -> aijosecq9wn033qcu-
+
+# Decryption:
+- Decryption is the process of converting ciphertext back into its original plain text form using a decryption algorithm and the corresponding decryption key. The purpose of decryption is to restore the original information from the encrypted form, allowing authorized parties to access and understand the data.
+
+  - Decryption: Converting cipher text to readable text
+  - for e.g: aijosecq9wn033qcu- -> hello
+
+# Types
+- Symmetric Encryption: In symmetric encryption, the same key is used for both encryption and decryption. The sender and receiver must both have access to the same secret key to communicate securely. Examples of symmetric encryption algorithms include AES (Advanced Encryption Standard) and DES (Data Encryption Standard).
+ - Same key is used for encryption and decryption
+ - Sender and receiver must both have access to the same secret key to communicate securely
+- Asymmetric Encryption: In asymmetric encryption, two different keys are used for encryption and decryption. The sender uses a public key to encrypt the data, while the receiver uses a private key to decrypt it. This allows for secure communication without the need for sharing a secret key. Examples of asymmetric encryption algorithms include RSA (Rivest-Shamir-Adleman) and ECC (Elliptic Curve Cryptography).
+  - Different keys are used for encryption and decryption, public key for encryption and private key for decryption
+  - Allows for secure communication without the need for sharing a secret key
+  - Public/Private key (RSA)
+
+  ## Hashing
+- Hashing is the process of converting input data of any size into a fixed-size string of characters, which is typically a hash value or hash code. Hashing is commonly used for data integrity verification, password storage, and digital signatures. A hash function takes an input and produces a unique output (hash) that represents the original data. The same input will always produce the same hash, but even a small change in the input will result in a completely different hash. Examples of hashing algorithms include MD5 (Message Digest Algorithm 5) and SHA-256 (Secure Hash Algorithm 256-bit).
+- Hashing: Converting input data of any size into a fixed-size string of characters (hash value or hash code)
+- Used for data integrity verification, password storage, and digital signatures
+- Hash function takes an input and produces a unique output (hash) that represents the original data
+- Same input will always produce the same hash, but even a small change in the input will result in a completely different hash
+
+ - one way encryption
+ - Convert the readable text to cipher text but not back to readable
+ - Hashing always returns same cipher
+ - hello => 123456asdfdsfg
+
+
+# Salt
+- Salt is a random value that is added to the input of a hash function to enhance security. It is used to protect against attacks such as rainbow table attacks, where precomputed hash values are used to reverse-engineer the original input. By adding a unique salt value to each input before hashing, it ensures that even if two inputs are the same, their resulting hashes will be different. This makes it significantly more difficult for attackers to crack hashed passwords or other sensitive data.
+ - Adding random characters in the hash to make it more secure
+ - Protect against attacks such as rainbow table attacks
+  - Rainbow table attack: Precomputed hash values are used to reverse-engineer the original input 
+- By adding a unique salt value to each input before hashing, it ensures that even if two inputs are the same, their resulting hashes will be different
+- Makes it significantly more difficult for attackers to crack hashed passwords or other sensitive data
+
+# Authentication & Authorization
+- Authentication is the process of verifying the identity of a user or system. It involves confirming that the user is who they claim to be, typically through the use of credentials such as usernames and passwords. Authentication is a crucial step in ensuring that only authorized individuals can access certain resources or perform specific actions.
+- Authorization, on the other hand, is the process of determining what actions or resources a user or system is allowed to access after their identity has been authenticated. It involves defining and enforcing permissions and access controls based on the authenticated user's role or privileges. Authorization ensures that users can only access the resources and perform the actions that they are authorized to, preventing unauthorized access and potential security breaches.
+
+ 1. Authentication: Verifying the identity of a user or system using credentials (e.g., username and password)
+  - Who you are? Logged in user
+ 2. Authorization: Determining what actions or resources a user or system is allowed to access after authentication, based on their role or privileges.
+  - What you can do? User role
+
+# JSON Web Tokens (JWT)
+- JSON Web Tokens (JWT) is a compact, URL-safe means of representing claims to be transferred between two parties. It is commonly used for authentication and authorization purposes in web applications. A JWT consists of three parts: a header, a payload, and a signature. The header typically contains information about the type of token and the signing algorithm used. The payload contains the claims or statements about an entity (usually the user) and additional data. The signature is created by signing the header and payload with a secret key or a public/private key pair. JWTs are often used in stateless authentication systems, where the server does not need to store session information, as the token itself contains all the necessary information for authentication and authorization.
+  - Self verified
+  - Tamper proof
+  - Used for both authentication and authorization
+
+# JWT Structure
+- Header: The header typically consists of two parts: the type of token (JWT) and the signing algorithm being used (e.g., HMAC SHA256 or RSA). It is Base64Url encoded to form the first part of the JWT.
+- Payload: The payload contains the claims or statements about an entity (usually the user) and additional data. It can include standard claims such as "iss" (issuer), "sub" (subject), "aud" (audience), and custom claims defined by the application. The payload is also Base64Url encoded to form the second part of the JWT.
+- Signature: The signature is created by taking the encoded header and payload, concatenating them with a period (.), and then signing the resulting string using a secret key or a public/private key pair. The signature is used to verify the integrity of the token and ensure that it has not been tampered with. The signature is Base64Url encoded to form the third part of the JWT.
+
+# Storage
+ 1. Cookie Storage
+   - Size: 4KB
+   - Storage: Server & Browser
+   - Expiry: Cookie expiry
+  2. Local Storage
+    - Size: 5 - 10MB
+    - Storage: Only Browser
+    - Expiry: Never
+  3. Session Storage
+    - Size: 5MB
+    - Storage: Only Browser
+    - Expiry: Session end (On tab close)
+
+## Auth Process
+1. Login/Register success
+2. Generate token (JWT)
+3. Store token: Cookie, Session, Local storage
+4. Append the token in every request to handle auth
+5. Verify the token and authenticate/authorize user (Middleware)
+
+
+
