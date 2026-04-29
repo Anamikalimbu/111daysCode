@@ -377,5 +377,26 @@ c. sort: db.users.find().sort({name:1}) 1: ASC, -1: DESC
 4. Append the token in every request to handle auth
 5. Verify the token and authenticate/authorize user (Middleware)
 
+## Middleware
+  - Middleware is a function that has access to the request object (req), the response object (res), and the next middleware function in the application's request-response cycle. It can execute any code, make changes to the request and response objects, end the request-response cycle, or call the next middleware function in the stack. Middleware functions are commonly used for tasks such as authentication, logging, error handling, and modifying request/response data before it reaches the route handlers. They help in organizing and structuring the application by separating concerns and allowing for reusable code.
+
+  - Function that lies between request and response
+  - Function that has access of both request and response object.
+  - It has additional functionality to go to next() middleware call
+   Browser ----Request ---->Server Middleware, Middleware, Middleware Server ---- Response ----> Browser
+   # Usage
+   - Logging
+       - logging is the process of recording information about the requests and responses in an application. It helps in monitoring and debugging the application by providing insights into the flow of requests, errors, and other important events. Middleware can be used to implement logging functionality by intercepting the incoming requests and outgoing responses, allowing you to log relevant information such as request method, URL, status code, and response time. 
+   - Authentication & Authorization
+      - Authentication is the process of verifying the identity of a user or system, while authorization is the process of determining what actions or resources a user or system is allowed to access after authentication. Middleware can be used to implement authentication and authorization functionality by intercepting incoming requests and checking for valid credentials (e.g., JWT tokens) before allowing access to protected routes or resources. This helps in ensuring that only authorized users can access certain parts of the application.
+
+      - Authorization is the process of determining what actions or resources a user or system is allowed to access after authentication, based on their role or privileges. Middleware can be used to implement authorization functionality by intercepting incoming requests and checking the user's role or permissions before allowing access to specific routes or resources. This helps in enforcing access control and ensuring that users can only perform actions that they are authorized to.
+   - Request & Response object modification
+
+   - Error handling
+     - Error handling is the process of managing and responding to errors that occur during the execution of an application. Middleware can be used to implement error handling functionality by intercepting errors that occur in the application and providing a centralized mechanism for handling them. This allows you to log errors, send appropriate responses to the client, and prevent the application from crashing due to unhandled exceptions.
+     
+   - Data validation
+
 
 
