@@ -395,8 +395,10 @@ c. sort: db.users.find().sort({name:1}) 1: ASC, -1: DESC
 
    - Error handling
      - Error handling is the process of managing and responding to errors that occur during the execution of an application. Middleware can be used to implement error handling functionality by intercepting errors that occur in the application and providing a centralized mechanism for handling them. This allows you to log errors, send appropriate responses to the client, and prevent the application from crashing due to unhandled exceptions.
-     
+
    - Data validation
+      - Data validation is the process of ensuring that the data being processed or stored in an application meets certain criteria or rules. Middleware can be used to implement data validation functionality by intercepting incoming requests and validating the data before it reaches the route handlers. This helps in ensuring that the data is in the correct format, contains required fields, and meets any other specified validation rules, thereby preventing invalid data from being processed or stored in the application.
 
-
+    - Postman
+     - Postman is API development and testing tool that allows developers to create, test, and document APIs. It provides a user-friendly interface for sending HTTP requests, inspecting responses, and organizing API endpoints. Postman supports various HTTP methods (GET, POST, PUT, DELETE) and allows you to set headers, query parameters, and request bodies. It also provides features for creating test scripts, automating API testing, and generating API documentation. Postman is widely used by developers to streamline the API development process and ensure the functionality and reliability of their APIs.
 
