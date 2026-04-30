@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Async JS + Fetch API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header>
+    <div class="header-tag">ASYNC JS</div>
+    <h1>Fetch<span class="accent">_</span>API</h1>
+    <p class="subtitle">Live demo: Promises · async/await · error handling</p>
+  </header>
+
+  <!-- ── CONCEPT CARDS ── -->
+  <section class="concepts">
+    <div class="concept-card" id="card-promise">
+      <span class="card-num">01</span>
+      <h2>Promise Chain</h2>
+      <p>Fetch a random post using <code>.then()</code> / <code>.catch()</code> chaining.</p>
+      <button class="btn" onclick="fetchWithPromise()">Run</button>
+      <div class="result-box" id="result-promise"><span class="placeholder">— output appears here —</span></div>
+    </div>
+
+    <div class="concept-card" id="card-async">
+      <span class="card-num">02</span>
+      <h2>async / await</h2>
+      <p>Same request, cleaner syntax with <code>async</code> function & <code>await</code>.</p>
+      <button class="btn" onclick="fetchWithAsync()">Run</button>
+      <div class="result-box" id="result-async"><span class="placeholder">— output appears here —</span></div>
+    </div>
+
+    <div class="concept-card" id="card-parallel">
+      <span class="card-num">03</span>
+      <h2>Promise.all</h2>
+      <p>Fetch a post <em>and</em> a user in parallel — resolves when both complete.</p>
+      <button class="btn" onclick="fetchParallel()">Run</button>
+      <div class="result-box" id="result-parallel"><span class="placeholder">— output appears here —</span></div>
+    </div>
+
+    <div class="concept-card" id="card-error">
+      <span class="card-num">04</span>
+      <h2>Error Handling</h2>
+      <p>Intentional 404 request — observe graceful <code>try/catch</code> recovery.</p>
+      <button class="btn btn-danger" onclick="fetchWithError()">Trigger Error</button>
+      <div class="result-box" id="result-error"><span class="placeholder">— output appears here —</span></div>
+    </div>
+  </section>
+
+  <!-- ── LIVE FEED ── -->
+  <section class="feed-section">
+    <div class="feed-header">
+      <h2>Live Post Feed</h2>
+      <div class="controls">
+        <input type="number" id="post-limit" min="1" max="20" value="5" />
+        <label for="post-limit">posts</label>
+        <button class="btn" onclick="loadFeed()">Load</button>
+      </div>
+    </div>
+    <div id="feed-grid" class="feed-grid">
+      <p class="feed-empty">Press <strong>Load</strong> to fetch posts from the API.</p>
+    </div>
+  </section>
+
+  <!-- ── CODE PANEL ── -->
+  <section class="code-section">
+    <h2>Source <span class="accent">Snippets</span></h2>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('tab-promise', this)">Promise</button>
+      <button class="tab" onclick="switchTab('tab-async', this)">async/await</button>
+      <button class="tab" onclick="switchTab('tab-parallel', this)">Parallel</button>
+      <button class="tab" onclick="switchTab('tab-error-code', this)">Error</button>
+    </div>
+    <pre id="tab-promise" class="code-block active"><code><span class="kw">function</span> <span class="fn">fetchWithPromise</span>() {
+  <span class="kw">const</span> id = randomId();
+
+  fetch(<span class="str">`https://jsonplaceholder.typicode.com/posts/${id}`</span>)
+    .<span class="fn">then</span>(res => {
+      <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> Error(<span class="str">`HTTP ${res.status}`</span>);
+      <span class="kw">return</span> res.<span class="fn">json</span>();
+    })
+    .<span class="fn">then</span>(data => <span class="fn">displayResult</span>(<span class="str">"promise"</span>, data))
+    .<span class="fn">catch</span>(err => <span class="fn">displayError</span>(<span class="str">"promise"</span>, err));
+}</code></pre>
+
+    <pre id="tab-async" class="code-block"><code><span class="kw">async function</span> <span class="fn">fetchWithAsync</span>() {
+  <span class="kw">const</span> id = randomId();
+  <span class="kw">try</span> {
+    <span class="kw">const</span> res  = <span class="kw">await</span> fetch(<span class="str">`…/posts/${id}`</span>);
+    <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> Error(<span class="str">`HTTP ${res.status}`</span>);
+    <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+    <span class="fn">displayResult</span>(<span class="str">"async"</span>, data);
+  } <span class="kw">catch</span> (err) {
+    <span class="fn">displayError</span>(<span class="str">"async"</span>, err);
+  }
+}</code></pre>
+
+    <pre id="tab-parallel" class="code-block"><code><span class="kw">async function</span> <span class="fn">fetchParallel</span>() {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> [postRes, userRes] = <span class="kw">await</span> Promise.<span class="fn">all</span>([
+      fetch(<span class="str">"…/posts/1"</span>),
+      fetch(<span class="str">"…/users/1"</span>)
+    ]);
+    <span class="kw">const</span> [post, user] = <span class="kw">await</span> Promise.<span class="fn">all</span>([
+      postRes.<span class="fn">json</span>(),
+      userRes.<span class="fn">json</span>()
+    ]);
+    <span class="fn">displayResult</span>(<span class="str">"parallel"</span>, { post, user });
+  } <span class="kw">catch</span> (err) {
+    <span class="fn">displayError</span>(<span class="str">"parallel"</span>, err);
+  }
+}</code></pre>
+
+    <pre id="tab-error-code" class="code-block"><code><span class="kw">async function</span> <span class="fn">fetchWithError</span>() {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> res = <span class="kw">await</span> fetch(<span class="str">"…/posts/99999"</span>); <span class="cm">// 404</span>
+    <span class="kw">if</span> (!res.ok)
+      <span class="kw">throw new</span> Error(<span class="str">`Not Found — HTTP ${res.status}`</span>);
+    <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+    <span class="fn">displayResult</span>(<span class="str">"error"</span>, data);
+  } <span class="kw">catch</span> (err) {
+    <span class="fn">displayError</span>(<span class="str">"error"</span>, err); <span class="cm">// caught here ✓</span>
+  }
+}</code></pre>
+  </section>
+
+  <footer>
+    <span>JSONPlaceholder API — typicode.com</span>
+    <span>Async JS · Fetch · ES2017+</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
