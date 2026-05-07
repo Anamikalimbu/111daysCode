@@ -11,7 +11,6 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* ── Decorative background blobs ── */}
       <div className="blob blob-1" />
       <div className="blob blob-2" />
       <div className="blob blob-3" />

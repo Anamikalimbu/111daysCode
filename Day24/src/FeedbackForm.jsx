@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 
-/* ── Validation helpers ─────────────────────────────────── */
+/* ── Validation ─────────────────────────────────── */
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
 const validate = (fields) => {
@@ -12,10 +12,8 @@ const validate = (fields) => {
   return errors
 }
 
-/* ── Stars helper ───────────────────────────────────────── */
 const stars = [1, 2, 3, 4, 5]
 
-/* ── Component ──────────────────────────────────────────── */
 function FeedbackForm({ onSubmit }) {
   /* Controlled state */
   const [fields, setFields] = useState({
@@ -29,16 +27,14 @@ function FeedbackForm({ onSubmit }) {
   const [touched, setTouched] = useState({})
   const [showSuccess, setShowSuccess] = useState(false)
 
-  /* useRef – uncontrolled "Subject" field */
+  /* useRef – uncontrolled */
   const subjectRef = useRef(null)
 
-  /* ── Handlers ──────────────────────────────────────────── */
   const handleChange = (e) => {
     const { name, value } = e.target
     const updated = { ...fields, [name]: value }
     setFields(updated)
 
-    /* live‑validate on every keystroke once touched */
     if (touched[name]) {
       setErrors(validate(updated))
     }
@@ -60,14 +56,12 @@ function FeedbackForm({ onSubmit }) {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    /* Mark all touched so errors appear */
     setTouched({ name: true, email: true, rating: true, message: true })
 
     const errs = validate(fields)
     setErrors(errs)
     if (Object.keys(errs).length > 0) return
 
-    /* Build submission payload */
     const subject = subjectRef.current?.value?.trim() || '(No subject)'
     const payload = { ...fields, subject, submittedAt: new Date().toLocaleString() }
 
@@ -84,11 +78,9 @@ function FeedbackForm({ onSubmit }) {
     setTimeout(() => setShowSuccess(false), 3000)
   }
 
-  /* ── Derived state ─────────────────────────────────────── */
   const currentErrors = validate(fields)
   const isFormValid = Object.keys(currentErrors).length === 0
 
-  /* ── Render ────────────────────────────────────────────── */
   return (
     <form className="feedback-form" onSubmit={handleSubmit} noValidate>
       {/* Success badge */}
@@ -134,7 +126,6 @@ function FeedbackForm({ onSubmit }) {
         {touched.email && errors.email && <span className="error-text">{errors.email}</span>}
       </div>
 
-      {/* ── Subject (uncontrolled via useRef) ── */}
       <div className="form-group">
         <label htmlFor="subject">
           <span className="label-icon">📝</span> Subject <span className="optional-tag">optional</span>
