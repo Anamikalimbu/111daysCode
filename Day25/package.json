@@ -1,0 +1,40 @@
+{
+  "name": "day25",
+  "version": "1.0.0",
+  "description": "- Node.js is a JavaScript runtime. - Runtime: A program that runs another program. - Run JS in local machine. - Built on C++ - Powered by Google Chrome v8 engine - Used to build: API, real time apps, micro-services",
+  "main": "server.js",
+  "scripts": {
+    "build": "node build",
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "axios": "^1.16.0",
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.2",
+    "cloudinary": "^2.10.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.5.0",
+    "multer": "^2.1.1",
+    "resend": "^6.12.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
