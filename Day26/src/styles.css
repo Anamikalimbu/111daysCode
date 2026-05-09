@@ -1,0 +1,697 @@
+`/**
+ * styles.css — Multi-Step Registration Form
+ *
+ * Design system:
+ *   - Dark glassmorphism theme with vibrant gradient accents
+ *   - Smooth slide animations between steps
+ *   - Responsive layout for all viewports
+ *   - Floating background orbs for depth
+ */
+
+/* ─── Google Font ─────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ─── CSS Custom Properties (Design Tokens) ──────────────────────── */
+:root {
+  /* Colors */
+  --bg-primary: #0a0e1a;
+  --bg-card: rgba(15, 20, 40, 0.75);
+  --bg-card-border: rgba(255, 255, 255, 0.06);
+  --bg-field: rgba(255, 255, 255, 0.04);
+  --bg-field-focus: rgba(255, 255, 255, 0.07);
+
+  --text-primary: #e8eaf0;
+  --text-secondary: #8b92a8;
+  --text-muted: #5a6178;
+
+  --accent: #6c5ce7;
+  --accent-light: #a29bfe;
+  --accent-glow: rgba(108, 92, 231, 0.25);
+
+  --success: #00b894;
+  --success-glow: rgba(0, 184, 148, 0.25);
+  --error: #fd79a8;
+  --error-bg: rgba(253, 121, 168, 0.08);
+
+  --gradient-primary: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  --gradient-success: linear-gradient(135deg, #00b894, #55efc4);
+
+  /* Sizing */
+  --card-max-width: 560px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  /* Shadows */
+  --shadow-card: 0 8px 60px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-btn: 0 4px 20px var(--accent-glow);
+
+  /* Transition */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Reset ───────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ─── App Wrapper ─────────────────────────────────────────────────── */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── Decorative Background Orbs ──────────────────────────────────── */
+.bg-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-orb--1 {
+  width: 500px;
+  height: 500px;
+  background: #6c5ce7;
+  top: -150px;
+  left: -100px;
+  animation: orbFloat1 18s ease-in-out infinite alternate;
+}
+
+.bg-orb--2 {
+  width: 400px;
+  height: 400px;
+  background: #00b894;
+  bottom: -100px;
+  right: -80px;
+  animation: orbFloat2 22s ease-in-out infinite alternate;
+}
+
+.bg-orb--3 {
+  width: 300px;
+  height: 300px;
+  background: #fd79a8;
+  top: 50%;
+  left: 60%;
+  animation: orbFloat3 15s ease-in-out infinite alternate;
+}
+
+@keyframes orbFloat1 {
+  to { transform: translate(60px, 80px) scale(1.1); }
+}
+@keyframes orbFloat2 {
+  to { transform: translate(-70px, -50px) scale(0.9); }
+}
+@keyframes orbFloat3 {
+  to { transform: translate(-90px, -60px) scale(1.15); }
+}
+
+/* ─── Form Card (Glassmorphism) ───────────────────────────────────── */
+.form-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--card-max-width);
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 2.5rem 2rem 2rem;
+  animation: cardEntry 0.6s var(--ease) both;
+}
+
+@keyframes cardEntry {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ─── Form Header ─────────────────────────────────────────────────── */
+.form-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-title {
+  font-size: 1.65rem;
+  font-weight: 700;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.3px;
+}
+
+.form-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+}
+
+.highlight {
+  color: var(--accent-light);
+  font-weight: 600;
+}
+
+/* ─── Progress Bar ────────────────────────────────────────────────── */
+.progress-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 999px;
+  transition: width 0.5s var(--ease);
+}
+
+/* ─── Step Indicators ─────────────────────────────────────────────── */
+.step-indicators {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding: 0 0.25rem;
+}
+
+.step-dot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.dot-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  transition: all 0.4s var(--ease);
+}
+
+.step-dot.active .dot-circle {
+  background: var(--gradient-primary);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 20px var(--accent-glow);
+  transform: scale(1.1);
+}
+
+.step-dot.completed .dot-circle {
+  background: var(--success);
+  border-color: var(--success);
+  color: #fff;
+}
+
+.dot-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  transition: color 0.3s;
+}
+
+.step-dot.active .dot-label {
+  color: var(--accent-light);
+}
+
+.step-dot.completed .dot-label {
+  color: var(--success);
+}
+
+/* ─── Step Container (Animations) ─────────────────────────────────── */
+.step-container {
+  animation-duration: 0.45s;
+  animation-timing-function: var(--ease);
+  animation-fill-mode: both;
+}
+
+.step-container.slide-left {
+  animation-name: slideInLeft;
+}
+
+.step-container.slide-right {
+  animation-name: slideInRight;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ─── Step Form ───────────────────────────────────────────────────── */
+.step-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.step-heading {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.step-icon {
+  font-size: 1.3rem;
+}
+
+/* ─── Field Groups ────────────────────────────────────────────────── */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field-group label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.field-group input,
+.field-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--bg-field);
+  border: 1.5px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  transition: all 0.3s var(--ease);
+}
+
+.field-group input::placeholder {
+  color: var(--text-muted);
+}
+
+.field-group input:focus,
+.field-group select:focus {
+  background: var(--bg-field-focus);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* Error state */
+.field-group.has-error input,
+.field-group.has-error select {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
+.error-msg {
+  font-size: 0.75rem;
+  color: var(--error);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  animation: errorPop 0.3s var(--ease);
+}
+
+@keyframes errorPop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Password Wrapper ────────────────────────────────────────────── */
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  padding-right: 3rem;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+}
+
+/* ─── Password Strength Meter ─────────────────────────────────────── */
+.strength-meter {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.2rem;
+}
+
+.strength-bars {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.strength-bar {
+  height: 4px;
+  flex: 1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  transition: background 0.3s var(--ease);
+}
+
+.strength-bar.weak   { background: #e17055; }
+.strength-bar.fair   { background: #fdcb6e; }
+.strength-bar.good   { background: #6c5ce7; }
+.strength-bar.strong { background: #00b894; }
+
+.strength-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 50px;
+  text-align: right;
+}
+
+.strength-label.weak   { color: #e17055; }
+.strength-label.fair   { color: #fdcb6e; }
+.strength-label.good   { color: #a29bfe; }
+.strength-label.strong { color: #00b894; }
+
+/* ─── Checkbox Group ──────────────────────────────────────────────── */
+.checkbox-group {
+  margin-top: 0.25rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  color: var(--text-secondary) !important;
+  cursor: pointer;
+}
+
+.checkbox-label input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.terms-link {
+  color: var(--accent-light);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.terms-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* ─── Step Actions (Navigation Buttons) ───────────────────────────── */
+.step-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+/* ─── Buttons ─────────────────────────────────────────────────────── */
+.btn {
+  padding: 0.7rem 1.6rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  letter-spacing: 0.2px;
+}
+
+.btn-primary {
+  background: var(--gradient-primary);
+  color: #fff;
+  box-shadow: var(--shadow-btn);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px var(--accent-glow);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-success {
+  background: var(--gradient-success);
+  color: #fff;
+  box-shadow: 0 4px 20px var(--success-glow);
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px var(--success-glow);
+}
+
+.btn-success:active {
+  transform: translateY(0);
+}
+
+/* ─── Summary Page ────────────────────────────────────────────────── */
+.summary-note {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.summary-section {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  animation: fadeInUp 0.4s var(--ease) both;
+}
+
+.summary-section:nth-child(3) { animation-delay: 0.05s; }
+.summary-section:nth-child(4) { animation-delay: 0.1s; }
+.summary-section:nth-child(5) { animation-delay: 0.15s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.summary-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-light);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem 1.5rem;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.summary-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-value {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+/* ─── Success Screen ──────────────────────────────────────────────── */
+.summary-success {
+  text-align: center;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.success-icon {
+  font-size: 4rem;
+  animation: successBounce 0.6s var(--ease);
+}
+
+@keyframes successBounce {
+  0%   { transform: scale(0); opacity: 0; }
+  50%  { transform: scale(1.3); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.success-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  max-width: 340px;
+  line-height: 1.6;
+}
+
+/* ─── Footer ──────────────────────────────────────────────────────── */
+.app-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 2rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .form-card {
+    padding: 1.75rem 1.25rem 1.5rem;
+    border-radius: var(--radius-md);
+  }
+
+  .form-title {
+    font-size: 1.35rem;
+  }
+
+  .dot-label {
+    display: none;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .step-actions {
+    flex-direction: column-reverse;
+    gap: 0.6rem;
+  }
+
+  .step-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .bg-orb--1 { width: 300px; height: 300px; }
+  .bg-orb--2 { width: 250px; height: 250px; }
+  .bg-orb--3 { width: 200px; height: 200px; }
+}
