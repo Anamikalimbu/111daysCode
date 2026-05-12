@@ -5,7 +5,6 @@
 }
 
 :root {
-  /* Primary Palette */
   --primary: #6c5ce7;
   /* Accent */
   --accent: #fd79a8;
@@ -56,7 +55,6 @@ body {
   flex-direction: column;
 }
 
-/* ============ Animations ============ */
 
 @keyframes fadeInUp {
   from {
@@ -155,8 +153,6 @@ body {
   background: var(--primary-light);
   border-radius: 3px;
 }
-
-/* ============ Header ============ */
 
 .header {
   padding: 20px 30px;
