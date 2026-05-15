@@ -10,7 +10,5 @@ function greet() {
   return "Hello world";
 }
 
-// module.exports = { sum };
-
 export { sum };
 export default greet;

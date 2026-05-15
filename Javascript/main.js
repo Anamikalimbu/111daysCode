@@ -8,8 +8,6 @@ if (marks >= 80) {
   console.log("Pass");
 }
 
-// Additional JS examples
-
 // 1. Array and Loop
 const subjects = ["Math", "Science", "English"];
 console.log("\nSubjects:");
