@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "question": "Which keyword is used to declare a block-scoped variable that cannot be reassigned?",
+        "options": ["var", "let", "const", "define"],
+        "answer": "const"
+    },
+    {
+        "id": 2,
+        "question": "What is the output of: console.log(typeof NaN)?",
+        "options": ["\"number\"", "\"nan\"", "\"undefined\"", "\"object\""],
+        "answer": "\"number\""
+    },
+    {
+        "id": 3,
+        "question": "Which array method creates a new array with all elements that pass the test implemented by the provided function?",
+        "options": ["map()", "filter()", "reduce()", "forEach()"],
+        "answer": "filter()"
+    },
+    {
+        "id": 4,
+        "question": "What does an arrow function NOT bind dynamically?",
+        "options": ["arguments", "this", "super", "All of the above"],
+        "answer": "All of the above"
+    },
+    {
+        "id": 5,
+        "question": "What will console.log(1 + '1' - 1) output in JavaScript?",
+        "options": ["10", "11", "0", "NaN"],
+        "answer": "10"
+    },
+    {
+        "id": 6,
+        "question": "Which of the following is used to handle asynchronous operations in a synchronous-looking style?",
+        "options": ["Promises with .then()", "Callbacks", "Async/Await", "Generators"],
+        "answer": "Async/Await"
+    },
+    {
+        "id": 7,
+        "question": "What is the value of: [1, 2, 3].reduce((acc, curr) => acc + curr, 10)?",
+        "options": ["6", "16", "10", "Error"],
+        "answer": "16"
+    }
+]

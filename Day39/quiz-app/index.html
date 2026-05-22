@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Core Fundamentals Quiz</title>
+    <!-- Google Fonts: Plus Jakarta Sans for body, Space Grotesk for headings -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-decorations">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="quiz-container">
+        <!-- Start Screen -->
+        <section id="start-screen" class="quiz-card active">
+            <div class="card-header-icon">
+                <i class="fa-brands fa-square-js logo-icon"></i>
+            </div>
+            <h1 class="quiz-title">JS Core Fundamentals</h1>
+            <p class="quiz-subtitle">Test your mastery of ES6, async/await, Promises, and essential array methods.</p>
+            
+            <div class="rules-container">
+                <div class="rule-item">
+                    <i class="fa-solid fa-circle-question rule-icon"></i>
+                    <span><strong>7 Questions</strong> covering core concepts</span>
+                </div>
+                <div class="rule-item">
+                    <i class="fa-solid fa-bolt rule-icon"></i>
+                    <span><strong>Interactive Feedback</strong> with green/red flags</span>
+                </div>
+                <div class="rule-item">
+                    <i class="fa-solid fa-trophy rule-icon"></i>
+                    <span><strong>Get scored</strong> and level up your skills</span>
+                </div>
+            </div>
+
+            <button id="start-btn" class="btn primary-btn btn-glow">
+                <span>Start Quiz</span>
+                <i class="fa-solid fa-arrow-right-long"></i>
+            </button>
+        </section>
+
+        <!-- Loading Screen -->
+        <section id="loading-screen" class="quiz-card hidden">
+            <div class="spinner-container">
+                <div class="spinner"></div>
+                <div class="spinner-inner"></div>
+            </div>
+            <h2 class="loading-text">Fetching Quiz Database...</h2>
+            <p class="loading-subtext">Initializing Promise and resolving JSON assets.</p>
+        </section>
+
+        <!-- Error Screen -->
+        <section id="error-screen" class="quiz-card hidden">
+            <div class="error-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h2 class="error-title">Failed to load quiz</h2>
+            <p id="error-message" class="error-text">Network Timeout Error</p>
+            <button id="retry-btn" class="btn secondary-btn">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Retry Fetch</span>
+            </button>
+        </section>
+
+        <!-- Quiz Play Screen -->
+        <section id="quiz-screen" class="quiz-card hidden">
+            <header class="quiz-progress-header">
+                <div class="progress-info">
+                    <span id="question-counter">Question 1 of 7</span>
+                    <span id="score-indicator">Score: 0</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
+                </div>
+            </header>
+
+            <article class="question-body">
+                <h2 id="question-text" class="question-text">Question goes here?</h2>
+                <div id="options-container" class="options-container">
+                    <!-- Options will be generated dynamically -->
+                </div>
+            </article>
+
+            <footer class="quiz-footer">
+                <button id="next-btn" class="btn primary-btn disabled" disabled>
+                    <span>Next Question</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </footer>
+        </section>
+
+        <!-- Results Screen -->
+        <section id="results-screen" class="quiz-card hidden">
+            <div class="trophy-container">
+                <div class="trophy-glow"></div>
+                <i class="fa-solid fa-trophy trophy-icon"></i>
+            </div>
+            <h2 class="results-title">Quiz Completed!</h2>
+            
+            <div class="score-display-card">
+                <div class="radial-progress">
+                    <svg class="radial-svg" viewBox="0 0 100 100">
+                        <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
+                        <circle id="circle-progress" class="circle-progress" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                    </svg>
+                    <div class="score-text-container">
+                        <span id="score-percent" class="score-percent">0%</span>
+                        <span id="score-fraction" class="score-fraction">0/7</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 id="result-message-heading" class="result-feedback-title">Great Effort!</h3>
+            <p id="result-message-body" class="result-feedback-body">Keep practicing to master JavaScript.</p>
+
+            <div class="results-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Correct</span>
+                    <span id="stat-correct" class="stat-val correct-color">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Incorrect</span>
+                    <span id="stat-incorrect" class="stat-val incorrect-color">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Accuracy</span>
+                    <span id="stat-accuracy" class="stat-val">0%</span>
+                </div>
+            </div>
+
+            <button id="restart-btn" class="btn primary-btn btn-glow">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>Try Again</span>
+            </button>
+        </section>
+    </main>
+
+    <!-- Footer Credit -->
+    <footer class="app-credit">
+        <p>Created for <span class="highlight">Day 39</span> of 111 Days of Code</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
