@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js Core Study Plan - Day 40 (Day 2 of Node)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header Banner -->
+    <header>
+      <div class="day-badge">Day 40 / Node Day 2</div>
+      <h1>Node.js Core Deep-Dive</h1>
+      <p class="subtitle">Mastering the Node.js runtime environment, Event Loop, core modules (fs, path, os), and the transition between CJS and ESM module systems.</p>
+    </header>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- Main Content Tabs -->
+      <main>
+        
+        <!-- Tab Headers -->
+        <nav class="tabs-navigation" aria-label="Study Plan Sections">
+          <button class="tab-btn active" onclick="switchTab(event, 'tab-overview')">Roadmap Overview</button>
+          <button class="tab-btn" onclick="switchTab(event, 'tab-runtime')">1. Event Loop</button>
+          <button class="tab-btn" onclick="switchTab(event, 'tab-modules')">2. Core Modules</button>
+          <button class="tab-btn" onclick="switchTab(event, 'tab-systems')">3. CJS vs ESM</button>
+          <button class="tab-btn" onclick="switchTab(event, 'tab-cli')">4. Practical CLI Task</button>
+        </nav>
+
+        <div id="tab-overview" class="tab-pane active">
+          <div class="card">
+            <h2 class="section-title">Day 2 Study Roadmap</h2>
+            <p>Welcome to Day 2 of your Node.js journey (Day 40 of 111 Days of Code). Today, we move beyond simple scripts and dig deep into the internal mechanics of Node.js and its standard library.</p>
+            
+            <div class="roadmap-checkpoint">
+              <div class="checkpoint-bullet"></div>
+              <span class="badge-outline">Step 1</span>
+              <h3>Runtime Architecture & The Event Loop</h3>
+              <p>Learn how Node executes JavaScript. Master the event loop phases (Timers, Poll, Check) and how Microtask queues (Promises, process.nextTick) interrupt execution flow.</p>
+            </div>
+
+            <div class="roadmap-checkpoint">
+              <div class="checkpoint-bullet"></div>
+              <span class="badge-outline">Step 2</span>
+              <h3>Core System Utilities</h3>
+              <p>Explore built-in modules designed to interface with the operating system: file system handling (<code>fs</code>), path resolution (<code>path</code>), and system resources (<code>os</code>).</p>
+            </div>
+
+            <div class="roadmap-checkpoint">
+              <div class="checkpoint-bullet"></div>
+              <span class="badge-outline">Step 3</span>
+              <h3>Modern Module Systems</h3>
+              <p>Understand the differences between CommonJS (<code>require</code>) and ESModules (<code>import/export</code>). Learn how to configure your project to use ESM and resolve path globals.</p>
+            </div>
+
+            <div class="roadmap-checkpoint">
+              <div class="checkpoint-bullet"></div>
+              <span class="badge-outline">Step 4</span>
+              <h3>Building a CLI Tool</h3>
+              <p>Consolidate your learning by building an interactive command-line explorer that lists directory contents, checks file stats, and accepts custom arguments.</p>
+            </div>
+          </div>
+
+          <!-- Official Resources Card -->
+          <div class="card">
+            <h2 class="section-title">Best Official Resources</h2>
+            <p>Relying on official, accurate, and up-to-date documentation is a superpower. Here are the curated reference points for today's studies:</p>
+            <div class="resources-grid">
+              
+              <div class="resource-card">
+                <div>
+                  <h4 class="resource-name">Node.js Guide: Event Loop</h4>
+                  <p class="resource-desc">The absolute best reference explaining timers, intervals, I/O polling, and ticks.</p>
+                </div>
+                <a href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/" target="_blank" rel="noopener noreferrer" class="resource-link">Open Guide &rarr;</a>
+              </div>
+
+              <div class="resource-card">
+                <div>
+                  <h4 class="resource-name">Node.js API: File System</h4>
+                  <p class="resource-desc">Complete directory of asynchronous, promise-based, and synchronous file APIs.</p>
+                </div>
+                <a href="https://nodejs.org/api/fs.html" target="_blank" rel="noopener noreferrer" class="resource-link">Open Documentation &rarr;</a>
+              </div>
+
+              <div class="resource-card">
+                <div>
+                  <h4 class="resource-name">Node.js API: Path</h4>
+                  <p class="resource-desc">Official methods for handling file paths across Windows, macOS, and Linux.</p>
+                </div>
+                <a href="https://nodejs.org/api/path.html" target="_blank" rel="noopener noreferrer" class="resource-link">Open Documentation &rarr;</a>
+              </div>
+
+              <div class="resource-card">
+                <div>
+                  <h4 class="resource-name">MDN: JavaScript Modules</h4>
+                  <p class="resource-desc">In-depth comparison of static ESM structure vs browser execution patterns.</p>
+                </div>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" target="_blank" rel="noopener noreferrer" class="resource-link">Open MDN Guide &rarr;</a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-runtime" class="tab-pane">
+          <div class="card">
+            <h2 class="section-title">1. Node Runtime & Event Loop</h2>
+            <p>Node.js is an open-source, cross-platform JavaScript runtime environment built on Chrome's V8 JavaScript engine. Under the hood, Node utilizes <strong>Libuv</strong> to enable asynchronous, non-blocking I/O.</p>
+            
+            <h3>The Architecture Breakdown</h3>
+            <ul>
+              <li><strong>V8 Engine:</strong> Executes JS code, compiles it to machine code, handles call stack and memory allocation.</li>
+              <li><strong>Libuv:</strong> Manages thread-pool execution for heavier work (file operations, cryptography), networking events, and the central loop.</li>
+              <li><strong>Core APIs:</strong> Javascript wrappers exposing operating system bindings to the developer.</li>
+            </ul>
+
+            <div class="alert">
+              <div class="alert-title">Is Node Single-Threaded?</div>
+              <p>Yes, the JavaScript execution thread (call stack) is single-threaded. However, Libuv delegates system tasks to the operating system kernel when possible or utilizes a <strong>thread pool (4 threads by default)</strong> for operations like file systems, making Node concurrency highly scalable.</p>
+            </div>
+
+            <h3>Event Loop Phases</h3>
+            <p>The loop runs indefinitely as long as callbacks are pending, transitioning through 6 distinct stages:</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Phase</th>
+                  <th>Action performed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>1. Timers</strong></td>
+                  <td>Runs callbacks scheduled by <code>setTimeout</code> and <code>setInterval</code>.</td>
+                </tr>
+                <tr>
+                  <td><strong>2. Pending Callbacks</strong></td>
+                  <td>Executes deferred system I/O errors (e.g. TCP connection refused).</td>
+                </tr>
+                <tr>
+                  <td><strong>3. Idle, Prepare</strong></td>
+                  <td>Used internally by Node for performance configurations.</td>
+                </tr>
+                <tr>
+                  <td><strong>4. Poll</strong></td>
+                  <td>Retrieves new I/O events, runs corresponding callbacks. Can block if empty.</td>
+                </tr>
+                <tr>
+                  <td><strong>5. Check</strong></td>
+                  <td>Executes callbacks scheduled with <code>setImmediate()</code>.</td>
+                </tr>
+                <tr>
+                  <td><strong>6. Close Callbacks</strong></td>
+                  <td>Executes teardowns, such as <code>socket.on('close')</code> callbacks.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Microtask Priority Order</h3>
+            <p>Before moving from one phase of the event loop to the next, Node checks and empties the <strong>Microtask queues</strong>. They execute in this order:</p>
+            <ol>
+              <li><code>process.nextTick()</code> callbacks (run immediately after the current operation, before any other async tasks).</li>
+              <li>Promise resolution callbacks (<code>.then</code>, <code>.catch</code>, <code>await</code> resolution).</li>
+            </ol>
+
+            <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>// Execution Demonstration
+console.log('Start');
+setTimeout(() => console.log('Timeout (Timer Phase)'), 0);
+setImmediate(() => console.log('Immediate (Check Phase)'));
+Promise.resolve().then(() => console.log('Promise (Microtask)'));
+process.nextTick(() => console.log('nextTick (Tick Queue)'));
+console.log('End');
+
+// Expected Output:
+// Start -> End -> nextTick -> Promise -> Timeout -> Immediate</code></pre>
+            
+            <div class="alert alert-warning">
+              <div class="alert-title">Recursive process.nextTick Warning</div>
+              <p>Because the event loop must empty the process.nextTick queue before moving to the next phase, recursive nextTick loops will starve I/O, freezing the event loop completely. Avoid infinite nextTick recursion!</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-modules" class="tab-pane">
+          <div class="card">
+            <h2 class="section-title">2. Core Modules (fs, path, os)</h2>
+            <p>Node includes out-of-the-box standard library modules that don't need external installations.</p>
+
+            <h3>The File System (<code>fs</code>) Module</h3>
+            <p>The <code>fs</code> module has three forms. We strongly recommend the modern <strong>Promises-based API</strong> for clean codebase design.</p>
+            
+            <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>// 1. Promises-based API (Recommended)
+import fs from 'fs/promises';
+
+async function writeAndRead() {
+  try {
+    await fs.writeFile('example.txt', 'Learning Node Core Modules!');
+    const content = await fs.readFile('example.txt', 'utf8');
+    console.log(content); // Learning Node Core Modules!
+  } catch (err) {
+    console.error(err);
+  }
+}
+writeAndRead();</code></pre>
+
+            <h3>The <code>path</code> Module</h3>
+            <p>Windows and POSIX systems format file paths differently (backslash vs forward slash). To make your code platform-independent, always use the <code>path</code> module.</p>
+            
+            <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>import path from 'path';
+
+// Joins pieces using the correct platform separator
+const relativePath = path.join('src', 'components', 'button.js');
+console.log(relativePath); // Output (Windows): src\components\button.js
+
+// Resolves into an absolute path
+const absolutePath = path.resolve('src', 'components', 'button.js');
+console.log(absolutePath); // Output: E:\Drive D\NodeJs\Day40\src\components\button.js
+
+// Get details
+console.log(path.extname(absolutePath)); // .js
+console.log(path.basename(absolutePath)); // button.js
+console.log(path.parse(absolutePath)); // returns path components object</code></pre>
+
+            <h3>The <code>os</code> Module</h3>
+            <p>Collects metadata regarding CPU usage, platform, architectures, and system memory state.</p>
+            
+            <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>import os from 'os';
+
+console.log('Platform:', os.platform()); // 'win32', 'darwin', etc.
+console.log('CPU Architecture:', os.arch()); // 'x64', 'arm64'
+console.log('Free memory (GB):', (os.freemem() / 1024**3).toFixed(2));
+console.log('Total cores:', os.cpus().length);</code></pre>
+          </div>
+        </div>
+
+        <div id="tab-systems" class="tab-pane">
+          <div class="card">
+            <h2 class="section-title">3. CommonJS vs. ESModules</h2>
+            <p>JavaScript originally didn't have modules. Node developed CommonJS (CJS). Later, TC39 standardized ESModules (ESM) for all JS engines. Both formats exist today, and navigating them is a key skill.</p>
+
+            <h3>Core Differences</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Aspect</th>
+                  <th>CommonJS (CJS)</th>
+                  <th>ESModules (ESM)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Syntax</strong></td>
+                  <td><code>require()</code> and <code>module.exports</code></td>
+                  <td><code>import</code> and <code>export</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Loading</strong></td>
+                  <td>Synchronous (loaded dynamically on-the-fly)</td>
+                  <td>Asynchronous (resolved at parse-time statically)</td>
+                </tr>
+                <tr>
+                  <td><strong>File Globals</strong></td>
+                  <td>Provides <code>__dirname</code> and <code>__filename</code></td>
+                  <td>Globals don't exist. Recreated using <code>import.meta.url</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Top-Level Await</strong></td>
+                  <td>Not supported directly. Must wrap in async functions.</td>
+                  <td>Fully supported natively at file root.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Resolving <code>__dirname</code> in ESModules</h3>
+            <p>In ESModules, the global variables <code>__dirname</code> and <code>__filename</code> are unavailable. You must use the <code>url</code> and <code>path</code> modules to resolve directory paths relative to the current file:</p>
+
+            <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>import { fileURLToPath } from 'url';
+import path from 'path';
+
+// Get current filename (as absolute local path)
+const __filename = fileURLToPath(import.meta.url);
+
+// Get current directory path
+const __dirname = path.dirname(__filename);
+
+console.log('Current directory:', __dirname);</code></pre>
+
+            <h3>How to toggle ESModules in your project</h3>
+            <ul>
+              <li><strong>Option A:</strong> In <code>package.json</code>, add the property <code>"type": "module"</code>. This turns all <code>.js</code> files into ESModules.</li>
+              <li><strong>Option B:</strong> Use the <code>.mjs</code> extension to target ESModules individually, or <code>.cjs</code> to target CommonJS individually.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="tab-cli" class="tab-pane">
+          <div class="card">
+            <h2 class="section-title">4. Practical Challenge: Directory Explorer CLI</h2>
+            <p>Your task is to write a CLI tool using ESModules that reads directory contents, prints file paths, checks metadata, and handles console flags.</p>
+
+            <h3>Challenge Requirements</h3>
+            <ol>
+              <li>Accept an optional path argument, defaulting to the current directory (<code>process.cwd()</code>).</li>
+              <li>Use <code>fs/promises</code> and <code>path</code> to parse directories and sub-paths asynchronously.</li>
+              <li>Implement flags: <code>--help</code> (show manual), <code>--recursive</code> (depth-first exploration), and <code>--json</code> (format output as stringified JSON).</li>
+              <li>Utilize modern, clean ESModules syntax.</li>
+            </ol>
+
+            <h3>The Implementation</h3>
+            <p>Your CLI script is located at <a href="file:///e:/Drive D/NodeJs/Day40/cli_tool.js">cli_tool.js</a>. Read the code below to see how it operates:</p>
+
+            <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>// Run in your terminal from the Day40 folder:
+node cli_tool.js . --recursive</code></pre>
+
+            <p>Review the CLI script structure:</p>
+            <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>import fs from 'fs/promises';
+import path from 'path';
+import os from 'os';
+
+const args = process.argv.slice(2);
+const isRecursive = args.includes('--recursive') || args.includes('-r');
+const isJson = args.includes('--json') || args.includes('-j');
+const pathArgs = args.filter(a => !a.startsWith('-'));
+const targetDir = pathArgs[0] ? path.resolve(pathArgs[0]) : process.cwd();
+
+async function scanDirectory(dirPath, recursive = false) {
+  let fileList = [];
+  const entries = await fs.readdir(dirPath, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = path.join(dirPath, entry.name);
+    try {
+      const stats = await fs.stat(fullPath);
+      const detail = {
+        name: entry.name,
+        absolutePath: fullPath,
+        isDirectory: entry.isDirectory(),
+        size: stats.size
+      };
+      fileList.push(detail);
+
+      if (recursive && entry.isDirectory()) {
+        const subFiles = await scanDirectory(fullPath, true);
+        fileList = fileList.concat(subFiles);
+      }
+    } catch (e) {
+      continue; // skip permissions locks
+    }
+  }
+  return fileList;
+}
+
+// ... Scan directory, log out values visually or print JSON</code></pre>
+
+            <h3>How to run the tool</h3>
+            <ul>
+              <li><strong>List current directory:</strong> <code>node cli_tool.js .</code></li>
+              <li><strong>Recursive search:</strong> <code>node cli_tool.js . -r</code></li>
+              <li><strong>JSON formatted:</strong> <code>node cli_tool.js . -j</code></li>
+              <li><strong>Open Help Menu:</strong> <code>node cli_tool.js -h</code></li>
+            </ul>
+          </div>
+        </div>
+
+      </main>
+      
+      <aside>
+        <div class="card progress-card">
+          <div class="progress-header">
+            <span>📈 Learning Progress</span>
+          </div>
+          
+          <div class="progress-ring-container">
+            <span class="progress-text" id="progress-percent">0% Completed</span>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+          </div>
+
+          <h4 style="font-family: var(--font-heading); margin-bottom: 0.5rem; font-size: 0.95rem;">Milestones:</h4>
+          <ul class="task-list">
+            <li class="task-item" onclick="toggleTask(this, 0)">
+              <input type="checkbox" id="task-0" onclick="event.stopPropagation(); updateProgress();">
+              <span>Node.js Runtime & Libuv</span>
+            </li>
+            <li class="task-item" onclick="toggleTask(this, 1)">
+              <input type="checkbox" id="task-1" onclick="event.stopPropagation(); updateProgress();">
+              <span>Event Loop Phases</span>
+            </li>
+            <li class="task-item" onclick="toggleTask(this, 2)">
+              <input type="checkbox" id="task-2" onclick="event.stopPropagation(); updateProgress();">
+              <span>Microtask Queues Priority</span>
+            </li>
+            <li class="task-item" onclick="toggleTask(this, 3)">
+              <input type="checkbox" id="task-3" onclick="event.stopPropagation(); updateProgress();">
+              <span>Using the 'fs' module APIs</span>
+            </li>
+            <li class="task-item" onclick="toggleTask(this, 4)">
+              <input type="checkbox" id="task-4" onclick="event.stopPropagation(); updateProgress();">
+              <span>Path and OS Module APIs</span>
+            </li>
+            <li class="task-item" onclick="toggleTask(this, 5)">
+              <input type="checkbox" id="task-5" onclick="event.stopPropagation(); updateProgress();">
+              <span>CommonJS vs ESModules</span>
+            </li>
+            <li class="task-item" onclick="toggleTask(this, 6)">
+              <input type="checkbox" id="task-6" onclick="event.stopPropagation(); updateProgress();">
+              <span>Run the CLI Explorer Tool</span>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <script>
+    // Tab switching logic
+    function switchTab(event, tabId) {
+      // Remove active class from buttons
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      // Remove active class from tab panes
+      const panes = document.querySelectorAll('.tab-pane');
+      panes.forEach(pane => pane.classList.remove('active'));
+
+      // Add active class to clicked button
+      event.currentTarget.classList.add('active');
+
+      // Add active class to corresponding tab
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    // Toggle checklist tasks when clicking the list item
+    function toggleTask(element, index) {
+      const checkbox = document.getElementById('task-' + index);
+      checkbox.checked = !checkbox.checked;
+      
+      if (checkbox.checked) {
+        element.classList.add('completed');
+      } else {
+        element.classList.remove('completed');
+      }
+      updateProgress();
+    }
+
+    // Update the progress percentage and bar fill
+    function updateProgress() {
+      const checkboxes = document.querySelectorAll('.task-list input[type="checkbox"]');
+      const total = checkboxes.length;
+      let checked = 0;
+
+      checkboxes.forEach((cb, idx) => {
+        const item = cb.parentElement;
+        if (cb.checked) {
+          checked++;
+          item.classList.add('completed');
+        } else {
+          item.classList.remove('completed');
+        }
+        // Save state to localStorage
+        localStorage.setItem('day40-task-' + idx, cb.checked);
+      });
+
+      const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+      
+      // Update UI elements
+      document.getElementById('progress-percent').innerText = percent + '% Completed';
+      document.getElementById('progress-fill').style.width = percent + '%';
+    }
+
+    // Copy to clipboard helper
+    function copyCode(badgeElement) {
+      const pre = badgeElement.parentElement;
+      const code = pre.querySelector('code').innerText;
+      
+      navigator.clipboard.writeText(code).then(() => {
+        const originalText = badgeElement.innerText;
+        badgeElement.innerText = 'Copied!';
+        badgeElement.style.color = '#10b981';
+        
+        setTimeout(() => {
+          badgeElement.innerText = originalText;
+          badgeElement.style.color = '';
+        }, 1500);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+    }
+
+    // Load initial states from localStorage
+    window.addEventListener('DOMContentLoaded', () => {
+      const checkboxes = document.querySelectorAll('.task-list input[type="checkbox"]');
+      checkboxes.forEach((cb, idx) => {
+        const savedState = localStorage.getItem('day40-task-' + idx);
+        if (savedState === 'true') {
+          cb.checked = true;
+          cb.parentElement.classList.add('completed');
+        }
+      });
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
