@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js & MERN Mastery Roadmap</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">N+M</div>
+        <div class="brand-info">
+          <h2>Node & MERN</h2>
+          <span>Mastery Dashboard</span>
+        </div>
+      </div>
+      
+      <nav class="nav-menu" aria-label="Roadmap Navigation">
+        <div class="nav-item-header">Roadmap</div>
+        <a class="nav-link active" onclick="switchSection('section-overview', this)">
+          <span class="nav-icon">📊</span> Overview
+        </a>
+        <a class="nav-link" onclick="switchSection('section-roadmap', this)">
+          <span class="nav-icon">🗺️</span> 30-60 Day Study Plan
+        </a>
+        
+        <div class="nav-item-header">MERN Project</div>
+        <a class="nav-link" onclick="switchSection('section-architecture', this)">
+          <span class="nav-icon">🏗️</span> Project Blueprint
+        </a>
+        <a class="nav-link" onclick="switchSection('section-apis', this)">
+          <span class="nav-icon">🔌</span> Database & APIs
+        </a>
+        
+        <div class="nav-item-header">Practice & Prep</div>
+        <a class="nav-link" onclick="switchSection('section-challenges', this)">
+          <span class="nav-icon">🏆</span> Daily Challenges
+        </a>
+      </nav>
+      
+      <!-- Progress Widget -->
+      <div class="sidebar-footer">
+        <div class="global-progress">
+          <div class="global-progress-header">
+            <span>Overall Roadmap Progress</span>
+            <span id="global-progress-text">0%</span>
+          </div>
+          <div class="global-progress-bar">
+            <div class="global-progress-fill" id="global-progress-fill"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Main Dashboard Container -->
+    <main class="main-dashboard">
+      
+      <!-- Top header banner -->
+      <header class="dashboard-header">
+        <div class="header-title-section">
+          <h1 id="page-title">Roadmap Overview</h1>
+          <p id="page-subtitle">Your comprehensive path from Node.js runtime mechanics to a production MERN Stack application.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="resetProgress()">🔄 Reset Progress</button>
+          <a href="../index.html" class="btn btn-primary">◀ Back to Day 40 Core</a>
+        </div>
+      </header>
+      
+      <!-- SECTION 1: OVERVIEW -->
+      <div id="section-overview" class="tab-pane active">
+        <div class="card">
+          <h2 class="card-title cyan">Welcome to the Node.js & MERN Roadmap</h2>
+          <p>
+            This interactive masterclass dashboard is designed to take you from a complete beginner to a professional full-stack engineer. 
+            You'll start by building strong foundations in <strong>Node.js core runtime engine</strong>, advance to backend server architecture using <strong>Express.js & MongoDB</strong>, and finally build and deploy a fully fledged <strong>MERN stack web application</strong> complete with React, JWT authentication, state management, and file systems.
+          </p>
+          
+          <div class="grid-3" style="margin-top: 2rem;">
+            <div class="timeline-content">
+              <h4>🔥 Core Node.js</h4>
+              <p style="font-size: 0.85rem; margin-bottom: 0;">Master the Event Loop, asynchronous I/O, NPM ecosystem, file streams, pathing systems, and core APIs.</p>
+            </div>
+            <div class="timeline-content">
+              <h4>🛡️ Robust REST APIs</h4>
+              <p style="font-size: 0.85rem; margin-bottom: 0;">Build production APIs with Express.js, MVC model, JWT authentication, bcrypt hashing, and validation middleware.</p>
+            </div>
+            <div class="timeline-content">
+              <h4>🚀 MERN Deployment</h4>
+              <p style="font-size: 0.85rem; margin-bottom: 0;">Integrate with a React frontend, manage application state, deploy backend to Render/Vercel and database to Atlas.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">MERN Stack Architecture</h2>
+          <p>The diagram below shows how the client (React) interacts with the API gateway (Node + Express) which reads and writes data to the document database (MongoDB).</p>
+          
+          <pre style="text-align: center; background: #080c14; padding: 2rem 0;">
+<code style="color: #67e8f9; font-size: 0.9rem;">+-------------------------------------------------------------+
+|                        FRONTEND (React)                     |
+|  [React Components] -> [Context API / Redux] -> [Axios Link]|
++------------------------------+------------------------------+
+                               | HTTPS Requests
+                               v
++-------------------------------------------------------------+
+|                 BACKEND SERVER (Node.js + Express)          |
+|  [Routing Layer] -> [Auth Middleware] -> [MVC Controllers]  |
++------------------------------+------------------------------+
+                               | Mongoose Queries
+                               v
++-------------------------------------------------------------+
+|                     DATABASE (MongoDB Atlas)                |
+|  [User Collection]  <->  [Product Collection]               |
++-------------------------------------------------------------+</code></pre>
+        </div>
+      </div>
+      
+      <!-- SECTION 2: 30-60 DAY ROADMAP -->
+      <div id="section-roadmap" class="tab-pane">
+        <div class="card">
+          <h2 class="card-title violet">30-60 Day Structured Roadmap</h2>
+          <p>We've broken down the roadmap into <strong>6 weeks (42 Days)</strong>. Each week has specific milestones, structured daily tasks, and checkboxes to track your progress.</p>
+          
+          <div class="timeline">
+            
+            <!-- WEEK 1 -->
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <span class="badge badge-violet">Week 1 (Days 1 - 7)</span>
+                  <span class="timeline-title">Node.js Core Fundamentals & CLI Projects</span>
+                </div>
+                <p>Learn the internals of the runtime. Explore how Node executes code asynchronously, work with path patterns, and write your first command-line scripts.</p>
+                
+                <div class="accordion">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    📋 Week 1 Daily Tasks & Checklist
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      <ul class="checklist">
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w1d1')">
+                          <input type="checkbox" id="chk-w1d1" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 1: Runtime & Event Loop:</strong> Understand V8, Libuv, single-threaded nature, and thread pool phases.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w1d2')">
+                          <input type="checkbox" id="chk-w1d2" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 2: CommonJS vs ESM:</strong> Master exports/imports, configure <code>"type": "module"</code>, and recreate <code>__dirname</code>.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w1d3')">
+                          <input type="checkbox" id="chk-w1d3" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 3: File System (fs):</strong> Use promises-based <code>fs/promises</code> to read, write, append, and delete files.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w1d4')">
+                          <input type="checkbox" id="chk-w1d4" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 4: Path & OS modules:</strong> Resolve absolute paths platforms-neutrally and query system memory/CPUs.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w1d5')">
+                          <input type="checkbox" id="chk-w1d5" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 5: Process Object & Args:</strong> Read command line flags using <code>process.argv</code> and environment configs.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w1d6')">
+                          <input type="checkbox" id="chk-w1d6" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 6: CLI Project:</strong> Combine concepts to build a directory listing explorer tool with recursion flags.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w1d7')">
+                          <input type="checkbox" id="chk-w1d7" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 7: Weekly Review:</strong> Test your core runtime knowledge, review asynchronous call flow, and organize scripts.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- WEEK 2 -->
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <span class="badge badge-cyan">Week 2 (Days 8 - 14)</span>
+                  <span class="timeline-title">Asynchronous Patterns, Streams, & HTTP</span>
+                </div>
+                <p>Move beyond simple commands. Understand Events architectures, process massive files efficiently with streams, and build low-level HTTP web servers.</p>
+                
+                <div class="accordion">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    📋 Week 2 Daily Tasks & Checklist
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      <ul class="checklist">
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w2d1')">
+                          <input type="checkbox" id="chk-w2d1" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 8: Event Emitter class:</strong> Learn to trigger and listen to custom application events using <code>events</code> module.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w2d2')">
+                          <input type="checkbox" id="chk-w2d2" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 9: Streams Fundamentals:</strong> Understand Readable, Writable, and Transform streams. Prevent memory overflow.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w2d3')">
+                          <input type="checkbox" id="chk-w2d3" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 10: Stream Pipes:</strong> Use <code>stream.pipeline</code> to pipe readable data sources into writable files.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w2d4')">
+                          <input type="checkbox" id="chk-w2d4" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 11: HTTP Server Basics:</strong> Create a native server using <code>http.createServer</code>, parse request headers.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w2d5')">
+                          <input type="checkbox" id="chk-w2d5" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 12: HTTP Routing & JSON:</strong> Build basic API routing and serve JSON response formats without frameworks.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w2d6')">
+                          <input type="checkbox" id="chk-w2d6" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 13: Markdown to HTML CLI:</strong> Project 2 - Read markdown file, convert format with regex/streams, write html page.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w2d7')">
+                          <input type="checkbox" id="chk-w2d7" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 14: Weekly Review:</strong> Understand streaming advantages and benchmark memory footprint of buffers vs streams.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- WEEK 3 -->
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <span class="badge badge-cyan">Week 3 (Days 15 - 21)</span>
+                  <span class="timeline-title">Express.js Framework & MVC Server Setup</span>
+                </div>
+                <p>Transition to Express framework. Design structured routing layers, write modular middlewares, structure configurations, and setup database connections.</p>
+                
+                <div class="accordion">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    📋 Week 3 Daily Tasks & Checklist
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      <ul class="checklist">
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w3d1')">
+                          <input type="checkbox" id="chk-w3d1" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 15: Introduction to Express:</strong> Set up a fresh Express server, parse JSON bodies, configure ports.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w3d2')">
+                          <input type="checkbox" id="chk-w3d2" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 16: Express Routing & Controllers:</strong> Split routes and handlers into MVC controller directories.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w3d3')">
+                          <input type="checkbox" id="chk-w3d3" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 17: Writing Custom Middlewares:</strong> Implement logger, request validation, rate-limiter gates.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w3d4')">
+                          <input type="checkbox" id="chk-w3d4" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 18: Global Error Handlers:</strong> Catch synchronous and asynchronous exceptions cleanly, return standard format.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w3d5')">
+                          <input type="checkbox" id="chk-w3d5" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 19: Environment variables:</strong> Setup <code>dotenv</code>, manage dev vs production environments config.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w3d6')">
+                          <input type="checkbox" id="chk-w3d6" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 20: MongoDB & Mongoose Setup:</strong> Connect to Atlas cluster, log connection state triggers.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w3d7')">
+                          <input type="checkbox" id="chk-w3d7" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 21: Weekly Project:</strong> Build a Task Manager API server using Express and raw mock array storage.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- WEEK 4 -->
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <span class="badge badge-emerald">Week 4 (Days 22 - 28)</span>
+                  <span class="timeline-title">Data Modelling, Mongoose & JWT Security</span>
+                </div>
+                <p>Define database relationships, encrypt passwords with bcrypt, validate schemas, sign JSON Web Tokens, and build registration/login endpoints.</p>
+                
+                <div class="accordion">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    📋 Week 4 Daily Tasks & Checklist
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      <ul class="checklist">
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w4d1')">
+                          <input type="checkbox" id="chk-w4d1" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 22: Mongoose Schemas & Types:</strong> Define schema fields, validations (required, min, max, trim).</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w4d2')">
+                          <input type="checkbox" id="chk-w4d2" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 23: Relational Collections:</strong> Link schemas using <code>mongoose.Schema.Types.ObjectId</code> references.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w4d3')">
+                          <input type="checkbox" id="chk-w4d3" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 24: Password Encryption:</strong> Implement bcrypt salting and hashing on user hooks.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w4d4')">
+                          <input type="checkbox" id="chk-w4d4" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 25: JWT Auth Tokens:</strong> Generate and sign JWT payloads containing user details.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w4d5')">
+                          <input type="checkbox" id="chk-w4d5" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 26: Route Protection Middleware:</strong> Write authentication guards to extract and verify bearer tokens.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w4d6')">
+                          <input type="checkbox" id="chk-w4d6" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 27: Registration & Login:</strong> Implement sign-up and login endpoints, handle invalid credentials.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w4d7')">
+                          <input type="checkbox" id="chk-w4d7" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 28: Weekly Project:</strong> Upgrade your Task API to require authentication and filter tasks by user ID.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- WEEK 5 -->
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <span class="badge badge-emerald">Week 5 (Days 29 - 35)</span>
+                  <span class="timeline-title">Advanced API Features: Uploads, Emails, and Validation</span>
+                </div>
+                <p>Enhance server capabilities with file uploads, automatic transactional email notifications, schema validations, and advanced pagination query controllers.</p>
+                
+                <div class="accordion">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    📋 Week 5 Daily Tasks & Checklist
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      <ul class="checklist">
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w5d1')">
+                          <input type="checkbox" id="chk-w5d1" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 29: File Uploads using Multer:</strong> Accept static file formats, check file-size limits, store on local disk.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w5d2')">
+                          <input type="checkbox" id="chk-w5d2" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 30: Static folders Express:</strong> Serve profile images or media templates using <code>express.static</code>.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w5d3')">
+                          <input type="checkbox" id="chk-w5d3" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 31: Input validation:</strong> Implement request validator schemas using <code>joi</code> or <code>express-validator</code>.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w5d4')">
+                          <input type="checkbox" id="chk-w5d4" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 32: Transactional Emails:</strong> Integrate Nodemailer, connect to SMTP relays, and construct html mailers.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w5d5')">
+                          <input type="checkbox" id="chk-w5d5" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 33: Pagination, Sorting, Filters:</strong> Code advanced mongoose queries parsing page, limits, and keywords.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w5d6')">
+                          <input type="checkbox" id="chk-w5d6" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 34: CORS and Security headers:</strong> Integrate CORS configs, helmet middlewares, and rate-limit parameters.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'w5d7')">
+                          <input type="checkbox" id="chk-w5d7" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 35: Weekly review:</strong> Verify API structures, test edge case payloads on Postman, analyze security parameters.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- WEEK 6 -->
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <span class="badge badge-rose">Week 6 (Days 36 - 42)</span>
+                  <span class="timeline-title">MERN Stack Integration & Server Deployments</span>
+                </div>
+                <p>Connect backend endpoints with React UI, manage token storage, protect frontend views, handle forms, and deploy both clients and API servers online.</p>
+                
+                <div class="accordion">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    📋 Week 6 Daily Tasks & Checklist
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      <ul class="checklist">
+                        <li class="check-item" onclick="toggleCheckItem(this, 'chk-w6d1')">
+                          <input type="checkbox" id="chk-w6d1" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 36: React Project Setup:</strong> Initialize React with Vite and styled layouts using TailwindCSS.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'chk-w6d2')">
+                          <input type="checkbox" id="chk-w6d2" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 37: API Linkage & Axios:</strong> Setup global HTTP client configs, handle response interceptors.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'chk-w6d3')">
+                          <input type="checkbox" id="chk-w6d3" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 38: Auth state Management:</strong> Connect Context API or Redux for user states, save tokens in cookies.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'chk-w6d4')">
+                          <input type="checkbox" id="chk-w6d4" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 39: Protected Routes:</strong> Build React guards that redirect unauthenticated users to the login screen.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'chk-w6d5')">
+                          <input type="checkbox" id="chk-w6d5" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 40: Dashboards & Forms:</strong> Build components for task actions, photo loads, validations, lists.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'chk-w6d6')">
+                          <input type="checkbox" id="chk-w6d6" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 41: Production Build:</strong> Compile React assets, configure express backend to serve build files directly.</span>
+                        </li>
+                        <li class="check-item" onclick="toggleCheckItem(this, 'chk-w6d7')">
+                          <input type="checkbox" id="chk-w6d7" onclick="event.stopPropagation(); syncCheckboxes();">
+                          <span><strong>Day 42: Production Deploy:</strong> Move backend server to Render, react files to Vercel/Netlify, databases on Atlas.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      <!-- SECTION 3: MERN PROJECT BLUEPRINT -->
+      <div id="section-architecture" class="tab-pane">
+        <div class="card">
+          <h2 class="card-title cyan">MERN Project Architecture</h2>
+          <p>
+            When building complex stack applications, sticking to clean folder standards makes development and scaling a breeze. 
+            Below is the recommended structure for a production-ready monorepo MERN stack application.
+          </p>
+          
+          <div class="grid-2">
+            <div>
+              <h4>📁 Backend Server Structure</h4>
+              <div class="folder-tree">
+                <span class="folder">backend/</span><br>
+                &nbsp;&nbsp;├── <span class="folder">config/</span> <span class="comment">// db connection, environment vars</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">db.js</span><br>
+                &nbsp;&nbsp;├── <span class="folder">controllers/</span> <span class="comment">// request logic handlers</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">authController.js</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">taskController.js</span><br>
+                &nbsp;&nbsp;├── <span class="folder">middleware/</span> <span class="comment">// gates and checks</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">authMiddleware.js</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">errorMiddleware.js</span><br>
+                &nbsp;&nbsp;├── <span class="folder">models/</span> <span class="comment">// mongoose databases</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">User.js</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">Task.js</span><br>
+                &nbsp;&nbsp;├── <span class="folder">routes/</span> <span class="comment">// endpoint declarations</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">authRoutes.js</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">taskRoutes.js</span><br>
+                &nbsp;&nbsp;├── <span class="folder">utils/</span> <span class="comment">// mailer templates, generators</span><br>
+                &nbsp;&nbsp;├── <span class="file">server.js</span> <span class="comment">// express starter file</span><br>
+                &nbsp;&nbsp;└── <span class="file">package.json</span>
+              </div>
+            </div>
+            
+            <div>
+              <h4>📁 Frontend React Structure</h4>
+              <div class="folder-tree">
+                <span class="folder">frontend/</span><br>
+                &nbsp;&nbsp;├── <span class="folder">public/</span><br>
+                &nbsp;&nbsp;├── <span class="folder">src/</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="folder">assets/</span> <span class="comment">// logos, static backgrounds</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="folder">components/</span> <span class="comment">// reusable modular components</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">Navbar.jsx</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">TaskCard.jsx</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="folder">context/</span> <span class="comment">// authentication providers</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">AuthContext.jsx</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="folder">pages/</span> <span class="comment">// routed layout pages</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">Login.jsx</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">Dashboard.jsx</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="folder">services/</span> <span class="comment">// axios server requests</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">api.js</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">App.jsx</span> <span class="comment">// routers config</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">index.css</span> <span class="comment">// tailwind base variables</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">main.jsx</span> <span class="comment">// react root launcher</span><br>
+                &nbsp;&nbsp;└── <span class="file">package.json</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Best Practices & Design Standards</h2>
+          <ul>
+            <li><strong>Always use Async/Await with Try/Catch:</strong> Avoid callback hell. Centralize error handling inside error middlewares to catch rejected promises automatically.</li>
+            <li><strong>Never Store Passwords in Plaintext:</strong> Use <code>bcrypt.hash()</code> with 10-12 salt rounds inside a schema hook before writing entries into DB.</li>
+            <li><strong>Environment variables security:</strong> Put keys like <code>JWT_SECRET</code>, <code>MONGO_URI</code> inside <code>.env</code> file. Add this file inside your <code>.gitignore</code> configuration.</li>
+            <li><strong>Frontend Clean APIs:</strong> Setup a dedicated <code>api.js</code> file using Axios instances. Configure an interceptor to insert <code>Authorization: Bearer [token]</code> header automatically.</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- SECTION 4: DATABASE & APIS -->
+      <div id="section-apis" class="tab-pane">
+        <div class="card">
+          <h2 class="card-title emerald">Database Schema Spec</h2>
+          <p>We use Mongoose models to establish structure in MongoDB. Below are the basic mongoose models designed for users and their related tasks.</p>
+          
+          <div class="grid-2">
+            <div>
+              <h4>👤 User Schema (models/User.js)</h4>
+              <pre><span class="copy-btn" onclick="copySnippet(this)">Copy</span><code>import mongoose from 'mongoose';
+
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'Name is required'],
+    trim: true
+  },
+  email: {
+    type: String,
+    required: [true, 'Email is required'],
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    minlength: 6
+  }
+}, { timestamps: true });
+
+export default mongoose.model('User', userSchema);</code></pre>
+            </div>
+            
+            <div>
+              <h4>📋 Task Schema (models/Task.js)</h4>
+              <pre><span class="copy-btn" onclick="copySnippet(this)">Copy</span><code>import mongoose from 'mongoose';
+
+const taskSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: [true, 'Title is required'],
+    trim: true
+  },
+  description: {
+    type: String,
+    trim: true
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'in-progress', 'completed'],
+    default: 'pending'
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
+}, { timestamps: true });
+
+export default mongoose.model('Task', taskSchema);</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title emerald">Backend REST API Reference</h2>
+          <p>Manage authentication and tasks utilizing standard REST patterns. Enter words or click the dropdown select to filter the list.</p>
+          
+          <div class="filter-box">
+            <input type="text" class="search-input" id="api-search" placeholder="Search routes by description, path, or method..." oninput="filterRoutes()">
+            <select class="filter-select" id="api-method-filter" onchange="filterRoutes()">
+              <option value="ALL">All Methods</option>
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+              <option value="PUT">PUT</option>
+              <option value="DELETE">DELETE</option>
+            </select>
+          </div>
+          
+          <table class="specs-table" id="routes-table">
+            <thead>
+              <tr>
+                <th style="width: 100px;">Method</th>
+                <th style="width: 250px;">Endpoint Route</th>
+                <th>Authentication</th>
+                <th>Action Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="route-row" data-method="POST">
+                <td><span class="badge badge-emerald">POST</span></td>
+                <td><code>/api/auth/register</code></td>
+                <td><span class="badge badge-outline">Public</span></td>
+                <td>Registers a new database user; returns a JWT access token.</td>
+              </tr>
+              <tr class="route-row" data-method="POST">
+                <td><span class="badge badge-emerald">POST</span></td>
+                <td><code>/api/auth/login</code></td>
+                <td><span class="badge badge-outline">Public</span></td>
+                <td>Validates user credentials; returns authentication token.</td>
+              </tr>
+              <tr class="route-row" data-method="GET">
+                <td><span class="badge badge-violet">GET</span></td>
+                <td><code>/api/auth/me</code></td>
+                <td><span class="badge badge-rose">Private (JWT)</span></td>
+                <td>Retrieves details of currently logged-in account.</td>
+              </tr>
+              <tr class="route-row" data-method="GET">
+                <td><span class="badge badge-violet">GET</span></td>
+                <td><code>/api/tasks</code></td>
+                <td><span class="badge badge-rose">Private (JWT)</span></td>
+                <td>Fetches list of tasks belonging to authorized account.</td>
+              </tr>
+              <tr class="route-row" data-method="POST">
+                <td><span class="badge badge-emerald">POST</span></td>
+                <td><code>/api/tasks</code></td>
+                <td><span class="badge badge-rose">Private (JWT)</span></td>
+                <td>Creates a new user task linked to active session.</td>
+              </tr>
+              <tr class="route-row" data-method="PUT">
+                <td><span class="badge badge-cyan">PUT</span></td>
+                <td><code>/api/tasks/:id</code></td>
+                <td><span class="badge badge-rose">Private (JWT)</span></td>
+                <td>Updates task fields (status, description, or title).</td>
+              </tr>
+              <tr class="route-row" data-method="DELETE">
+                <td><span class="badge badge-rose">DELETE</span></td>
+                <td><code>/api/tasks/:id</code></td>
+                <td><span class="badge badge-rose">Private (JWT)</span></td>
+                <td>Deletes user task from database collection.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- SECTION 5: DAILY CHALLENGES & PREP -->
+      <div id="section-challenges" class="tab-pane">
+        <div class="card">
+          <h2 class="card-title rose">Hands-On Development Tasks</h2>
+          <p>Strengthen your skills by completing these progressive coding projects throughout the learning cycle.</p>
+          
+          <div class="qa-item">
+            <span class="badge badge-cyan" style="margin-bottom: 0.5rem;">Mini Task 1</span>
+            <div class="qa-question">Interactive Directory Listing CLI Tool</div>
+            <div class="qa-answer">
+              Write a command-line script in ESModules syntax that scans files inside a target directory (defaults to <code>process.cwd()</code>). Highlight file extensions (like .js, .txt, .json) in neon colors. Handle cases where paths do not exist cleanly.
+            </div>
+          </div>
+          
+          <div class="qa-item">
+            <span class="badge badge-cyan" style="margin-bottom: 0.5rem;">Mini Task 2</span>
+            <div class="qa-question">Markdown to HTML File Transformer CLI</div>
+            <div class="qa-answer">
+              Build a parser that accepts a file path to a <code>.md</code> document, converts headers (<code>#</code>), emphasis (<code>**</code>), code snippets, and list structures into standard HTML formatting using streams, then writes output to a new <code>.html</code> file on disk.
+            </div>
+          </div>
+          
+          <div class="qa-item">
+            <span class="badge badge-rose" style="margin-bottom: 0.5rem;">Final Challenge</span>
+            <div class="qa-question">Extend the MERN Project: Live Watch & Custom Themes</div>
+            <div class="qa-answer">
+              Take your final MERN deployment and implement a <strong>live watch mode</strong> (real-time task updates via WebSockets/Socket.io) or add custom user color themes stored in the database profiles. Secure the server with rate limiters.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title rose">MERN Stack Interview Questions</h2>
+          
+          <div class="qa-item">
+            <div class="qa-question">Q: Explain Node.js Event Loop phases and how process.nextTick fits in.</div>
+            <div class="qa-answer">
+              <strong>Answer:</strong> The Event Loop has phases: Timers (setTimeout), Pending callbacks (system errors), Poll (incoming I/O), Check (setImmediate), and Close. Before transitioning between phases, Node drains microtask queues. <code>process.nextTick</code> runs immediately after the current operation executes, ahead of promises and other timers.
+            </div>
+          </div>
+          
+          <div class="qa-item">
+            <div class="qa-question">Q: What is the difference between require() and import?</div>
+            <div class="qa-answer">
+              <strong>Answer:</strong> <code>require()</code> is the CommonJS (CJS) method, which loads modules synchronously at runtime. <code>import</code> is ESModules (ESM) syntax, which is resolved statically at compile time before execution, enabling optimization techniques like tree-shaking and native top-level await.
+            </div>
+          </div>
+          
+          <div class="qa-item">
+            <div class="qa-question">Q: How does authentication persist securely in MERN stack?</div>
+            <div class="qa-answer">
+              <strong>Answer:</strong> When logging in, the server generates a JSON Web Token (JWT) signed using a secret key. The token is sent to the client, which can store it in memory or in a secure, HTTP-only cookie to prevent XSS attacks. The client sends this token inside the <code>Authorization: Bearer [token]</code> header for protected API routes.
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </main>
+    
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
