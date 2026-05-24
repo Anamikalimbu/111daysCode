@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js CLI Explorer & Analytics Dashboard</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-surface: rgba(16, 24, 48, 0.65);
+      --bg-surface-hover: rgba(26, 38, 74, 0.8);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(126, 87, 240, 0.4);
+      --accent-purple: #7e57f0;
+      --accent-cyan: #00f0ff;
+      --accent-green: #39d353;
+      --accent-yellow: #f1c40f;
+      --accent-red: #ff4757;
+      --text-main: #f1f2f6;
+      --text-muted: #a4b0be;
+      --glow-purple: rgba(126, 87, 240, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #15103a 0%, var(--bg-primary) 70%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    header {
+      backdrop-filter: blur(16px);
+      background: rgba(10, 14, 26, 0.7);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      font-size: 1.75rem;
+    }
+
+    .brand-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.25rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      color: var(--bg-primary);
+      background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0, 240, 255, 0.2);
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .view-panel {
+      display: none;
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    .view-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CARD / GLASS SYSTEM */
+    .glass-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .glass-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 8px 32px 0 rgba(126, 87, 240, 0.08);
+    }
+
+    /* FILE EXPLORER TAB */
+    .explorer-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+      min-height: 500px;
+    }
+
+    @media (max-width: 1024px) {
+      .explorer-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .explorer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      gap: 1rem;
+    }
+
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0.5rem 0;
+      flex: 1;
+    }
+
+    .breadcrumb-item {
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .breadcrumb-item:hover {
+      color: var(--accent-cyan);
+    }
+
+    .breadcrumb-separator {
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    .explorer-search {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      color: var(--text-main);
+      width: 250px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .explorer-search:focus {
+      border-color: var(--accent-cyan);
+    }
+
+    .file-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-height: 650px;
+      overflow-y: auto;
+      padding-right: 0.25rem;
+    }
+
+    .file-item {
+      display: grid;
+      grid-template-columns: auto 1fr 100px 150px;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .file-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateX(4px);
+    }
+
+    .file-item.selected {
+      background: rgba(126, 87, 240, 0.15);
+      border-color: var(--accent-purple);
+    }
+
+    .file-icon {
+      font-size: 1.25rem;
+      margin-right: 1rem;
+    }
+
+    .file-name {
+      font-weight: 500;
+    }
+
+    .file-size {
+      color: var(--accent-yellow);
+      font-size: 0.9rem;
+    }
+
+    .file-date {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* INSPECTOR SIDEBAR */
+    .inspector-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      height: 100%;
+    }
+
+    .inspector-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .inspect-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      font-size: 0.95rem;
+    }
+
+    .inspect-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .inspect-label {
+      color: var(--text-muted);
+    }
+
+    .inspect-val {
+      font-weight: 500;
+      max-width: 60%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .preview-container {
+      flex: 1;
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      padding: 0.75rem;
+      overflow: hidden;
+    }
+
+    .preview-header {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .preview-body {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      flex: 1;
+      color: #b8c4c7;
+      line-height: 1.4;
+    }
+
+    /* TREE VIEW TAB */
+    .tree-wrapper {
+      max-height: 700px;
+      overflow-y: auto;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 12px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .tree-node {
+      margin-left: 1.5rem;
+    }
+
+    .tree-node-title {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .tree-node-title:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tree-folder {
+      color: var(--accent-cyan);
+      font-weight: 500;
+    }
+
+    .tree-file {
+      color: var(--accent-green);
+    }
+
+    .tree-node-children {
+      border-left: 1px dashed rgba(255, 255, 255, 0.15);
+      margin-left: 0.75rem;
+    }
+
+    /* SYSTEM ANALYTICS TAB */
+    .sys-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-box {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .stat-header {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    .stat-sub {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .gauge-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    .circular-progress {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent-purple) 0deg, rgba(255,255,255,0.05) 0deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .circular-progress::before {
+      content: "";
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: #0d1222;
+    }
+
+    .progress-value {
+      position: relative;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* EVENT LOOP SIMULATOR */
+    .sim-layout {
+      display: grid;
+      grid-template-columns: 3fr 1.2fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .sim-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sim-board {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .sim-controls {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .sim-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.6rem 1.15rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s;
+    }
+
+    .sim-btn:hover {
+      border-color: var(--accent-purple);
+      background: rgba(126, 87, 240, 0.1);
+    }
+
+    .sim-btn.primary {
+      background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+      border: none;
+      color: var(--bg-primary);
+    }
+
+    .sim-btn.primary:hover {
+      box-shadow: 0 0 15px var(--accent-cyan);
+    }
+
+    .loop-structure {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 1.25rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    @media (max-width: 640px) {
+      .loop-structure {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .loop-phase {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: border-color 0.3s;
+    }
+
+    .loop-phase.active {
+      border-color: var(--accent-cyan);
+      background: rgba(0, 240, 255, 0.04);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+    }
+
+    .phase-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .phase-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      flex: 1;
+      overflow-y: auto;
+      max-height: 150px;
+    }
+
+    .task-badge {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      padding: 0.35rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      border-left: 3px solid var(--accent-purple);
+      animation: taskPop 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @keyframes taskPop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .sim-terminal {
+      background: #060913;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      height: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .term-header {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .term-body {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      flex: 1;
+      overflow-y: auto;
+      line-height: 1.5;
+    }
+
+    .term-line {
+      margin-bottom: 0.35rem;
+    }
+
+    .term-line.info { color: var(--text-muted); }
+    .term-line.sys { color: var(--accent-cyan); }
+    .term-line.success { color: var(--accent-green); }
+    .term-line.warning { color: var(--accent-yellow); }
+    .term-line.error { color: var(--accent-red); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span class="brand-logo">🪐</span>
+      <h1 class="brand-title">Node.js Analytics Platform</h1>
+    </div>
+    
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-target="explorer-view">📂 Explorer</button>
+      <button class="tab-btn" data-target="tree-view">🌳 Tree View</button>
+      <button class="tab-btn" data-target="sys-view" id="sys-tab-btn">💻 System stats</button>
+      <button class="tab-btn" data-target="sim-view">⚡ Loop Simulator</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- FILE EXPLORER TAB -->
+    <section id="explorer-view" class="view-panel active">
+      <div class="explorer-layout">
+        
+        <!-- Files Block -->
+        <div class="glass-card">
+          <div class="explorer-header">
+            <div class="breadcrumbs" id="breadcrumbs-container">
+              <!-- Rendered Dynamically -->
+            </div>
+            <input type="text" placeholder="Search files..." class="explorer-search" id="search-input">
+          </div>
+          
+          <div class="file-grid" id="file-list-container">
+            <!-- Rendered Dynamically -->
+          </div>
+        </div>
+
+        <!-- Inspection Panel -->
+        <div class="glass-card">
+          <div class="inspector-panel" id="inspector-container">
+            <h3 class="inspector-title">🔎 File Inspector</h3>
+            <p style="color: var(--text-muted); text-align: center; margin: auto;">Select a file to inspect detailed metrics.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TREE VIEW TAB -->
+    <section id="tree-view" class="view-panel">
+      <div class="glass-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 style="font-size: 1.4rem; font-weight: 600;">🌳 Recursive Workspace Hierarchy</h2>
+          <button class="sim-btn" onclick="loadTreeData()">🔄 Refresh tree</button>
+        </div>
+        <div class="tree-wrapper" id="tree-container">
+          <!-- Rendered Dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SYSTEM ANALYTICS TAB -->
+    <section id="sys-view" class="view-panel">
+      <div class="sys-grid">
+        <!-- CPU Core Box -->
+        <div class="glass-card stat-box">
+          <span class="stat-header">Processor Config</span>
+          <span class="stat-value" id="sys-cpu-model">-</span>
+          <span class="stat-sub" id="sys-cpu-cores">-</span>
+        </div>
+        <!-- OS Info Box -->
+        <div class="glass-card stat-box">
+          <span class="stat-header">Platform OS</span>
+          <span class="stat-value" id="sys-os">-</span>
+          <span class="stat-sub" id="sys-uptime">-</span>
+        </div>
+        <!-- Node Host Box -->
+        <div class="glass-card stat-box">
+          <span class="stat-header">System Profile</span>
+          <span class="stat-value" id="sys-hostname">-</span>
+          <span class="stat-sub" id="sys-home">-</span>
+        </div>
+      </div>
+
+      <div class="explorer-layout">
+        <!-- RAM Gauge -->
+        <div class="glass-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 1.5rem;">Memory Allocation (RAM)</h3>
+          <div class="gauge-wrapper">
+            <div class="circular-progress" id="ram-progress">
+              <span class="progress-value" id="ram-percentage">0%</span>
+            </div>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 1rem;" id="ram-usage-text">-</p>
+        </div>
+
+        <!-- Interfaces List -->
+        <div class="glass-card">
+          <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">Active Network Interfaces</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;" id="sys-networks">
+            <!-- Rendered Dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENT LOOP SIMULATOR -->
+    <section id="sim-view" class="view-panel">
+      <div class="sim-layout">
+        <!-- Simulator Grid -->
+        <div class="glass-card sim-board">
+          <h2 style="font-size: 1.3rem; font-weight: 600;">⚡ Dynamic Node.js Event Loop Sandbox</h2>
+          
+          <div class="sim-controls">
+            <button class="sim-btn" onclick="addTimerTask()">⏰ Add setTimeout (0ms)</button>
+            <button class="sim-btn" onclick="addImmediateTask()">⚡ Add setImmediate</button>
+            <button class="sim-btn" onclick="addNextTickTask()">🟢 Add process.nextTick</button>
+            <button class="sim-btn" onclick="addPromiseTask()">🔵 Add Promise.then</button>
+            <button class="sim-btn" onclick="addIoTask()">💾 Add fs.readFile I/O</button>
+            <button class="sim-btn primary" onclick="stepEventLoop()">➡️ Step Loop Phase</button>
+            <button class="sim-btn" style="background: rgba(255, 71, 87, 0.1); border-color: rgba(255, 71, 87, 0.3);" onclick="resetSimulator()">🔄 Reset</button>
+          </div>
+
+          <div class="loop-structure">
+            <!-- Call Stack -->
+            <div class="loop-phase" id="phase-stack">
+              <div class="phase-title" style="color: var(--accent-cyan)">Call Stack <span>Stack</span></div>
+              <div class="phase-items" id="items-stack"></div>
+            </div>
+
+            <!-- Microtask Queue -->
+            <div class="loop-phase" id="phase-microtasks">
+              <div class="phase-title" style="color: var(--accent-purple)">nextTick & Promise <span>Microtasks</span></div>
+              <div class="phase-items" id="items-microtasks"></div>
+            </div>
+
+            <!-- Timer Phase -->
+            <div class="loop-phase" id="phase-timers">
+              <div class="phase-title" style="color: var(--accent-yellow)">Timer Phase <span>setTimeout</span></div>
+              <div class="phase-items" id="items-timers"></div>
+            </div>
+
+            <!-- Poll Phase -->
+            <div class="loop-phase" id="phase-poll">
+              <div class="phase-title" style="color: var(--accent-green)">Poll Phase <span>fs Asynchronous I/O</span></div>
+              <div class="phase-items" id="items-poll"></div>
+            </div>
+
+            <!-- Check Phase -->
+            <div class="loop-phase" id="phase-check">
+              <div class="phase-title" style="color: var(--accent-purple)">Check Phase <span>setImmediate</span></div>
+              <div class="phase-items" id="items-check"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal Output -->
+        <div class="glass-card">
+          <div class="sim-terminal">
+            <div class="term-header">Event Loop Log Output</div>
+            <div class="term-body" id="terminal-body">
+              <div class="term-line info">[System] Simulator loaded. Click tasks above to schedule, then click "Step Loop Phase"!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Tab switching
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const viewPanels = document.querySelectorAll('.view-panel');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.target;
+        
+        tabBtns.forEach(b => b.classList.remove('active'));
+        viewPanels.forEach(p => p.classList.remove('active'));
+        
+        btn.classList.add('active');
+        document.getElementById(target).classList.add('active');
+
+        // Refresh dynamic components
+        if (target === 'sys-view') {
+          loadSysStats();
+        } else if (target === 'tree-view') {
+          loadTreeData();
+        }
+      });
+    });
+
+    // --- FILE EXPLORER SCRIPTS ---
+    let currentDirPath = '.';
+    let allDirectoryItems = [];
+
+    async function loadDirectory(pathString) {
+      try {
+        const res = await fetch(`/api/list?path=${encodeURIComponent(pathString)}`);
+        const data = await res.json();
+        
+        if (data.error) {
+          alert(`Error loading folder: ${data.error}`);
+          return;
+        }
+
+        currentDirPath = data.currentPath;
+        allDirectoryItems = data.items;
+        renderFiles(data.items);
+        renderBreadcrumbs(data.currentPath);
+      } catch (err) {
+        console.error('Error fetching directory:', err);
+      }
+    }
+
+    function renderBreadcrumbs(dirPath) {
+      const container = document.getElementById('breadcrumbs-container');
+      container.innerHTML = '';
+
+      // Support Unix and Windows separators
+      const parts = dirPath.split(/[\\\/]/);
+      let cumulativePath = '';
+
+      parts.forEach((part, index) => {
+        if (!part && index > 0) return;
+        
+        if (index === 0 && part.includes(':')) {
+          cumulativePath = part + '\\';
+        } else if (index === 0) {
+          cumulativePath = part || '/';
+        } else {
+          cumulativePath = cumulativePath + (cumulativePath.endsWith('\\') || cumulativePath.endsWith('/') ? '' : '/') + part;
+        }
+
+        const crumb = document.createElement('span');
+        crumb.className = 'breadcrumb-item';
+        crumb.innerText = part || 'Root';
+        
+        const pathRef = cumulativePath;
+        crumb.onclick = () => loadDirectory(pathRef);
+        container.appendChild(crumb);
+
+        if (index < parts.length - 1) {
+          const sep = document.createElement('span');
+          sep.className = 'breadcrumb-separator';
+          sep.innerText = ' / ';
+          container.appendChild(sep);
+        }
+      });
+    }
+
+    function renderFiles(items) {
+      const container = document.getElementById('file-list-container');
+      container.innerHTML = '';
+
+      if (items.length === 0) {
+        container.innerHTML = `<div style="color: var(--text-muted); text-align: center; padding: 2rem;">Directory is empty</div>`;
+        return;
+      }
+
+      items.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'file-item';
+        
+        const icon = item.isDirectory ? '📁' : '📄';
+        const typeClass = item.isDirectory ? 'directory' : 'file';
+        
+        const date = new Date(item.mtime);
+        const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+        row.innerHTML = `
+          <span class="file-icon">${icon}</span>
+          <span class="file-name" style="color: ${item.isDirectory ? 'var(--accent-cyan)' : 'var(--accent-green)'}">${item.name}</span>
+          <span class="file-size">${item.sizeFormatted}</span>
+          <span class="file-date">${formattedDate}</span>
+        `;
+
+        row.onclick = () => {
+          document.querySelectorAll('.file-item').forEach(r => r.classList.remove('selected'));
+          row.classList.add('selected');
+          
+          if (item.isDirectory) {
+            // double click would navigate, click selects. Let's make click on directory navigate for speed!
+            loadDirectory(currentDirPath + '/' + item.name);
+          } else {
+            inspectFile(currentDirPath + '/' + item.name);
+          }
+        };
+
+        container.appendChild(row);
+      });
+    }
+
+    // Search input filtering
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      const filtered = allDirectoryItems.filter(item => item.name.toLowerCase().includes(query));
+      renderFiles(filtered);
+    });
+
+    async function inspectFile(filePath) {
+      const container = document.getElementById('inspector-container');
+      container.innerHTML = `
+        <h3 class="inspector-title">🔎 File Inspector</h3>
+        <p style="color: var(--text-muted); text-align: center; margin: auto;">Loading file details...</p>
+      `;
+
+      try {
+        const res = await fetch(`/api/inspect?file=${encodeURIComponent(filePath)}`);
+        const file = await res.json();
+
+        if (file.error) {
+          container.innerHTML = `
+            <h3 class="inspector-title">🔎 File Inspector</h3>
+            <p style="color: var(--accent-red); padding: 1rem;">Failed: ${file.error}</p>
+          `;
+          return;
+        }
+
+        let previewBlock = '';
+        if (file.isText && file.preview) {
+          // Escaping html entities to prevent rendering issues in preview box
+          const escaped = file.preview
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+            
+          previewBlock = `
+            <div class="preview-container">
+              <span class="preview-header">Buffered File Preview (10KB)</span>
+              <pre class="preview-body"><code>${escaped}</code></pre>
+            </div>
+          `;
+        } else if (file.size === 0) {
+          previewBlock = `<div style="text-align: center; color: var(--text-muted); padding: 1rem; background: rgba(0,0,0,0.1); border-radius: 8px;">File is empty</div>`;
+        } else {
+          previewBlock = `<div style="text-align: center; color: var(--accent-yellow); padding: 1rem; background: rgba(0,0,0,0.1); border-radius: 8px;">Binary/Preview Unsupported</div>`;
+        }
+
+        container.innerHTML = `
+          <h3 class="inspector-title">🔎 File Inspector</h3>
+          <div class="inspect-meta">
+            <div class="inspect-row"><span class="inspect-label">Name</span><span class="inspect-val">${file.name}</span></div>
+            <div class="inspect-row"><span class="inspect-label">Size</span><span class="inspect-val">${file.sizeFormatted}</span></div>
+            <div class="inspect-row"><span class="inspect-label">Octal Mode</span><span class="inspect-val">${file.modeOctal}</span></div>
+            <div class="inspect-row"><span class="inspect-label">Modified</span><span class="inspect-val">${new Date(file.mtime).toLocaleString()}</span></div>
+          </div>
+          ${previewBlock}
+        `;
+      } catch (err) {
+        console.error('Error inspecting file:', err);
+      }
+    }
+
+    // --- TREE VIEW SCRIPTS ---
+    async function loadTreeData() {
+      const container = document.getElementById('tree-container');
+      container.innerHTML = `<p style="color: var(--text-muted)">Generating file structure tree...</p>`;
+
+      try {
+        const res = await fetch(`/api/tree?path=${encodeURIComponent(currentDirPath)}`);
+        const treeData = await res.json();
+        
+        container.innerHTML = '';
+        container.appendChild(buildTreeElement(treeData));
+      } catch (err) {
+        container.innerHTML = `<p style="color: var(--accent-red)">Error loading tree: ${err.message}</p>`;
+      }
+    }
+
+    function buildTreeElement(node) {
+      const nodeDiv = document.createElement('div');
+      nodeDiv.className = 'tree-node';
+
+      const titleSpan = document.createElement('span');
+      titleSpan.className = `tree-node-title ${node.isDirectory ? 'tree-folder' : 'tree-file'}`;
+      
+      const icon = node.isDirectory ? '📁' : '📄';
+      titleSpan.innerHTML = `<span>${icon}</span> <span>${node.name}${node.isDirectory ? '/' : ''}</span>`;
+      nodeDiv.appendChild(titleSpan);
+
+      if (node.isDirectory && node.children && node.children.length > 0) {
+        const childrenDiv = document.createElement('div');
+        childrenDiv.className = 'tree-node-children';
+        
+        node.children.forEach(child => {
+          childrenDiv.appendChild(buildTreeElement(child));
+        });
+
+        nodeDiv.appendChild(childrenDiv);
+
+        // Make folder collapsible
+        titleSpan.onclick = (e) => {
+          e.stopPropagation();
+          const collapsed = childrenDiv.style.display === 'none';
+          childrenDiv.style.display = collapsed ? 'block' : 'none';
+          titleSpan.firstChild.innerText = collapsed ? '📁' : '📁 (closed)';
+        };
+      }
+
+      return nodeDiv;
+    }
+
+    // --- SYSTEM METRICS SCRIPTS ---
+    async function loadSysStats() {
+      try {
+        const res = await fetch('/api/sysinfo');
+        const info = await res.json();
+
+        document.getElementById('sys-cpu-model').innerText = info.cpuModel;
+        document.getElementById('sys-cpu-cores').innerText = `${info.cpuCores} physical cores @ ${info.cpuSpeedMhz} MHz`;
+        document.getElementById('sys-os').innerText = `${info.type} (${info.platform} ${info.arch})`;
+        document.getElementById('sys-uptime').innerText = `Uptime: ${info.uptimeFormatted}`;
+        document.getElementById('sys-hostname').innerText = info.hostname;
+        document.getElementById('sys-home').innerText = `Home: ${info.homeDir}`;
+
+        // Draw Memory Circular progress
+        const usagePercent = parseFloat(info.memoryUsagePercent);
+        const progressEl = document.getElementById('ram-progress');
+        progressEl.style.background = `conic-gradient(var(--accent-purple) ${usagePercent * 3.6}deg, rgba(255,255,255,0.05) 0deg)`;
+        
+        document.getElementById('ram-percentage').innerText = `${usagePercent}%`;
+        document.getElementById('ram-usage-text').innerText = `${info.usedMemoryFormatted} used / ${info.totalMemoryFormatted} total`;
+
+        // Render network interfaces
+        const netContainer = document.getElementById('sys-networks');
+        netContainer.innerHTML = '';
+
+        if (info.network.length === 0) {
+          netContainer.innerHTML = `<p style="color: var(--text-muted)">No active network cards found</p>`;
+        } else {
+          info.network.forEach(net => {
+            const item = document.createElement('div');
+            item.style.display = 'flex';
+            item.style.justifyContent = 'space-between';
+            item.style.padding = '0.5rem';
+            item.style.background = 'rgba(255,255,255,0.02)';
+            item.style.borderRadius = '6px';
+            
+            item.innerHTML = `
+              <span style="font-weight: 500;">${net.interface}</span>
+              <span style="color: var(--accent-green); font-family: monospace;">${net.address}</span>
+            `;
+            netContainer.appendChild(item);
+          });
+        }
+      } catch (err) {
+        console.error('Error fetching sys stats:', err);
+      }
+    }
+
+    // --- EVENT LOOP SIMULATOR SCRIPTS ---
+    let idCounter = 1;
+    const simulatorState = {
+      currentPhase: 'Call Stack', // Phases: 'Call Stack', 'Microtask Queue', 'Timer Phase', 'Poll Phase', 'Check Phase'
+      stack: [],
+      microtasks: [],
+      timers: [],
+      poll: [],
+      check: []
+    };
+
+    function logTerminal(message, type = 'info') {
+      const body = document.getElementById('terminal-body');
+      const time = new Date().toLocaleTimeString();
+      const line = document.createElement('div');
+      line.className = `term-line ${type}`;
+      line.innerHTML = `[${time}] ${message}`;
+      body.appendChild(line);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function renderSimulatorUI() {
+      // Clear all phase layouts
+      document.getElementById('items-stack').innerHTML = '';
+      document.getElementById('items-microtasks').innerHTML = '';
+      document.getElementById('items-timers').innerHTML = '';
+      document.getElementById('items-poll').innerHTML = '';
+      document.getElementById('items-check').innerHTML = '';
+
+      // Remove active classes
+      document.querySelectorAll('.loop-phase').forEach(el => el.classList.remove('active'));
+
+      // Render tasks in Call Stack
+      simulatorState.stack.forEach(t => {
+        document.getElementById('items-stack').appendChild(createTaskEl(t));
+      });
+
+      // Render microtasks
+      simulatorState.microtasks.forEach(t => {
+        document.getElementById('items-microtasks').appendChild(createTaskEl(t));
+      });
+
+      // Render timers
+      simulatorState.timers.forEach(t => {
+        document.getElementById('items-timers').appendChild(createTaskEl(t));
+      });
+
+      // Render I/O
+      simulatorState.poll.forEach(t => {
+        document.getElementById('items-poll').appendChild(createTaskEl(t));
+      });
+
+      // Render Check
+      simulatorState.check.forEach(t => {
+        document.getElementById('items-check').appendChild(createTaskEl(t));
+      });
+
+      // Highlight active phase
+      if (simulatorState.currentPhase === 'Call Stack') {
+        document.getElementById('phase-stack').classList.add('active');
+      } else if (simulatorState.currentPhase === 'Microtask Queue') {
+        document.getElementById('phase-microtasks').classList.add('active');
+      } else if (simulatorState.currentPhase === 'Timer Phase') {
+        document.getElementById('phase-timers').classList.add('active');
+      } else if (simulatorState.currentPhase === 'Poll Phase') {
+        document.getElementById('phase-poll').classList.add('active');
+      } else if (simulatorState.currentPhase === 'Check Phase') {
+        document.getElementById('phase-check').classList.add('active');
+      }
+    }
+
+    function createTaskEl(task) {
+      const el = document.createElement('div');
+      el.className = 'task-badge';
+      el.style.borderLeftColor = task.color;
+      el.innerHTML = `<span>${task.name}</span> <span style="color: var(--text-muted)">#${task.id}</span>`;
+      return el;
+    }
+
+    function addTimerTask() {
+      const task = { id: idCounter++, name: 'setTimeout(cb, 0)', type: 'timer', color: 'var(--accent-yellow)' };
+      simulatorState.timers.push(task);
+      logTerminal(`Scheduled timer callback: setTimeout(cb, 0)`, 'warning');
+      renderSimulatorUI();
+    }
+
+    function addImmediateTask() {
+      const task = { id: idCounter++, name: 'setImmediate(cb)', type: 'check', color: 'var(--accent-purple)' };
+      simulatorState.check.push(task);
+      logTerminal(`Scheduled intermediate check: setImmediate(cb)`, 'warning');
+      renderSimulatorUI();
+    }
+
+    function addNextTickTask() {
+      const task = { id: idCounter++, name: 'process.nextTick(cb)', type: 'nextTick', color: 'var(--accent-cyan)' };
+      simulatorState.microtasks.unshift(task); // nextTick runs first in microtask queue
+      logTerminal(`Scheduled process.nextTick callback`, 'sys');
+      renderSimulatorUI();
+    }
+
+    function addPromiseTask() {
+      const task = { id: idCounter++, name: 'Promise.then(cb)', type: 'promise', color: 'var(--accent-purple)' };
+      simulatorState.microtasks.push(task); // Promise runs after nextTicks in microtasks
+      logTerminal(`Scheduled Promise.then resolution callback`, 'sys');
+      renderSimulatorUI();
+    }
+
+    function addIoTask() {
+      const task = { id: idCounter++, name: 'fs.readFile(cb)', type: 'io', color: 'var(--accent-green)' };
+      simulatorState.poll.push(task);
+      logTerminal(`Scheduled file system async read operation (Thread Pool)`, 'warning');
+      renderSimulatorUI();
+    }
+
+    function resetSimulator() {
+      idCounter = 1;
+      simulatorState.currentPhase = 'Call Stack';
+      simulatorState.stack = [];
+      simulatorState.microtasks = [];
+      simulatorState.timers = [];
+      simulatorState.poll = [];
+      simulatorState.check = [];
+      
+      const body = document.getElementById('terminal-body');
+      body.innerHTML = `<div class="term-line info">[System] Simulator reset completed. Ready to accept scheduling commands!</div>`;
+      renderSimulatorUI();
+    }
+
+    function stepEventLoop() {
+      // 1. Process Call Stack first
+      if (simulatorState.stack.length > 0) {
+        const currentTask = simulatorState.stack.pop();
+        logTerminal(`[Call Stack] Executed active synchronous job: ${currentTask.name}`, 'info');
+        renderSimulatorUI();
+        return;
+      }
+
+      // 2. Check Microtasks (Runs before transitioning to any phase)
+      if (simulatorState.microtasks.length > 0 && simulatorState.currentPhase !== 'Microtask Queue') {
+        simulatorState.currentPhase = 'Microtask Queue';
+        logTerminal(`[Event Loop] Microtask queue contains pending entries. Clearing microtasks first!`, 'sys');
+        renderSimulatorUI();
+        return;
+      }
+
+      if (simulatorState.currentPhase === 'Microtask Queue') {
+        if (simulatorState.microtasks.length > 0) {
+          const task = simulatorState.microtasks.shift();
+          // Simulating execution
+          simulatorState.stack.push({ ...task, name: `${task.name} Callback` });
+          logTerminal(`[Microtask Queue] Draining job to Call Stack: ${task.name}`, 'success');
+          renderSimulatorUI();
+          return;
+        } else {
+          // Microtasks fully drained, return back to cyclic loop
+          simulatorState.currentPhase = 'Timer Phase';
+          logTerminal(`[Event Loop] Microtask queue fully drained. Proceeding to main cycle phases...`, 'info');
+        }
+      }
+
+      // 3. Cyclic Loop Phases
+      switch (simulatorState.currentPhase) {
+        case 'Call Stack':
+          simulatorState.currentPhase = 'Timer Phase';
+          logTerminal(`[Event Loop] Transitioning to: Timer Phase`, 'info');
+          break;
+
+        case 'Timer Phase':
+          if (simulatorState.timers.length > 0) {
+            const task = simulatorState.timers.shift();
+            simulatorState.stack.push({ ...task, name: 'setTimeout CB' });
+            logTerminal(`[Timer Phase] Found pending timers! Moving to Call Stack: ${task.name}`, 'success');
+          } else {
+            logTerminal(`[Timer Phase] No pending timers found. Transitioning to Poll Phase (I/O).`, 'info');
+            simulatorState.currentPhase = 'Poll Phase';
+          }
+          break;
+
+        case 'Poll Phase':
+          if (simulatorState.poll.length > 0) {
+            const task = simulatorState.poll.shift();
+            simulatorState.stack.push({ ...task, name: 'fs.readFile CB' });
+            logTerminal(`[Poll Phase] Asynchronous operations completed! Executing file callback: ${task.name}`, 'success');
+            
+            // SPECIAL GOTCHA DEMO:
+            // Inside I/O callback, scheduling setImmediate and setTimeout
+            logTerminal(`[Gotcha Demo] Inside file callback: Scheduling setTimeout (Timer) and setImmediate (Check)...`, 'sys');
+            simulatorState.check.push({ id: idCounter++, name: 'setImmediate (Inside I/O)', type: 'check', color: 'var(--accent-purple)' });
+            simulatorState.timers.push({ id: idCounter++, name: 'setTimeout (Inside I/O)', type: 'timer', color: 'var(--accent-yellow)' });
+          } else {
+            logTerminal(`[Poll Phase] Poll phase complete. Moving to Check Phase (setImmediate).`, 'info');
+            simulatorState.currentPhase = 'Check Phase';
+          }
+          break;
+
+        case 'Check Phase':
+          if (simulatorState.check.length > 0) {
+            const task = simulatorState.check.shift();
+            simulatorState.stack.push({ ...task, name: 'setImmediate CB' });
+            logTerminal(`[Check Phase] Found setImmediate! Moving to Call Stack: ${task.name}`, 'success');
+          } else {
+            logTerminal(`[Check Phase] Check phase complete. Cycling back to Timer Phase.`, 'info');
+            simulatorState.currentPhase = 'Timer Phase';
+          }
+          break;
+      }
+
+      renderSimulatorUI();
+    }
+
+    // Initialize File Explorer
+    loadDirectory('.');
+  </script>
+</body>
+</html>
