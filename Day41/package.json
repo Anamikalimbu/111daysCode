@@ -1,0 +1,19 @@
+{
+  "name": "day41-cli-file-explorer",
+  "version": "1.0.0",
+  "description": "A fully functional CLI-based File Explorer demonstrating Node.js event loop, async operations, streams, and ESM + CJS module systems.",
+  "main": "explorer.js",
+  "type": "module",
+  "scripts": {
+    "start": "node explorer.js"
+  },
+  "keywords": [
+    "cli",
+    "file-explorer",
+    "nodejs",
+    "event-loop",
+    "streams"
+  ],
+  "author": "Antigravity",
+  "license": "ISC"
+}
