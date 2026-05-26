@@ -3,9 +3,9 @@ const connectDB = require('../config/db');
 const User = require('../models/User');
 
 const users = [
-  { name: 'Alice Admin', email: 'admin@example.com', password: 'password123', role: 'admin' },
-  { name: 'Bob User', email: 'bob@example.com', password: 'password123' },
-  { name: 'Charlie', email: 'charlie@example.com', password: 'password123' }
+  { name: 'Anamika Limbu', email: 'anamikalimbu8@gmail.com', password: 'password123', role: 'admin' },
+  { name: 'Smriti Rai', email: 'smriti@gmail.com', password: 'password123' },
+  { name: 'Ragita', email: 'ragita@gmail.com', password: 'password123' }
 ];
 
 const seed = async () => {
