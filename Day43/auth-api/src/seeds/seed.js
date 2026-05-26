@@ -1,0 +1,25 @@
+require('dotenv').config();
+const connectDB = require('../config/db');
+const User = require('../models/User');
+
+const users = [
+  { name: 'Alice Admin', email: 'admin@example.com', password: 'password123', role: 'admin' },
+  { name: 'Bob User', email: 'bob@example.com', password: 'password123' },
+  { name: 'Charlie', email: 'charlie@example.com', password: 'password123' }
+];
+
+const seed = async () => {
+  try {
+    await connectDB();
+    await User.deleteMany({});
+    const created = await User.create(users);
+    console.log(`✔ Inserted ${created.length} users`);
+    created.forEach(u => console.log(`- ${u.email} (${u.role})`));
+    process.exit(0);
+  } catch (error) {
+    console.error('Seed error:', error);
+    process.exit(1);
+  }
+};
+
+seed();
