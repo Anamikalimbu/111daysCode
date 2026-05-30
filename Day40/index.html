@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Node.js Core Study Plan - Day 40 (Day 2 of Node)</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <div class="container">
     <!-- Header Banner -->
     <header>
       <div class="day-badge">Day 40 / Node Day 2</div>
       <h1>Node.js Core Deep-Dive</h1>
-      <p class="subtitle">Mastering the Node.js runtime environment, Event Loop, core modules (fs, path, os), and the transition between CJS and ESM module systems.</p>
+      <p class="subtitle">Mastering the Node.js runtime environment, Event Loop, core modules (fs, path, os), and the
+        transition between CJS and ESM module systems.</p>
     </header>
 
     <!-- Main Dashboard Grid -->
     <div class="dashboard-grid">
-      
+
       <!-- Main Content Tabs -->
       <main>
-        
+
         <!-- Tab Headers -->
         <nav class="tabs-navigation" aria-label="Study Plan Sections">
           <button class="tab-btn active" onclick="switchTab(event, 'tab-overview')">Roadmap Overview</button>
@@ -33,73 +36,88 @@
         <div id="tab-overview" class="tab-pane active">
           <div class="card">
             <h2 class="section-title">Day 2 Study Roadmap</h2>
-            <p>Welcome to Day 2 of your Node.js journey (Day 40 of 111 Days of Code). Today, we move beyond simple scripts and dig deep into the internal mechanics of Node.js and its standard library.</p>
-            
+            <p>Welcome to Day 2 of your Node.js journey (Day 40 of 111 Days of Code). Today, we move beyond simple
+              scripts and dig deep into the internal mechanics of Node.js and its standard library.</p>
+
             <div class="roadmap-checkpoint">
               <div class="checkpoint-bullet"></div>
               <span class="badge-outline">Step 1</span>
               <h3>Runtime Architecture & The Event Loop</h3>
-              <p>Learn how Node executes JavaScript. Master the event loop phases (Timers, Poll, Check) and how Microtask queues (Promises, process.nextTick) interrupt execution flow.</p>
+              <p>Learn how Node executes JavaScript. Master the event loop phases (Timers, Poll, Check) and how
+                Microtask queues (Promises, process.nextTick) interrupt execution flow.</p>
             </div>
 
             <div class="roadmap-checkpoint">
               <div class="checkpoint-bullet"></div>
               <span class="badge-outline">Step 2</span>
               <h3>Core System Utilities</h3>
-              <p>Explore built-in modules designed to interface with the operating system: file system handling (<code>fs</code>), path resolution (<code>path</code>), and system resources (<code>os</code>).</p>
+              <p>Explore built-in modules designed to interface with the operating system: file system handling
+                (<code>fs</code>), path resolution (<code>path</code>), and system resources (<code>os</code>).</p>
             </div>
 
             <div class="roadmap-checkpoint">
               <div class="checkpoint-bullet"></div>
               <span class="badge-outline">Step 3</span>
               <h3>Modern Module Systems</h3>
-              <p>Understand the differences between CommonJS (<code>require</code>) and ESModules (<code>import/export</code>). Learn how to configure your project to use ESM and resolve path globals.</p>
+              <p>Understand the differences between CommonJS (<code>require</code>) and ESModules
+                (<code>import/export</code>). Learn how to configure your project to use ESM and resolve path globals.
+              </p>
             </div>
 
             <div class="roadmap-checkpoint">
               <div class="checkpoint-bullet"></div>
               <span class="badge-outline">Step 4</span>
               <h3>Building a CLI Tool</h3>
-              <p>Consolidate your learning by building an interactive command-line explorer that lists directory contents, checks file stats, and accepts custom arguments.</p>
+              <p>Consolidate your learning by building an interactive command-line explorer that lists directory
+                contents, checks file stats, and accepts custom arguments.</p>
             </div>
           </div>
 
           <!-- Official Resources Card -->
           <div class="card">
             <h2 class="section-title">Best Official Resources</h2>
-            <p>Relying on official, accurate, and up-to-date documentation is a superpower. Here are the curated reference points for today's studies:</p>
+            <p>Relying on official, accurate, and up-to-date documentation is a superpower. Here are the curated
+              reference points for today's studies:</p>
             <div class="resources-grid">
-              
+
               <div class="resource-card">
                 <div>
                   <h4 class="resource-name">Node.js Guide: Event Loop</h4>
-                  <p class="resource-desc">The absolute best reference explaining timers, intervals, I/O polling, and ticks.</p>
+                  <p class="resource-desc">The absolute best reference explaining timers, intervals, I/O polling, and
+                    ticks.</p>
                 </div>
-                <a href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/" target="_blank" rel="noopener noreferrer" class="resource-link">Open Guide &rarr;</a>
+                <a href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/" target="_blank"
+                  rel="noopener noreferrer" class="resource-link">Open Guide &rarr;</a>
               </div>
 
               <div class="resource-card">
                 <div>
                   <h4 class="resource-name">Node.js API: File System</h4>
-                  <p class="resource-desc">Complete directory of asynchronous, promise-based, and synchronous file APIs.</p>
+                  <p class="resource-desc">Complete directory of asynchronous, promise-based, and synchronous file APIs.
+                  </p>
                 </div>
-                <a href="https://nodejs.org/api/fs.html" target="_blank" rel="noopener noreferrer" class="resource-link">Open Documentation &rarr;</a>
+                <a href="https://nodejs.org/api/fs.html" target="_blank" rel="noopener noreferrer"
+                  class="resource-link">Open Documentation &rarr;</a>
               </div>
 
               <div class="resource-card">
                 <div>
                   <h4 class="resource-name">Node.js API: Path</h4>
-                  <p class="resource-desc">Official methods for handling file paths across Windows, macOS, and Linux.</p>
+                  <p class="resource-desc">Official methods for handling file paths across Windows, macOS, and Linux.
+                  </p>
                 </div>
-                <a href="https://nodejs.org/api/path.html" target="_blank" rel="noopener noreferrer" class="resource-link">Open Documentation &rarr;</a>
+                <a href="https://nodejs.org/api/path.html" target="_blank" rel="noopener noreferrer"
+                  class="resource-link">Open Documentation &rarr;</a>
               </div>
 
               <div class="resource-card">
                 <div>
                   <h4 class="resource-name">MDN: JavaScript Modules</h4>
-                  <p class="resource-desc">In-depth comparison of static ESM structure vs browser execution patterns.</p>
+                  <p class="resource-desc">In-depth comparison of static ESM structure vs browser execution patterns.
+                  </p>
                 </div>
-                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" target="_blank" rel="noopener noreferrer" class="resource-link">Open MDN Guide &rarr;</a>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules" target="_blank"
+                  rel="noopener noreferrer" class="resource-link">Open MDN Guide &rarr;</a>
               </div>
 
             </div>
@@ -109,18 +127,24 @@
         <div id="tab-runtime" class="tab-pane">
           <div class="card">
             <h2 class="section-title">1. Node Runtime & Event Loop</h2>
-            <p>Node.js is an open-source, cross-platform JavaScript runtime environment built on Chrome's V8 JavaScript engine. Under the hood, Node utilizes <strong>Libuv</strong> to enable asynchronous, non-blocking I/O.</p>
-            
+            <p>Node.js is an open-source, cross-platform JavaScript runtime environment built on Chrome's V8 JavaScript
+              engine. Under the hood, Node utilizes <strong>Libuv</strong> to enable asynchronous, non-blocking I/O.</p>
+
             <h3>The Architecture Breakdown</h3>
             <ul>
-              <li><strong>V8 Engine:</strong> Executes JS code, compiles it to machine code, handles call stack and memory allocation.</li>
-              <li><strong>Libuv:</strong> Manages thread-pool execution for heavier work (file operations, cryptography), networking events, and the central loop.</li>
-              <li><strong>Core APIs:</strong> Javascript wrappers exposing operating system bindings to the developer.</li>
+              <li><strong>V8 Engine:</strong> Executes JS code, compiles it to machine code, handles call stack and
+                memory allocation.</li>
+              <li><strong>Libuv:</strong> Manages thread-pool execution for heavier work (file operations,
+                cryptography), networking events, and the central loop.</li>
+              <li><strong>Core APIs:</strong> Javascript wrappers exposing operating system bindings to the developer.
+              </li>
             </ul>
 
             <div class="alert">
               <div class="alert-title">Is Node Single-Threaded?</div>
-              <p>Yes, the JavaScript execution thread (call stack) is single-threaded. However, Libuv delegates system tasks to the operating system kernel when possible or utilizes a <strong>thread pool (4 threads by default)</strong> for operations like file systems, making Node concurrency highly scalable.</p>
+              <p>Yes, the JavaScript execution thread (call stack) is single-threaded. However, Libuv delegates system
+                tasks to the operating system kernel when possible or utilizes a <strong>thread pool (4 threads by
+                  default)</strong> for operations like file systems, making Node concurrency highly scalable.</p>
             </div>
 
             <h3>Event Loop Phases</h3>
@@ -161,10 +185,13 @@
             </table>
 
             <h3>Microtask Priority Order</h3>
-            <p>Before moving from one phase of the event loop to the next, Node checks and empties the <strong>Microtask queues</strong>. They execute in this order:</p>
+            <p>Before moving from one phase of the event loop to the next, Node checks and empties the <strong>Microtask
+                queues</strong>. They execute in this order:</p>
             <ol>
-              <li><code>process.nextTick()</code> callbacks (run immediately after the current operation, before any other async tasks).</li>
-              <li>Promise resolution callbacks (<code>.then</code>, <code>.catch</code>, <code>await</code> resolution).</li>
+              <li><code>process.nextTick()</code> callbacks (run immediately after the current operation, before any
+                other async tasks).</li>
+              <li>Promise resolution callbacks (<code>.then</code>, <code>.catch</code>, <code>await</code> resolution).
+              </li>
             </ol>
 
             <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>// Execution Demonstration
@@ -177,10 +204,12 @@ console.log('End');
 
 // Expected Output:
 // Start -> End -> nextTick -> Promise -> Timeout -> Immediate</code></pre>
-            
+
             <div class="alert alert-warning">
               <div class="alert-title">Recursive process.nextTick Warning</div>
-              <p>Because the event loop must empty the process.nextTick queue before moving to the next phase, recursive nextTick loops will starve I/O, freezing the event loop completely. Avoid infinite nextTick recursion!</p>
+              <p>Because the event loop must empty the process.nextTick queue before moving to the next phase, recursive
+                nextTick loops will starve I/O, freezing the event loop completely. Avoid infinite nextTick recursion!
+              </p>
             </div>
           </div>
         </div>
@@ -191,8 +220,9 @@ console.log('End');
             <p>Node includes out-of-the-box standard library modules that don't need external installations.</p>
 
             <h3>The File System (<code>fs</code>) Module</h3>
-            <p>The <code>fs</code> module has three forms. We strongly recommend the modern <strong>Promises-based API</strong> for clean codebase design.</p>
-            
+            <p>The <code>fs</code> module has three forms. We strongly recommend the modern <strong>Promises-based
+                API</strong> for clean codebase design.</p>
+
             <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>// 1. Promises-based API (Recommended)
 import fs from 'fs/promises';
 
@@ -208,8 +238,9 @@ async function writeAndRead() {
 writeAndRead();</code></pre>
 
             <h3>The <code>path</code> Module</h3>
-            <p>Windows and POSIX systems format file paths differently (backslash vs forward slash). To make your code platform-independent, always use the <code>path</code> module.</p>
-            
+            <p>Windows and POSIX systems format file paths differently (backslash vs forward slash). To make your code
+              platform-independent, always use the <code>path</code> module.</p>
+
             <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>import path from 'path';
 
 // Joins pieces using the correct platform separator
@@ -227,7 +258,7 @@ console.log(path.parse(absolutePath)); // returns path components object</code><
 
             <h3>The <code>os</code> Module</h3>
             <p>Collects metadata regarding CPU usage, platform, architectures, and system memory state.</p>
-            
+
             <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>import os from 'os';
 
 console.log('Platform:', os.platform()); // 'win32', 'darwin', etc.
@@ -240,7 +271,8 @@ console.log('Total cores:', os.cpus().length);</code></pre>
         <div id="tab-systems" class="tab-pane">
           <div class="card">
             <h2 class="section-title">3. CommonJS vs. ESModules</h2>
-            <p>JavaScript originally didn't have modules. Node developed CommonJS (CJS). Later, TC39 standardized ESModules (ESM) for all JS engines. Both formats exist today, and navigating them is a key skill.</p>
+            <p>JavaScript originally didn't have modules. Node developed CommonJS (CJS). Later, TC39 standardized
+              ESModules (ESM) for all JS engines. Both formats exist today, and navigating them is a key skill.</p>
 
             <h3>Core Differences</h3>
             <table>
@@ -276,7 +308,9 @@ console.log('Total cores:', os.cpus().length);</code></pre>
             </table>
 
             <h3>Resolving <code>__dirname</code> in ESModules</h3>
-            <p>In ESModules, the global variables <code>__dirname</code> and <code>__filename</code> are unavailable. You must use the <code>url</code> and <code>path</code> modules to resolve directory paths relative to the current file:</p>
+            <p>In ESModules, the global variables <code>__dirname</code> and <code>__filename</code> are unavailable.
+              You must use the <code>url</code> and <code>path</code> modules to resolve directory paths relative to the
+              current file:</p>
 
             <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>import { fileURLToPath } from 'url';
 import path from 'path';
@@ -291,8 +325,10 @@ console.log('Current directory:', __dirname);</code></pre>
 
             <h3>How to toggle ESModules in your project</h3>
             <ul>
-              <li><strong>Option A:</strong> In <code>package.json</code>, add the property <code>"type": "module"</code>. This turns all <code>.js</code> files into ESModules.</li>
-              <li><strong>Option B:</strong> Use the <code>.mjs</code> extension to target ESModules individually, or <code>.cjs</code> to target CommonJS individually.</li>
+              <li><strong>Option A:</strong> In <code>package.json</code>, add the property
+                <code>"type": "module"</code>. This turns all <code>.js</code> files into ESModules.</li>
+              <li><strong>Option B:</strong> Use the <code>.mjs</code> extension to target ESModules individually, or
+                <code>.cjs</code> to target CommonJS individually.</li>
             </ul>
           </div>
         </div>
@@ -300,18 +336,23 @@ console.log('Current directory:', __dirname);</code></pre>
         <div id="tab-cli" class="tab-pane">
           <div class="card">
             <h2 class="section-title">4. Practical Challenge: Directory Explorer CLI</h2>
-            <p>Your task is to write a CLI tool using ESModules that reads directory contents, prints file paths, checks metadata, and handles console flags.</p>
+            <p>Your task is to write a CLI tool using ESModules that reads directory contents, prints file paths, checks
+              metadata, and handles console flags.</p>
 
             <h3>Challenge Requirements</h3>
             <ol>
-              <li>Accept an optional path argument, defaulting to the current directory (<code>process.cwd()</code>).</li>
-              <li>Use <code>fs/promises</code> and <code>path</code> to parse directories and sub-paths asynchronously.</li>
-              <li>Implement flags: <code>--help</code> (show manual), <code>--recursive</code> (depth-first exploration), and <code>--json</code> (format output as stringified JSON).</li>
+              <li>Accept an optional path argument, defaulting to the current directory (<code>process.cwd()</code>).
+              </li>
+              <li>Use <code>fs/promises</code> and <code>path</code> to parse directories and sub-paths asynchronously.
+              </li>
+              <li>Implement flags: <code>--help</code> (show manual), <code>--recursive</code> (depth-first
+                exploration), and <code>--json</code> (format output as stringified JSON).</li>
               <li>Utilize modern, clean ESModules syntax.</li>
             </ol>
 
             <h3>The Implementation</h3>
-            <p>Your CLI script is located at <a href="file:///e:/Drive D/NodeJs/Day40/cli_tool.js">cli_tool.js</a>. Read the code below to see how it operates:</p>
+            <p>Your CLI script is located at <a href="file:///e:/Drive D/NodeJs/Day40/cli_tool.js">cli_tool.js</a>. Read
+              the code below to see how it operates:</p>
 
             <pre><span class="copy-badge" onclick="copyCode(this)">Copy Code</span><code>// Run in your terminal from the Day40 folder:
 node cli_tool.js . --recursive</code></pre>
@@ -367,13 +408,13 @@ async function scanDirectory(dirPath, recursive = false) {
         </div>
 
       </main>
-      
+
       <aside>
         <div class="card progress-card">
           <div class="progress-header">
             <span>📈 Learning Progress</span>
           </div>
-          
+
           <div class="progress-ring-container">
             <span class="progress-text" id="progress-percent">0% Completed</span>
             <div class="progress-bar-bg">
@@ -440,7 +481,7 @@ async function scanDirectory(dirPath, recursive = false) {
     function toggleTask(element, index) {
       const checkbox = document.getElementById('task-' + index);
       checkbox.checked = !checkbox.checked;
-      
+
       if (checkbox.checked) {
         element.classList.add('completed');
       } else {
@@ -468,7 +509,7 @@ async function scanDirectory(dirPath, recursive = false) {
       });
 
       const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
-      
+
       // Update UI elements
       document.getElementById('progress-percent').innerText = percent + '% Completed';
       document.getElementById('progress-fill').style.width = percent + '%';
@@ -478,12 +519,12 @@ async function scanDirectory(dirPath, recursive = false) {
     function copyCode(badgeElement) {
       const pre = badgeElement.parentElement;
       const code = pre.querySelector('code').innerText;
-      
+
       navigator.clipboard.writeText(code).then(() => {
         const originalText = badgeElement.innerText;
         badgeElement.innerText = 'Copied!';
         badgeElement.style.color = '#10b981';
-        
+
         setTimeout(() => {
           badgeElement.innerText = originalText;
           badgeElement.style.color = '';
@@ -507,4 +548,5 @@ async function scanDirectory(dirPath, recursive = false) {
     });
   </script>
 </body>
+
 </html>
