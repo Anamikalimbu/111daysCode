@@ -1,20 +1,17 @@
 ﻿const mongoose = require('mongoose');
 
 const connectDB = async () => {
-  const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/Day47';
-
-  if (!process.env.MONGO_URI) {
-    console.warn(' MONGO_URI not found in environment; using default local MongoDB URL');
+  const uri = process.env.MONGO_URI;
+  if (!uri) {
+    throw new Error('MONGO_URI is not defined in environment variables');
   }
 
   try {
-    const conn = await mongoose.connect(mongoUri);
-    console.log(` MongoDB Connected: ${conn.connection.host}`);
+    const conn = await mongoose.connect(uri);
+    console.log(`MongoDB connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(' MongoDB Connection Error:', error.message);
-    console.error('Please ensure MongoDB is running and the connection URI is correct.');
+    console.error('MongoDB connection failed:', error);
     process.exit(1);
   }
 };
-
 module.exports = connectDB;
