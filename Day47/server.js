@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
-  await connectDB();
+await connectDB();
 
   // Middleware
   app.use(express.json());
