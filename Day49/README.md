@@ -1,63 +1,118 @@
-# React
+# 📝 NoteStack — MERN Notes App
 
-- Library for web and native UI
-- Built and maintained by Facebook
-- Used to build single page app
-- Uses virtual DOM for rendering
-- Most popular frontend framework
-- Huge community
-- Job opportunities
+A full-stack Notes App built with the **MERN Stack**:
+- **M**ongoDB — Database
+- **E**xpress.js — Backend Framework
+- **R**eact.js — Frontend UI
+- **N**ode.js — Runtime
 
-## Virtual DOM
+---
 
-- Light weight copy of real DOM
-- Whenever state change happens:
-  - React updates the virtual DOM
-  - Compares virtual DOM with previous DOM (Diffing)
-  - Updates only the changed parts in the real DOM (Reconciliation)
-- Faster rendering
-- Better performance
+## 📁 Project Structure
 
-## JSX
+```
+notes-app/
+├── backend/
+│   ├── models/
+│   │   └── Note.js          ← Mongoose schema
+│   ├── routes/
+│   │   └── notes.js         ← CRUD API routes
+│   ├── server.js            ← Express server
+│   ├── .env                 ← Environment variables
+│   └── package.json
+│
+└── frontend/
+    ├── public/
+    │   └── index.html
+    ├── src/
+    │   ├── components/
+    │   │   ├── NoteCard.js   ← Individual note card
+    │   │   └── NoteModal.js  ← Create/Edit modal
+    │   ├── App.js            ← Main app logic
+    │   ├── App.css           ← App styles
+    │   ├── index.js          ← React entry point
+    │   ├── index.css         ← Global styles
+    │   └── api.js            ← Axios API calls
+    └── package.json
+```
 
-- JS + HTML code
+---
 
-## Components
+## 🚀 Setup & Run
 
-- UI Block
-- Reusable
-- Functional Component, Class Component
-- Functional components are stateless components by default
-- Class components are stateful components
-- Stateful: State/UI can be updated
-- Stateless: State can be updated, UI cannot be updated
-- Hooks: Special function
+### Prerequisites
+- Node.js (v16+)
+- MongoDB installed and running locally
+- npm or yarn
 
-## Props
+---
 
-- Properties of Component
-- Similar to HTML element attributes
+### 1️⃣ Start MongoDB
+```bash
+# On macOS/Linux
+mongod
 
-## State
+# On Windows (if installed as service, it may already be running)
+net start MongoDB
+```
 
-- Mutable(changeable) object
-- Whenever state value changes, UI is re-rendered
-- State value changes on user interaction, event triggers or API calls.
+---
 
-## Hooks
+### 2️⃣ Run the Backend
 
-- Special function
-- It enables us to make functional component stateful.
+```bash
+cd backend
+npm install
+npm run dev
+```
 
-1. useState: used for local state management
-2. useEffect: side effects
-3. useRef: accessing DOM elements
+Server starts at: **http://localhost:5000**
 
-## React router
+---
 
-- Route is a URL endpoint
-- Route defines which component/page to show on URL match
+### 3️⃣ Run the Frontend
 
-/contact => Contact page
-/about => About page
-/ => Home page
+Open a new terminal:
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+App opens at: **http://localhost:3000**
+
+---
+
+## 🔗 API Endpoints
+
+| Method | Endpoint          | Description         |
+|--------|-------------------|---------------------|
+| GET    | /api/notes        | Get all notes       |
+| GET    | /api/notes/:id    | Get single note     |
+| POST   | /api/notes        | Create a note       |
+| PUT    | /api/notes/:id    | Update a note       |
+| DELETE | /api/notes/:id    | Delete a note       |
+
+---
+
+## ✨ Features
+
+- ✅ Create, Read, Update, Delete notes
+- 📌 Pin/unpin important notes
+- 🎨 Color-code notes (8 colors)
+- 🔍 Live search/filter
+- 📱 Responsive design (mobile friendly)
+- 🌙 Dark theme UI
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer     | Technology         |
+|-----------|--------------------|
+| Database  | MongoDB + Mongoose |
+| Backend   | Node.js + Express  |
+| Frontend  | React 18           |
+| HTTP      | Axios              |
+| Styling   | Plain CSS          |
