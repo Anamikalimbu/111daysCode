@@ -8,3 +8,8 @@ use ('e-commerce');
 // { _id: 5, item: "Mango", price: 15, quantity: 3, category: "Fruit" }
 // ]);
 
+
+// match stage to filter documents based on a condition
+db.sales.aggregate([
+{ $match: { category: "Fruit" } }
+]);
