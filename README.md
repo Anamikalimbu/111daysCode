@@ -402,3 +402,68 @@ c. sort: db.users.find().sort({name:1}) 1: ASC, -1: DESC
     - Postman
      - Postman is API development and testing tool that allows developers to create, test, and document APIs. It provides a user-friendly interface for sending HTTP requests, inspecting responses, and organizing API endpoints. Postman supports various HTTP methods (GET, POST, PUT, DELETE) and allows you to set headers, query parameters, and request bodies. It also provides features for creating test scripts, automating API testing, and generating API documentation. Postman is widely used by developers to streamline the API development process and ensure the functionality and reliability of their APIs.
 
+# React 
+   React is a popular JavaScript library for building user interfaces, particularly for single-page applications. It was developed and is maintained by Facebook. React allows developers to create reusable UI components and efficiently update and render them based on changes in data. It uses a virtual DOM (Document Object Model) to optimize rendering performance by minimizing direct manipulation of the actual DOM. React has a large and active community, making it a widely adopted framework for frontend development, with numerous job opportunities available for skilled React developers.
+
+- Library for web and native UI
+- Built and maintained by Facebook
+- Used to build single page app
+- Uses virtual DOM for rendering
+- Most popular frontend framework
+- Huge community
+- Job opportunities
+
+## Virtual DOM
+
+- Light weight copy of real DOM
+- Whenever state change happens:
+  - React updates the virtual DOM
+  - Compares virtual DOM with previous DOM (Diffing)
+  - Updates only the changed parts in the real DOM (Reconciliation)
+- Faster rendering
+- Better performance
+
+## JSX
+  jsx stands for JavaScript XML. It is a syntax extension for JavaScript that allows you to write HTML-like code within your JavaScript code. JSX is commonly used in React to define the structure and appearance of UI components. It provides a more intuitive and declarative way to create React elements and components, making it easier to visualize the UI structure and improve code readability. JSX is transpiled into regular JavaScript before being executed in the browser, allowing developers to leverage the full power of JavaScript while still benefiting from the simplicity of HTML-like syntax.
+
+- JS + HTML code
+
+## Components
+
+- UI Block
+- Reusable
+- Functional Component, Class Component
+- Functional components are stateless components by default
+- Class components are stateful components
+- Stateful: State/UI can be updated
+- Stateless: State can be updated, UI cannot be updated
+- Hooks: Special function
+
+## Props
+
+- Properties of Component
+- Similar to HTML element attributes
+
+## State
+
+- Mutable(changeable) object
+- Whenever state value changes, UI is re-rendered
+- State value changes on user interaction, event triggers or API calls.
+
+## Hooks
+
+- Special function
+- It enables us to make functional component stateful.
+
+1. useState: used for local state management
+2. useEffect: side effects
+3. useRef: accessing DOM elements
+
+## React router
+
+- Route is a URL endpoint
+- Route defines which component/page to show on URL match
+
+/contact => Contact page
+/about => About page
+/ => Home page
