@@ -19,16 +19,29 @@ db.sales.aggregate([
 // db.sales.aggregate([
 // { $project: { _id: 0, item: 1, quantity: 1 } }
 // ]);
-db.sales.aggregate([
-{ $project: { _id: 0, item: 1, price: 1 } }
-]);
+// db.sales.aggregate([
+// { $project: { _id: 0, item: 1, price: 1 } }
+// ]);
 
 // group stage to group documents by a specified field and perform aggregation operations
+// db.sales.aggregate([
+// {
+//  $group: {
+//  _id: "$category",
+//  totalSales: { $sum: { $multiply: ["$price", "$quantity"] } }
+// }
+// }
+// ]);
+
+
+// Combine match and group stages to calculate total sales for a specific category
 db.sales.aggregate([
+{ $match: { category: "Fruit" } },
 {
  $group: {
- _id: "$category",
- totalSales: { $sum: { $multiply: ["$price", "$quantity"] } }
+ _id: null,
+ totalFruitSales: { $sum: { $multiply: ["$price", "$quantity"] } }
 }
 }
 ]);
+
