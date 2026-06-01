@@ -24,4 +24,16 @@ use ('e-commerce');
 // Logical Operators
 
 // find products that are in "Electronics" category and have ratings greater than 4.5
-db.products.find({ $and: [ { category: "Electronics" }, { ratings: { $gt: 4.5 } } ] })
+//db.products.find({ $and: [ { category: "Electronics" }, { ratings: { $gt: 4.5 } } ] })
+
+// find products that are either in "Electronics" category or have stock less than 50
+// db.products.find({$or: [ { category: "Electronics" }, { stock: { $lt: 50 } } ] })
+
+// find products of specific fields
+// db.products.find({}, { name: 1, price: 1, _id: 0 })
+
+// find products with sorting
+// db.products.find().sort({ price: -1 }) // Sort by price in descending order
+
+// find products with Sorting and Limit
+ db.products.find().sort({ price: -1 }).limit(5) // Sort by price in descending order and limit to 5 products
