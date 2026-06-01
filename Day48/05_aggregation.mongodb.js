@@ -13,3 +13,9 @@ use ('e-commerce');
 db.sales.aggregate([
 { $match: { category: "Fruit" } }
 ]);
+
+
+// project stage to reshape the documents and include only specific fields
+db.sales.aggregate([
+{ $project: { _id: 0, item: 1, quantity: 1 } }
+]);
