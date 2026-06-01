@@ -1,0 +1,24 @@
+.note-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.note-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,0.08); }
+
+.note-card__bar { height: 6px; background: var(--note-accent); border-radius: 8px; }
+.note-card__header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.note-card__title { margin:0; font-size:1rem; color:var(--text-primary); }
+.note-card__actions { display:flex; gap:6px; }
+.note-card__btn { background:transparent; border:none; padding:6px; border-radius:8px; color:var(--text-muted); }
+.note-card__btn:hover { background:var(--border); color:var(--text-primary); }
+.note-card__body { margin:0; color:var(--text-secondary); font-size:0.9rem; }
+.note-card__footer { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:0.78rem; color:var(--text-muted); }
+.note-card__pin-badge { background:var(--border); padding:4px 8px; border-radius:8px; font-family:var(--font-mono); font-size:0.68rem; }
