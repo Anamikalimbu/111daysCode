@@ -16,6 +16,10 @@ db.sales.aggregate([
 
 
 // project stage to reshape the documents and include only specific fields
+// db.sales.aggregate([
+// { $project: { _id: 0, item: 1, quantity: 1 } }
+// ]);
 db.sales.aggregate([
-{ $project: { _id: 0, item: 1, quantity: 1 } }
+{ $project: { _id: 0, item: 1, price: 1 } }
 ]);
+
