@@ -4,7 +4,7 @@ use ('e-commerce');
 // db.products.find()
 
 // find products with name "Wireless Mouse"
-// db.products.find({ name: "Wireless Mouse" })
+db.products.find({ name: "Wireless Mouse" })
 
 // find products by category "Electronics"
 // db.products.find({ category: "Electronics" })
@@ -36,4 +36,10 @@ use ('e-commerce');
 // db.products.find().sort({ price: -1 }) // Sort by price in descending order
 
 // find products with Sorting and Limit
- db.products.find().sort({ price: -1 }).limit(5) // Sort by price in descending order and limit to 5 products
+//  db.products.find().sort({ price: -1 }).limit(5) // Sort by price in descending order and limit to 5 products
+
+// Skip the first 0 products and limit to 10 products
+//  db.products.find().skip(0).limit(10) 
+
+// Skip the first 5 products and limit to 10 products
+//  db.products.find().skip(5).limit(10)
