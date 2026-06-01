@@ -23,3 +23,12 @@ db.sales.aggregate([
 { $project: { _id: 0, item: 1, price: 1 } }
 ]);
 
+// group stage to group documents by a specified field and perform aggregation operations
+db.sales.aggregate([
+{
+ $group: {
+ _id: "$category",
+ totalSales: { $sum: { $multiply: ["$price", "$quantity"] } }
+}
+}
+]);
