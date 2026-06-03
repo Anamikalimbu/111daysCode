@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTH API — Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="auth-api.css">
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo">AUTH / API</div>
+    <div class="version-tag">v2.1.0</div>
+  </div>
+  <div class="topbar-right">STATUS <span>● OPERATIONAL</span></div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Overview</div>
+      <a href="#intro" class="sidebar-item active">Introduction</a>
+      <a href="#auth" class="sidebar-item">Authentication</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Endpoints</div>
+      <a href="#register" class="sidebar-item">
+        <span class="method-badge badge-post">POST</span>
+        Register
+      </a>
+      <a href="#login" class="sidebar-item">
+        <span class="method-badge badge-post">POST</span>
+        Login
+      </a>
+      <a href="#profile" class="sidebar-item">
+        <span class="method-badge badge-get">GET</span>
+        Profile
+      </a>
+      <a href="#refresh" class="sidebar-item">
+        <span class="method-badge badge-post">POST</span>
+        Refresh Token
+      </a>
+      <a href="#logout" class="sidebar-item">
+        <span class="method-badge badge-post">POST</span>
+        Logout
+      </a>
+      <a href="#delete" class="sidebar-item">
+        <span class="method-badge badge-del">DEL</span>
+        Delete Account
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Reference</div>
+      <a href="#errors" class="sidebar-item">Error Codes</a>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HERO -->
+    <div class="hero" id="intro">
+      <div class="hero-eyebrow">Documentation</div>
+      <h1>User Auth<span>_</span><br>API Reference</h1>
+      <p class="hero-desc">A stateless JWT-based authentication system for managing user registration, login, session tokens, and account lifecycle operations.</p>
+      <div class="base-url-box">
+        <span class="base-url-label">Base URL</span>
+        <span class="base-url-val">https://api.example.com/v2/auth</span>
+      </div>
+    </div>
+
+    <!-- AUTH INFO -->
+    <div id="auth">
+      <div class="auth-box">
+        <div class="auth-box-title">Bearer Token Authentication</div>
+        <p>Protected endpoints require a valid JWT in the <span class="inline-code">Authorization</span> header. Tokens expire after <strong>15 minutes</strong>. Use the refresh endpoint to obtain a new access token without re-login.</p>
+      </div>
+      <div class="code-block"><span class="c-kw">Authorization</span>: Bearer <span class="c-str">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</span></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ENDPOINTS -->
+
+    <!-- REGISTER -->
+    <div class="endpoint-section" id="register">
+      <h2>User Registration</h2>
+      <div class="endpoint-card open" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-pill pill-post">POST</span>
+          <span class="endpoint-path">/register</span>
+          <span class="endpoint-desc-short">Create a new user account</span>
+          <span class="endpoint-arrow">▶</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-about">Creates a new user account. Validates email uniqueness, hashes the password with bcrypt, and returns a signed JWT access token along with a refresh token.</p>
+
+          <div class="params-title">Request Body</div>
+          <table class="params-table">
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            <tr>
+              <td><span class="param-name">email</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span class="req-badge">REQUIRED</span></td>
+              <td>Valid email address. Must be unique.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">password</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span class="req-badge">REQUIRED</span></td>
+              <td>Min 8 chars. Must include a number and uppercase letter.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">username</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span class="req-badge">REQUIRED</span></td>
+              <td>3–32 characters. Alphanumeric and underscores only.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">full_name</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span class="opt-badge">OPTIONAL</span></td>
+              <td>User's display name.</td>
+            </tr>
+          </table>
+
+          <div class="params-title">Request Example</div>
+          <div class="code-block"><span class="c-fn">POST</span> /v2/auth/register
+<span class="c-key">Content-Type</span>: application/json
+
+{
+  <span class="c-key">"email"</span>: <span class="c-str">"anu@example.com"</span>,
+  <span class="c-key">"password"</span>: <span class="c-str">"Secure#Pass9"</span>,
+  <span class="c-key">"username"</span>: <span class="c-str">"anu_dev"</span>,
+  <span class="c-key">"full_name"</span>: <span class="c-str">"Anu Sharma"</span>
+}</div>
+
+          <div class="params-title">Responses</div>
+          <div class="response-section">
+            <div class="status-row">
+              <span class="status-code s-200">201</span>
+              <span class="status-desc">Account created successfully. Returns tokens.</span>
+            </div>
+            <div class="code-block">{
+  <span class="c-key">"user"</span>: {
+    <span class="c-key">"id"</span>: <span class="c-str">"usr_01j8xkt..."</span>,
+    <span class="c-key">"email"</span>: <span class="c-str">"anu@example.com"</span>,
+    <span class="c-key">"username"</span>: <span class="c-str">"anu_dev"</span>,
+    <span class="c-key">"created_at"</span>: <span class="c-str">"2026-06-03T10:00:00Z"</span>
+  },
+  <span class="c-key">"access_token"</span>: <span class="c-str">"eyJhbGci..."</span>,
+  <span class="c-key">"refresh_token"</span>: <span class="c-str">"dGhpcyBpcyBh..."</span>,
+  <span class="c-key">"expires_in"</span>: <span class="c-num">900</span>
+}</div>
+            <div class="status-row">
+              <span class="status-code s-409">409</span>
+              <span class="status-desc">Email or username already in use.</span>
+            </div>
+            <div class="status-row">
+              <span class="status-code s-400">400</span>
+              <span class="status-desc">Validation failed. Check field constraints.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="endpoint-section" id="login">
+      <h2>Login</h2>
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-pill pill-post">POST</span>
+          <span class="endpoint-path">/login</span>
+          <span class="endpoint-desc-short">Authenticate and obtain tokens</span>
+          <span class="endpoint-arrow">▶</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-about">Verifies credentials and issues a new JWT access token and refresh token. Returns the user object on success.</p>
+
+          <div class="params-title">Request Body</div>
+          <table class="params-table">
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            <tr>
+              <td><span class="param-name">email</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span class="req-badge">REQUIRED</span></td>
+              <td>Registered email address.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">password</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span class="req-badge">REQUIRED</span></td>
+              <td>Account password.</td>
+            </tr>
+          </table>
+
+          <div class="params-title">Request Example</div>
+          <div class="code-block"><span class="c-fn">POST</span> /v2/auth/login
+<span class="c-key">Content-Type</span>: application/json
+
+{
+  <span class="c-key">"email"</span>: <span class="c-str">"anu@example.com"</span>,
+  <span class="c-key">"password"</span>: <span class="c-str">"Secure#Pass9"</span>
+}</div>
+
+          <div class="params-title">Responses</div>
+          <div class="status-row"><span class="status-code s-200">200</span><span class="status-desc">Login successful. Tokens issued.</span></div>
+          <div class="code-block">{
+  <span class="c-key">"user"</span>: { <span class="c-key">"id"</span>: <span class="c-str">"usr_01j8xkt..."</span>, <span class="c-key">"email"</span>: <span class="c-str">"anu@example.com"</span> },
+  <span class="c-key">"access_token"</span>: <span class="c-str">"eyJhbGci..."</span>,
+  <span class="c-key">"refresh_token"</span>: <span class="c-str">"dGhpcyBpcyBh..."</span>,
+  <span class="c-key">"expires_in"</span>: <span class="c-num">900</span>
+}</div>
+          <div class="status-row"><span class="status-code s-401">401</span><span class="status-desc">Invalid credentials.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="endpoint-section" id="profile">
+      <h2>User Profile</h2>
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-pill pill-get">GET</span>
+          <span class="endpoint-path">/me</span>
+          <span class="endpoint-desc-short">Fetch the authenticated user's profile</span>
+          <span class="endpoint-arrow">▶</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-about">Returns the full profile of the currently authenticated user. Requires a valid Bearer token in the Authorization header.</p>
+
+          <div class="params-title">Headers</div>
+          <table class="params-table">
+            <tr><th>Header</th><th>Value</th><th>Required</th></tr>
+            <tr>
+              <td><span class="param-name">Authorization</span></td>
+              <td><span class="param-type">Bearer &lt;access_token&gt;</span></td>
+              <td><span class="req-badge">REQUIRED</span></td>
+            </tr>
+          </table>
+
+          <div class="params-title">Response — 200 OK</div>
+          <div class="code-block">{
+  <span class="c-key">"id"</span>: <span class="c-str">"usr_01j8xkt..."</span>,
+  <span class="c-key">"email"</span>: <span class="c-str">"anu@example.com"</span>,
+  <span class="c-key">"username"</span>: <span class="c-str">"anu_dev"</span>,
+  <span class="c-key">"full_name"</span>: <span class="c-str">"Anu Sharma"</span>,
+  <span class="c-key">"created_at"</span>: <span class="c-str">"2026-06-03T10:00:00Z"</span>,
+  <span class="c-key">"last_login"</span>: <span class="c-str">"2026-06-03T12:45:00Z"</span>
+}</div>
+          <div class="status-row"><span class="status-code s-401">401</span><span class="status-desc">Missing or expired token.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REFRESH -->
+    <div class="endpoint-section" id="refresh">
+      <h2>Token Refresh</h2>
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-pill pill-post">POST</span>
+          <span class="endpoint-path">/refresh</span>
+          <span class="endpoint-desc-short">Obtain a new access token</span>
+          <span class="endpoint-arrow">▶</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-about">Issues a new access token using a valid refresh token. Refresh tokens are valid for 7 days and are rotated on each use (old token is invalidated).</p>
+
+          <div class="params-title">Request Body</div>
+          <table class="params-table">
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            <tr>
+              <td><span class="param-name">refresh_token</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span class="req-badge">REQUIRED</span></td>
+              <td>The refresh token from a previous login or refresh.</td>
+            </tr>
+          </table>
+
+          <div class="params-title">Response — 200 OK</div>
+          <div class="code-block">{
+  <span class="c-key">"access_token"</span>: <span class="c-str">"eyJhbGci_new..."</span>,
+  <span class="c-key">"refresh_token"</span>: <span class="c-str">"dGhpcyBpc_new..."</span>,
+  <span class="c-key">"expires_in"</span>: <span class="c-num">900</span>
+}</div>
+          <div class="status-row"><span class="status-code s-401">401</span><span class="status-desc">Refresh token invalid, expired, or already used.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGOUT -->
+    <div class="endpoint-section" id="logout">
+      <h2>Logout</h2>
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-pill pill-post">POST</span>
+          <span class="endpoint-path">/logout</span>
+          <span class="endpoint-desc-short">Invalidate current session</span>
+          <span class="endpoint-arrow">▶</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-about">Revokes the provided refresh token and adds the access token to the server-side denylist until its natural expiry. Use this to cleanly terminate a session.</p>
+
+          <div class="params-title">Headers</div>
+          <table class="params-table">
+            <tr><th>Header</th><th>Value</th><th>Required</th></tr>
+            <tr>
+              <td><span class="param-name">Authorization</span></td>
+              <td><span class="param-type">Bearer &lt;access_token&gt;</span></td>
+              <td><span class="req-badge">REQUIRED</span></td>
+            </tr>
+          </table>
+
+          <div class="params-title">Request Body</div>
+          <div class="code-block">{
+  <span class="c-key">"refresh_token"</span>: <span class="c-str">"dGhpcyBpcyBh..."</span>
+}</div>
+
+          <div class="status-row"><span class="status-code s-200">200</span><span class="status-desc">Session terminated successfully.</span></div>
+          <div class="code-block">{ <span class="c-key">"message"</span>: <span class="c-str">"Logged out successfully."</span> }</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELETE -->
+    <div class="endpoint-section" id="delete">
+      <h2>Account Deletion</h2>
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-pill pill-del">DEL</span>
+          <span class="endpoint-path">/me</span>
+          <span class="endpoint-desc-short">Permanently delete account</span>
+          <span class="endpoint-arrow">▶</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-about">Permanently deletes the authenticated user's account and all associated data. This action is irreversible. Requires password confirmation.</p>
+
+          <div class="params-title">Request Body</div>
+          <table class="params-table">
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            <tr>
+              <td><span class="param-name">password</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span class="req-badge">REQUIRED</span></td>
+              <td>Current password for confirmation.</td>
+            </tr>
+          </table>
+
+          <div class="status-row"><span class="status-code s-200">200</span><span class="status-desc">Account deleted permanently.</span></div>
+          <div class="status-row"><span class="status-code s-401">401</span><span class="status-desc">Incorrect password or invalid token.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ERROR CODES -->
+    <div class="endpoint-section" id="errors">
+      <h2>Error Codes</h2>
+      <table class="params-table" style="margin-bottom:0">
+        <tr><th>Code</th><th>HTTP</th><th>Meaning</th></tr>
+        <tr><td><span class="param-name">AUTH_001</span></td><td><span class="param-type">401</span></td><td>Invalid or missing token</td></tr>
+        <tr><td><span class="param-name">AUTH_002</span></td><td><span class="param-type">401</span></td><td>Token expired</td></tr>
+        <tr><td><span class="param-name">AUTH_003</span></td><td><span class="param-type">401</span></td><td>Invalid refresh token</td></tr>
+        <tr><td><span class="param-name">AUTH_004</span></td><td><span class="param-type">409</span></td><td>Email already registered</td></tr>
+        <tr><td><span class="param-name">AUTH_005</span></td><td><span class="param-type">409</span></td><td>Username already taken</td></tr>
+        <tr><td><span class="param-name">AUTH_006</span></td><td><span class="param-type">400</span></td><td>Password does not meet requirements</td></tr>
+        <tr><td><span class="param-name">AUTH_007</span></td><td><span class="param-type">429</span></td><td>Too many requests — rate limited</td></tr>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<script src="auth-api.js"></script>
+</body>
+</html>
