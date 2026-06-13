@@ -10,7 +10,6 @@ const b64 = (obj) => btoa(JSON.stringify(obj)).replace(/=/g, '');
 
 const futureExp = Math.floor(Date.now() / 1000) + 3600;
 const pastExp = Math.floor(Date.now() / 1000) - 3600;
-
 const TOKENS = {
   none: null,
   user: `${b64(JSON.parse(sampleHeader))}.${b64({ id: 'u_104', role: 'user', iat: 1, exp: futureExp })}.fakeSig123`,
@@ -26,7 +25,6 @@ const SCENARIOS = [
   { id: 'user', label: 'Valid user token', tooltip: 'role: "user" — try the /admin route!' },
   { id: 'admin', label: 'Valid admin token', tooltip: 'role: "admin" — full access' },
 ];
-
 export default function AuthSimulator() {
   const [scenarioId, setScenarioId] = useState('none');
   const [route, setRoute] = useState('profile'); // 'profile' | 'admin'

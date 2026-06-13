@@ -45,21 +45,18 @@
   background-size: 200% 100%;
   animation: shimmer 8s linear infinite;
 }
-
 .btn-press {
   transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 .btn-press:active {
   transform: scale(0.97);
 }
-
 .nav-item {
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 .nav-item:hover {
   transform: translateX(2px);
 }
-
 .icon-spin-hover:hover svg {
   transition: transform 0.5s ease;
   transform: rotate(180deg);
