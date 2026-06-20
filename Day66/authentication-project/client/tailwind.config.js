@@ -1,36 +1,43 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
-  darkMode: 'class',
+  content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
     extend: {
       colors: {
         ink: {
-          950: '#0B0E14', // app background
-          900: '#11151D', // card surface
-          800: '#1A1F2B', // raised surface / inputs
-          700: '#262C3B', // borders
-          600: '#3A4254', // hover borders
+          950: "#070B14",
+          900: "#0B1220",
+          800: "#121B2E",
+          700: "#1B2740",
         },
-        signal: {
-          // single confident accent — used sparingly for primary actions & focus
-          400: '#5EEAD4',
-          500: '#2DD4BF',
-          600: '#0D9488',
+        teal: {
+          400: "#2DD4BF",
+          500: "#14B8A6",
+          600: "#0D9488",
         },
-        warn: {
-          400: '#FBBF24',
-          500: '#F59E0B',
+        amber: {
+          400: "#FBBF24",
+          500: "#F59E0B",
         },
-        danger: {
-          400: '#FB7185',
-          500: '#F43F5E',
+        slate: {
+          300: "#CBD5E1",
+          400: "#94A3B8",
+          500: "#64748B",
         },
+        danger: "#EF4444",
+        success: "#22C55E",
       },
       fontFamily: {
-        display: ['"Space Grotesk"', 'sans-serif'],
-        body: ['"Inter"', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        display: ["Space Grotesk", "system-ui", "sans-serif"],
+        body: ["Inter", "system-ui", "sans-serif"],
+        mono: ["JetBrains Mono", "ui-monospace", "monospace"],
+      },
+      backgroundImage: {
+        "dot-grid":
+          "radial-gradient(circle, rgba(45, 212, 191, 0.18) 1px, transparent 1px)",
+      },
+      backgroundSize: {
+        "dot-grid": "22px 22px",
       },
     },
   },
