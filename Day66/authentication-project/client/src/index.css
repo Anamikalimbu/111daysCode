@@ -1,32 +1,39 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html {
-  color-scheme: dark;
+html,
+body,
+#root {
+  height: 100%;
 }
 
 body {
-  @apply bg-ink-950 text-slate-200 font-body antialiased;
-  background-image:
-    radial-gradient(circle at 15% 0%, rgba(45, 212, 191, 0.06), transparent 40%),
-    radial-gradient(circle at 85% 100%, rgba(45, 212, 191, 0.04), transparent 40%);
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4 {
-  @apply font-display;
+h1,
+h2,
+h3,
+.font-display {
+  font-family: "Space Grotesk", system-ui, sans-serif;
 }
 
-/* Visible keyboard focus everywhere — non-negotiable for an auth product */
-:focus-visible {
-  outline: 2px solid theme('colors.signal.400');
-  outline-offset: 2px;
+.token-text {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Subtle dot-grid pattern used on the auth brand panel — kept quiet, not decorative noise */
+.dot-grid-bg {
+  background-image: radial-gradient(circle, rgba(45, 212, 191, 0.16) 1px, transparent 1px);
+  background-size: 22px 22px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  * {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
