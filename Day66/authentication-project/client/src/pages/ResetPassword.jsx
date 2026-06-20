@@ -1,108 +1,85 @@
-import { useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import authService from '../services/authService';
-import AuthLayout from '../components/AuthLayout';
-import FormInput from '../components/FormInput';
-import AlertMessage from '../components/AlertMessage';
-import PasswordStrengthIndicator from '../components/PasswordStrengthIndicator';
+import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import AuthLayout from "../components/AuthLayout";
+import FormInput from "../components/FormInput";
+import Alert from "../components/Alert";
+import PasswordStrength from "../components/PasswordStrength";
+import * as authService from "../services/authService";
 
-export default function ResetPasswordPage() {
+export default function ResetPassword() {
   const { token } = useParams();
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({ password: '', confirmPassword: '' });
-  const [fieldErrors, setFieldErrors] = useState({});
-  const [formError, setFormError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setFieldErrors({ ...fieldErrors, [e.target.name]: undefined });
-  };
-
-  const validate = () => {
-    const errors = {};
-    if (form.password.length < 8) errors.password = 'Password must be at least 8 characters.';
-    if (form.password !== form.confirmPassword) errors.confirmPassword = 'Passwords do not match.';
-    setFieldErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [alert, setAlert] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormError('');
-    if (!validate()) return;
+    setAlert(null);
 
-    setIsSubmitting(true);
+    if (password.length < 8) {
+      setAlert({ type: "error", message: "Password must be at least 8 characters" });
+      return;
+    }
+    if (password !== confirmPassword) {
+      setAlert({ type: "error", message: "Passwords do not match" });
+      return;
+    }
+
+    setSubmitting(true);
     try {
-      await authService.resetPassword(token, form.password);
-      setSuccess(true);
-      setTimeout(() => navigate('/login'), 2500);
+      const data = await authService.resetPassword(token, password);
+      navigate("/login", { state: { notice: data.message } });
     } catch (err) {
-      // Token expiration is the most common failure mode here — surface
-      // the backend's message directly since it's already user-facing.
-      setFormError(err.response?.data?.message || 'Could not reset your password. The link may have expired.');
+      setAlert({ type: "error", message: err.response?.data?.message || "Reset failed. Try requesting a new link." });
     } finally {
-      setIsSubmitting(false);
+      setSubmitting(false);
     }
   };
 
-  if (success) {
-    return (
-      <AuthLayout eyebrow="Password updated" title="You're good to go">
-        <p className="text-center text-sm text-slate-300">
-          Your password has been reset. Redirecting you to login…
-        </p>
-      </AuthLayout>
-    );
-  }
-
   return (
-    <AuthLayout
-      eyebrow="New password"
-      title="Reset your password"
-      subtitle="Choose a strong, unique password."
-      footer={
-        <Link to="/login" className="text-signal-400 hover:text-signal-300">
-          Back to login
-        </Link>
-      }
-    >
-      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        {formError && <AlertMessage variant="error">{formError}</AlertMessage>}
+    <AuthLayout eyebrow="Account recovery" title="Choose a new password" subtitle="Make it something you haven't used before.">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {alert && <Alert {...alert} onClose={() => setAlert(null)} />}
 
         <div>
           <FormInput
-            id="password"
             label="New password"
             type="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Create a new password"
-            autoComplete="new-password"
-            error={fieldErrors.password}
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="At least 8 characters"
+            required
           />
-          <PasswordStrengthIndicator password={form.password} />
+          <PasswordStrength password={password} />
         </div>
+
         <FormInput
-          id="confirmPassword"
           label="Confirm new password"
           type="password"
-          value={form.confirmPassword}
-          onChange={handleChange}
+          name="confirmPassword"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
           placeholder="Re-enter your new password"
-          autoComplete="new-password"
-          error={fieldErrors.confirmPassword}
+          required
         />
 
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-lg bg-signal-500 py-2.5 text-sm font-medium text-ink-950 transition-colors hover:bg-signal-400 disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={submitting}
+          className="w-full rounded-lg bg-teal-500 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-teal-400 disabled:opacity-60"
         >
-          {isSubmitting ? 'Resetting…' : 'Reset password'}
+          {submitting ? "Resetting…" : "Reset password"}
         </button>
+
+        <p className="text-center text-sm text-slate-400">
+          <Link to="/login" className="font-medium text-teal-400 hover:text-teal-300">
+            Back to log in
+          </Link>
+        </p>
       </form>
     </AuthLayout>
   );

@@ -1,118 +1,108 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import AuthLayout from '../components/AuthLayout';
-import FormInput from '../components/FormInput';
-import AlertMessage from '../components/AlertMessage';
-import PasswordStrengthIndicator from '../components/PasswordStrengthIndicator';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AuthLayout from "../components/AuthLayout";
+import FormInput from "../components/FormInput";
+import Alert from "../components/Alert";
+import PasswordStrength from "../components/PasswordStrength";
+import { useAuth } from "../context/AuthContext";
 
-export default function RegisterPage() {
-  const { register } = useAuth();
+export default function Register() {
+  const { registerUser } = useAuth();
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
-  const [fieldErrors, setFieldErrors] = useState({});
-  const [formError, setFormError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [errors, setErrors] = useState({});
+  const [alert, setAlert] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setFieldErrors({ ...fieldErrors, [e.target.name]: undefined });
+    setErrors({ ...errors, [e.target.name]: null });
   };
 
   const validate = () => {
-    const errors = {};
-    if (!form.name.trim()) errors.name = 'Name is required.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errors.email = 'Enter a valid email address.';
-    if (form.password.length < 8) errors.password = 'Password must be at least 8 characters.';
-    if (form.password !== form.confirmPassword) errors.confirmPassword = 'Passwords do not match.';
-    setFieldErrors(errors);
-    return Object.keys(errors).length === 0;
+    const next = {};
+    if (form.name.trim().length < 2) next.name = "Enter your full name";
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) next.email = "Enter a valid email address";
+    if (form.password.length < 8) next.password = "Use at least 8 characters";
+    setErrors(next);
+    return Object.keys(next).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormError('');
+    setAlert(null);
     if (!validate()) return;
 
-    setIsSubmitting(true);
+    setSubmitting(true);
     try {
-      await register({ name: form.name, email: form.email, password: form.password });
-      navigate('/verify-email', { state: { email: form.email, justRegistered: true } });
+      await registerUser(form);
+      navigate("/login", {
+        state: { notice: "Account created. Check your inbox to verify your email before logging in." },
+      });
     } catch (err) {
-      setFormError(err.message);
+      setAlert({ type: "error", message: err.response?.data?.message || "Registration failed. Try again." });
     } finally {
-      setIsSubmitting(false);
+      setSubmitting(false);
     }
   };
 
   return (
     <AuthLayout
       eyebrow="Create account"
-      title="Get started with SecureAuth"
-      subtitle="Register to access your protected dashboard."
-      footer={
-        <>
-          Already have an account?{' '}
-          <Link to="/login" className="font-medium text-signal-400 hover:text-signal-300">
-            Log in
-          </Link>
-        </>
-      }
+      title="Set up SecureAuth"
+      subtitle="Takes less than a minute. We'll send a verification link to your inbox."
     >
-      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        {formError && <AlertMessage variant="error">{formError}</AlertMessage>}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {alert && <Alert {...alert} onClose={() => setAlert(null)} />}
 
         <FormInput
-          id="name"
           label="Full name"
+          name="name"
           value={form.name}
           onChange={handleChange}
-          placeholder="Ada Lovelace"
-          autoComplete="name"
-          error={fieldErrors.name}
+          placeholder="Anamika Limbu"
+          error={errors.name}
+          required
         />
         <FormInput
-          id="email"
-          label="Email"
+          label="Email address"
           type="email"
+          name="email"
           value={form.email}
           onChange={handleChange}
           placeholder="you@example.com"
-          autoComplete="email"
-          error={fieldErrors.email}
+          error={errors.email}
+          required
         />
         <div>
           <FormInput
-            id="password"
             label="Password"
             type="password"
+            name="password"
             value={form.password}
             onChange={handleChange}
-            placeholder="Create a password"
-            autoComplete="new-password"
-            error={fieldErrors.password}
+            placeholder="At least 8 characters"
+            error={errors.password}
+            required
           />
-          <PasswordStrengthIndicator password={form.password} />
+          <PasswordStrength password={form.password} />
         </div>
-        <FormInput
-          id="confirmPassword"
-          label="Confirm password"
-          type="password"
-          value={form.confirmPassword}
-          onChange={handleChange}
-          placeholder="Re-enter your password"
-          autoComplete="new-password"
-          error={fieldErrors.confirmPassword}
-        />
 
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-lg bg-signal-500 py-2.5 text-sm font-medium text-ink-950 transition-colors hover:bg-signal-400 disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={submitting}
+          className="w-full rounded-lg bg-teal-500 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-teal-400 disabled:opacity-60"
         >
-          {isSubmitting ? 'Creating account…' : 'Create account'}
+          {submitting ? "Creating account…" : "Create account"}
         </button>
+
+        <p className="text-center text-sm text-slate-400">
+          Already have an account?{" "}
+          <Link to="/login" className="font-medium text-teal-400 hover:text-teal-300">
+            Log in
+          </Link>
+        </p>
       </form>
     </AuthLayout>
   );

@@ -1,82 +1,64 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { MailCheck } from 'lucide-react';
-import authService from '../services/authService';
-import AuthLayout from '../components/AuthLayout';
-import FormInput from '../components/FormInput';
-import AlertMessage from '../components/AlertMessage';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import AuthLayout from "../components/AuthLayout";
+import FormInput from "../components/FormInput";
+import Alert from "../components/Alert";
+import * as authService from "../services/authService";
 
-export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+export default function ForgotPassword() {
+  const [email, setEmail] = useState("");
+  const [alert, setAlert] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setIsSubmitting(true);
+    setAlert(null);
+    setSubmitting(true);
     try {
-      await authService.forgotPassword(email);
-      // Always show the same confirmation regardless of whether the email
-      // exists, so the form can't be used to enumerate registered accounts.
-      setSubmitted(true);
-    } catch {
-      setSubmitted(true);
+      const data = await authService.forgotPassword(email);
+      setSent(true);
+      setAlert({ type: "success", message: data.message });
+    } catch (err) {
+      setAlert({ type: "error", message: err.response?.data?.message || "Something went wrong." });
     } finally {
-      setIsSubmitting(false);
+      setSubmitting(false);
     }
   };
-
-  if (submitted) {
-    return (
-      <AuthLayout eyebrow="Check your inbox" title="Reset link sent">
-        <div className="flex flex-col items-center text-center">
-          <MailCheck size={36} className="mb-3 text-signal-400" />
-          <p className="mb-5 text-sm text-slate-300">
-            If an account exists for <span className="font-medium text-slate-100">{email}</span>, a password
-            reset link is on its way. It expires in 1 hour.
-          </p>
-          <Link
-            to="/login"
-            className="w-full rounded-lg border border-ink-700 py-2.5 text-center text-sm font-medium text-slate-200 hover:border-signal-500/50"
-          >
-            Back to login
-          </Link>
-        </div>
-      </AuthLayout>
-    );
-  }
 
   return (
     <AuthLayout
       eyebrow="Account recovery"
       title="Forgot your password?"
-      subtitle="We'll email you a secure link to reset it."
-      footer={
-        <Link to="/login" className="text-signal-400 hover:text-signal-300">
-          Back to login
-        </Link>
-      }
+      subtitle="Enter the email on your account and we'll send a reset link."
     >
-      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        {error && <AlertMessage variant="error">{error}</AlertMessage>}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {alert && <Alert {...alert} onClose={() => setAlert(null)} />}
+
         <FormInput
-          id="email"
-          label="Email"
+          label="Email address"
           type="email"
+          name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
-          autoComplete="email"
+          required
         />
+
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-lg bg-signal-500 py-2.5 text-sm font-medium text-ink-950 transition-colors hover:bg-signal-400 disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={submitting || sent}
+          className="w-full rounded-lg bg-teal-500 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-teal-400 disabled:opacity-60"
         >
-          {isSubmitting ? 'Sending…' : 'Send reset link'}
+          {submitting ? "Sending…" : sent ? "Link sent" : "Send reset link"}
         </button>
+
+        <p className="text-center text-sm text-slate-400">
+          Remembered it?{" "}
+          <Link to="/login" className="font-medium text-teal-400 hover:text-teal-300">
+            Back to log in
+          </Link>
+        </p>
       </form>
     </AuthLayout>
   );

@@ -1,113 +1,124 @@
-import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import AuthLayout from '../components/AuthLayout';
-import FormInput from '../components/FormInput';
-import AlertMessage from '../components/AlertMessage';
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import AuthLayout from "../components/AuthLayout";
+import FormInput from "../components/FormInput";
+import Alert from "../components/Alert";
+import { useAuth } from "../context/AuthContext";
+import * as authService from "../services/authService";
 
-export default function LoginPage() {
-  const { login } = useAuth();
+export default function Login() {
+  const { loginUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const redirectTo = location.state?.from?.pathname || '/dashboard';
 
-  const [form, setForm] = useState({ email: '', password: '' });
-  const [rememberMe, setRememberMe] = useState(true);
-  const [formError, setFormError] = useState('');
-  const [needsVerification, setNeedsVerification] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [form, setForm] = useState({ email: "", password: "", rememberMe: false });
+  const [alert, setAlert] = useState(
+    location.state?.notice ? { type: "success", message: location.state.notice } : null
+  );
+  const [submitting, setSubmitting] = useState(false);
+  const [showResend, setShowResend] = useState(false);
+  const [resending, setResending] = useState(false);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormError('');
-    setNeedsVerification(false);
-    setIsSubmitting(true);
+    setAlert(null);
+    setShowResend(false);
+    setSubmitting(true);
+
     try {
-      await login({ ...form, rememberMe });
-      navigate(redirectTo, { replace: true });
+      await loginUser(form);
+      navigate("/dashboard");
     } catch (err) {
-      // The backend returns a distinct message when login is blocked
-      // because the email isn't verified yet — surface a path forward.
-      if (err.message.toLowerCase().includes('verify')) {
-        setNeedsVerification(true);
-      }
-      setFormError(err.message);
+      const data = err.response?.data;
+      setAlert({ type: "error", message: data?.message || "Login failed. Try again." });
+      if (data?.unverified) setShowResend(true);
     } finally {
-      setIsSubmitting(false);
+      setSubmitting(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setResending(true);
+    try {
+      await authService.resendVerification(form.email);
+      setAlert({ type: "success", message: "Verification email resent. Check your inbox." });
+      setShowResend(false);
+    } catch (err) {
+      setAlert({ type: "error", message: err.response?.data?.message || "Could not resend email." });
+    } finally {
+      setResending(false);
     }
   };
 
   return (
-    <AuthLayout
-      eyebrow="Welcome back"
-      title="Log in to your account"
-      footer={
-        <>
-          Don&apos;t have an account?{' '}
-          <Link to="/register" className="font-medium text-signal-400 hover:text-signal-300">
-            Sign up
-          </Link>
-        </>
-      }
-    >
-      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        {formError && (
-          <AlertMessage variant="error">
-            {formError}
-            {needsVerification && (
-              <>
-                {' '}
-                <Link to="/verify-email" state={{ email: form.email }} className="underline">
-                  Resend verification email
-                </Link>
-              </>
-            )}
-          </AlertMessage>
+    <AuthLayout eyebrow="Welcome back" title="Log in to SecureAuth" subtitle="Access your protected dashboard.">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {alert && <Alert {...alert} onClose={() => setAlert(null)} />}
+        {showResend && (
+          <button
+            type="button"
+            onClick={handleResend}
+            disabled={resending}
+            className="text-sm font-medium text-teal-400 hover:text-teal-300"
+          >
+            {resending ? "Sending…" : "Resend verification email"}
+          </button>
         )}
 
         <FormInput
-          id="email"
-          label="Email"
+          label="Email address"
           type="email"
+          name="email"
           value={form.email}
           onChange={handleChange}
           placeholder="you@example.com"
-          autoComplete="email"
+          required
         />
         <FormInput
-          id="password"
           label="Password"
           type="password"
+          name="password"
           value={form.password}
           onChange={handleChange}
           placeholder="Your password"
-          autoComplete="current-password"
+          required
         />
 
         <div className="flex items-center justify-between text-sm">
           <label className="flex items-center gap-2 text-slate-400">
             <input
               type="checkbox"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              className="h-4 w-4 rounded border-ink-700 bg-ink-800 text-signal-500 focus:ring-signal-400/50"
+              name="rememberMe"
+              checked={form.rememberMe}
+              onChange={handleChange}
+              className="h-4 w-4 rounded border-ink-700 bg-ink-800 text-teal-500 focus:ring-teal-500/60"
             />
             Remember me
           </label>
-          <Link to="/forgot-password" className="text-signal-400 hover:text-signal-300">
+          <Link to="/forgot-password" className="font-medium text-teal-400 hover:text-teal-300">
             Forgot password?
           </Link>
         </div>
 
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-lg bg-signal-500 py-2.5 text-sm font-medium text-ink-950 transition-colors hover:bg-signal-400 disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={submitting}
+          className="w-full rounded-lg bg-teal-500 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-teal-400 disabled:opacity-60"
         >
-          {isSubmitting ? 'Logging in…' : 'Log in'}
+          {submitting ? "Logging in…" : "Log in"}
         </button>
+
+        <p className="text-center text-sm text-slate-400">
+          Don't have an account?{" "}
+          <Link to="/register" className="font-medium text-teal-400 hover:text-teal-300">
+            Sign up
+          </Link>
+        </p>
       </form>
     </AuthLayout>
   );

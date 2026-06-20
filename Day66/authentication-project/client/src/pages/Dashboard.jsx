@@ -1,108 +1,80 @@
-import { useState } from 'react';
-import { ShieldCheck, ShieldAlert, Calendar, Mail, User as UserIcon } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
-import authService from '../services/authService';
-import AlertMessage from '../components/AlertMessage';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
-export default function DashboardPage() {
-  const { user, refreshProfile } = useAuth();
-  const [isResending, setIsResending] = useState(false);
-  const [notice, setNotice] = useState('');
+export default function Dashboard() {
+  const { user } = useAuth();
+  const [lightPreview, setLightPreview] = useState(false);
 
-  const handleResend = async () => {
-    setNotice('');
-    setIsResending(true);
-    try {
-      await authService.resendVerification(user.email);
-      setNotice('Verification email sent — check your inbox.');
-    } catch (err) {
-      setNotice(err.response?.data?.message || 'Could not send the email. Try again shortly.');
-    } finally {
-      setIsResending(false);
-    }
-  };
-
-  if (!user) {
-    return <LoadingSpinner fullPage label="Loading your profile…" />;
-  }
-
-  const joinedDate = user.createdAt
-    ? new Date(user.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
-    : null;
+  const initials = user?.name
+    ?.split(" ")
+    .map((part) => part[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-10">
-      <div className="mb-7">
-        <p className="mb-1 font-mono text-[11px] uppercase tracking-widest text-signal-500">Dashboard</p>
-        <h1 className="text-2xl font-semibold text-slate-50">Welcome back, {user.name.split(' ')[0]}</h1>
+    <div className="mx-auto max-w-3xl px-6 py-12">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="token-text text-xs uppercase tracking-widest text-teal-500">Dashboard</p>
+          <h1 className="mt-1 font-display text-2xl font-semibold text-slate-100">
+            Welcome back, {user?.name?.split(" ")[0]}
+          </h1>
+        </div>
+
+        {/* Bonus: theme preview toggle */}
+        <button
+          onClick={() => setLightPreview((v) => !v)}
+          className="rounded-md border border-ink-700 px-3 py-1.5 text-xs font-medium text-slate-400 hover:border-teal-500 hover:text-teal-400 transition-colors"
+        >
+          {lightPreview ? "Dark preview" : "Light preview"}
+        </button>
       </div>
 
-      {!user.isVerified && (
-        <div className="mb-6">
-          <AlertMessage variant="warning">
-            Your email isn&apos;t verified yet.{' '}
-            <button onClick={handleResend} disabled={isResending} className="underline disabled:opacity-60">
-              {isResending ? 'Sending…' : 'Resend verification email'}
-            </button>
-          </AlertMessage>
-        </div>
-      )}
-      {notice && (
-        <div className="mb-6">
-          <AlertMessage variant="info" onDismiss={() => setNotice('')}>
-            {notice}
-          </AlertMessage>
-        </div>
-      )}
-
-      <div className="rounded-xl border border-ink-700 bg-ink-900 p-6">
-        <h2 className="mb-5 text-sm font-medium uppercase tracking-wide text-slate-500">Profile</h2>
-
-        <dl className="space-y-4">
-          <div className="flex items-center gap-3">
-            <UserIcon size={16} className="text-slate-500" />
-            <dt className="w-28 text-sm text-slate-400">Name</dt>
-            <dd className="text-sm text-slate-100">{user.name}</dd>
-          </div>
-          <div className="flex items-center gap-3">
-            <Mail size={16} className="text-slate-500" />
-            <dt className="w-28 text-sm text-slate-400">Email</dt>
-            <dd className="text-sm text-slate-100">{user.email}</dd>
-          </div>
-          <div className="flex items-center gap-3">
-            {user.isVerified ? (
-              <ShieldCheck size={16} className="text-signal-400" />
-            ) : (
-              <ShieldAlert size={16} className="text-warn-400" />
-            )}
-            <dt className="w-28 text-sm text-slate-400">Status</dt>
-            <dd className="text-sm">
-              <span
-                className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                  user.isVerified ? 'bg-signal-500/10 text-signal-400' : 'bg-warn-500/10 text-warn-400'
-                }`}
-              >
-                {user.isVerified ? 'Verified' : 'Unverified'}
-              </span>
-            </dd>
-          </div>
-          {joinedDate && (
-            <div className="flex items-center gap-3">
-              <Calendar size={16} className="text-slate-500" />
-              <dt className="w-28 text-sm text-slate-400">Joined</dt>
-              <dd className="text-sm text-slate-100">{joinedDate}</dd>
-            </div>
-          )}
-        </dl>
-      </div>
-
-      <button
-        onClick={refreshProfile}
-        className="mt-4 text-xs text-slate-500 underline hover:text-slate-400"
+      <div
+        className={`mt-8 rounded-2xl border p-8 transition-colors ${
+          lightPreview ? "bg-slate-50 border-slate-200" : "bg-ink-800 border-ink-700"
+        }`}
       >
-        Refresh profile data
-      </button>
+        <div className="flex items-center gap-4">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-teal-500/15 font-display text-lg font-semibold text-teal-400">
+            {initials}
+          </div>
+          <div>
+            <p className={`font-display text-lg font-semibold ${lightPreview ? "text-ink-900" : "text-slate-100"}`}>
+              {user?.name}
+            </p>
+            <p className={`text-sm ${lightPreview ? "text-slate-600" : "text-slate-400"}`}>{user?.email}</p>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className={`rounded-xl border p-4 ${lightPreview ? "border-slate-200" : "border-ink-700"}`}>
+            <p className={`text-xs uppercase tracking-wide ${lightPreview ? "text-slate-500" : "text-slate-500"}`}>
+              Verification status
+            </p>
+            <p
+              className={`mt-1.5 inline-flex items-center gap-1.5 text-sm font-medium ${
+                user?.isVerified ? "text-success" : "text-amber-400"
+              }`}
+            >
+              <span className={`h-1.5 w-1.5 rounded-full ${user?.isVerified ? "bg-success" : "bg-amber-400"}`} />
+              {user?.isVerified ? "Verified" : "Pending verification"}
+            </p>
+          </div>
+
+          <div className={`rounded-xl border p-4 ${lightPreview ? "border-slate-200" : "border-ink-700"}`}>
+            <p className="text-xs uppercase tracking-wide text-slate-500">Member since</p>
+            <p className={`mt-1.5 text-sm font-medium ${lightPreview ? "text-ink-900" : "text-slate-100"}`}>
+              {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : "—"}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <p className="mt-6 text-sm text-slate-500">
+        This page is protected — it loaded only because your session JWT was verified by the server.
+      </p>
     </div>
   );
 }
