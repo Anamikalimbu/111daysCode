@@ -1,23 +1,21 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import LoadingSpinner from './LoadingSpinner';
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import LoadingSpinner from "./LoadingSpinner";
 
-/**
- * Wrap protected routes with this. While the auth bootstrap check runs,
- * shows a spinner instead of flashing a redirect. Once resolved, sends
- * unauthenticated users to /login and remembers where they were headed.
- */
-export default function ProtectedRoute() {
-  const { isAuthenticated, isLoading } = useAuth();
-  const location = useLocation();
+export default function ProtectedRoute({ children }) {
+  const { isAuthenticated, loading } = useAuth();
 
-  if (isLoading) {
-    return <LoadingSpinner fullPage label="Checking your session…" />;
+  if (loading) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <LoadingSpinner size="lg" label="Checking session" />
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" replace />;
   }
 
-  return <Outlet />;
+  return children;
 }
