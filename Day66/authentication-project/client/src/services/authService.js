@@ -1,45 +1,20 @@
-import api from './api';
+import api from "./api";
 
-export const authService = {
-  register: async ({ name, email, password }) => {
-    const { data } = await api.post('/auth/register', { name, email, password });
-    return data;
-  },
+export const register = (data) => api.post("/auth/register", data).then((res) => res.data);
 
-  login: async ({ email, password }) => {
-    const { data } = await api.post('/auth/login', { email, password });
-    return data;
-  },
+export const login = (data) => api.post("/auth/login", data).then((res) => res.data);
 
-  logout: async () => {
-    const { data } = await api.post('/auth/logout');
-    return data;
-  },
+export const logout = () => api.post("/auth/logout").then((res) => res.data);
 
-  verifyEmail: async (token) => {
-    const { data } = await api.get(`/auth/verify-email/${token}`);
-    return data;
-  },
+export const verifyEmail = (token) => api.get(`/auth/verify-email/${token}`).then((res) => res.data);
 
-  resendVerification: async (email) => {
-    const { data } = await api.post('/auth/resend-verification', { email });
-    return data;
-  },
+export const resendVerification = (email) =>
+  api.post("/auth/resend-verification", { email }).then((res) => res.data);
 
-  forgotPassword: async (email) => {
-    const { data } = await api.post('/auth/forgot-password', { email });
-    return data;
-  },
+export const forgotPassword = (email) =>
+  api.post("/auth/forgot-password", { email }).then((res) => res.data);
 
-  resetPassword: async (token, password) => {
-    const { data } = await api.post(`/auth/reset-password/${token}`, { password });
-    return data;
-  },
+export const resetPassword = (token, password) =>
+  api.post(`/auth/reset-password/${token}`, { password }).then((res) => res.data);
 
-  getProfile: async () => {
-    const { data } = await api.get('/auth/profile');
-    return data;
-  },
-};
-
-export default authService;
+export const getProfile = () => api.get("/auth/profile").then((res) => res.data);
