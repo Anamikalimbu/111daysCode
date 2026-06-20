@@ -1,109 +1,62 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import authService from '../services/authService';
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import * as authService from "../services/authService";
 
-const AuthContext = createContext(undefined);
+const AuthContext = createContext(null);
 
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // true while we check for an existing session
-  const [authError, setAuthError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // On first load, see if a token already exists (e.g. from a previous
-  // session) and try to hydrate the user from it.
-  useEffect(() => {
-    const bootstrap = async () => {
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      if (!token) {
-        setIsLoading(false);
-        return;
-      }
-      try {
-        const data = await authService.getProfile();
-        setUser(data.user);
-      } catch {
-        localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    bootstrap();
+  const loadProfile = useCallback(async () => {
+    try {
+      const data = await authService.getProfile();
+      setUser(data.user);
+    } catch {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const storeToken = (token, rememberMe) => {
-    if (rememberMe) {
-      localStorage.setItem('token', token);
-    } else {
-      sessionStorage.setItem('token', token);
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
+
+  const loginUser = async (credentials) => {
+    const data = await authService.login(credentials);
+    if (data.token) {
+      localStorage.setItem("rememberMe", credentials.rememberMe ? "true" : "false");
     }
+    setUser(data.user);
+    return data;
   };
 
-  const register = useCallback(async ({ name, email, password }) => {
-    setAuthError(null);
-    try {
-      const data = await authService.register({ name, email, password });
-      return data;
-    } catch (err) {
-      const message = err.response?.data?.message || 'Registration failed. Please try again.';
-      setAuthError(message);
-      throw new Error(message);
-    }
-  }, []);
+  const registerUser = async (payload) => {
+    return authService.register(payload);
+  };
 
-  const login = useCallback(async ({ email, password, rememberMe }) => {
-    setAuthError(null);
-    try {
-      const data = await authService.login({ email, password });
-      storeToken(data.token, rememberMe);
-      setUser(data.user);
-      return data;
-    } catch (err) {
-      const message = err.response?.data?.message || 'Login failed. Check your credentials.';
-      setAuthError(message);
-      throw new Error(message);
-    }
-  }, []);
-
-  const logout = useCallback(async () => {
-    try {
-      await authService.logout();
-    } catch {
-      // Even if the server call fails, clear local state so the user
-      // isn't stuck in a "logged in" UI with a dead token.
-    } finally {
-      localStorage.removeItem('token');
-      sessionStorage.removeItem('token');
-      setUser(null);
-    }
-  }, []);
-
-  const refreshProfile = useCallback(async () => {
-    const data = await authService.getProfile();
-    setUser(data.user);
-    return data.user;
-  }, []);
+  const logoutUser = async () => {
+    await authService.logout();
+    setUser(null);
+  };
 
   const value = {
     user,
+    loading,
     isAuthenticated: Boolean(user),
-    isLoading,
-    authError,
-    setAuthError,
-    register,
-    login,
-    logout,
-    refreshProfile,
+    loginUser,
+    registerUser,
+    logoutUser,
+    refreshProfile: loadProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
+};
 
-export function useAuth() {
+export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-}
-
-export default AuthContext;
+};
