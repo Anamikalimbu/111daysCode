@@ -52,3 +52,12 @@ print(high_achievers[["Name", "Maths", "Attendance"]])
 # Sorting
 top_attendance = df_students.sort_values(by="Attendance", ascending=False)
 print(top_attendance)
+
+# accessing cells using label based indexing (.loc)
+print(df_students.head(3))
+students_course_loc = df_students.loc[1, "Name"]
+print(students_course_loc)
+
+# Accessing cells using iloc
+student_maths_iloc = df_students.iloc[1:3,5:8]
+print(student_maths_iloc)
