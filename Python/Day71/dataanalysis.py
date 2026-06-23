@@ -32,3 +32,23 @@ df_students.info()
 #3. Generate summary statistics for numeric scores
 print("\n---Statistics Summary (.describe)---")
 print(df_students.describe())
+
+print("\nShape (Rows, Columns):", df_students.shape)
+
+names_column = df_students["Name"]
+grades_df = df_students [["Name", "Maths", "Science"]]
+
+computing_filter = df_students["Course"]== "Computing"
+computing_students = df_students[computing_filter]
+
+#3. Advance Filtering
+high_achievers = df_students[(df_students["Maths"]>=80)&(df_students["Attendance"]>=80)]
+
+print("---Computing Course Students---")
+print(computing_students[["Name","Course"]])
+print("\n---High Achievers---")
+print(high_achievers[["Name", "Maths", "Attendance"]])
+
+# Sorting
+top_attendance = df_students.sort_values(by="Attendance", ascending=False)
+print(top_attendance)
