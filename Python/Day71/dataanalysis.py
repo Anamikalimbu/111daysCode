@@ -61,3 +61,15 @@ print(students_course_loc)
 # Accessing cells using iloc
 student_maths_iloc = df_students.iloc[1:3,5:8]
 print(student_maths_iloc)
+
+# filtering
+student_filtering = df_students[(df_students["Gender"]== "F")&(df_students["Course"]=="Business")]
+print(student_filtering[["Name", "Gender", "Course"]])
+
+
+# sorting
+high_score = df_students.sort_values(by="Science", ascending=False)
+print(high_score[["Name", "Science"]].head())
+
+df_students["Total_Score"]= df_students["Maths"] + df_students["Science"] + df_students["English"]
+print(df_students.head())
