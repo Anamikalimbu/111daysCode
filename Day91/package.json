@@ -1,0 +1,29 @@
+{
+  "name": "day92-simple-rest-api",
+  "version": "1.0.0",
+  "description": "Day 92 - Build a Simple REST API (Express + MongoDB) - Task Manager API",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "rest-api",
+    "express",
+    "mongodb",
+    "mongoose",
+    "crud"
+  ],
+  "author": "Anu",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "mongoose": "^8.24.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
