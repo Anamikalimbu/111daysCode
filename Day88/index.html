@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anamika Limbu - Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+
+<body>
+
+    <!--  NOISE OVERLAY  -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!--  CURSOR  -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
+
+    <!--  NAVBAR  -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">
+                <span class="logo-bracket">&lt;</span>Anamika<span class="logo-slash">/</span><span
+                    class="logo-bracket">&gt;</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#education" class="nav-link">Education</a></li>
+                <li><a href="#hobbies" class="nav-link">Hobbies</a></li>
+                <li><a href="#resume" class="nav-link">Resume</a></li>
+                <li><a href="#contact" class="nav-link nav-cta">Contact</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!--  HERO  -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-grid" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb-3" aria-hidden="true"></div>
+
+        <div class="hero-content">
+            <div class="hero-text reveal">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span> Open to opportunities
+                </div>
+                <h1 class="hero-title">
+                    Hi, I'm <span class="hero-name">Anamika Limbu</span>
+                </h1>
+                <h2 class="hero-subtitle">
+                    <span class="typing-prefix">I'm a </span>
+                    <span class="typing-text" id="typingText"> </span>
+                    <span class="typing-cursor">|</span>
+                </h2>
+                <p class="hero-desc">
+                    Crafting digital experiences with clean code, creative design, and a passion for building things
+                    that matter.
+                </p>
+                <div class="hero-cta">
+                    <a href="#projects" class="btn btn-primary">
+                        <span>View Projects</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#contact" class="btn btn-ghost">Contact Me</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Projects</span></div>
+                    <div class="stat-divider"></div>
+                    <div class="stat"><span class="stat-num">2+</span><span class="stat-label">Years Learning</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat"><span class="stat-num">5+</span><span class="stat-label">Technologies</span></div>
+                </div>
+            </div>
+
+            <div class="hero-visual reveal reveal-right">
+                <div class="hero-card-wrapper">
+                    <div class="hero-avatar-card">
+                        <div class="avatar-ring"></div>
+                        <div class="avatar-img">
+                            <img src="./images/member1.png" alt="Anamika Limbu">
+                        </div>
+                        <div class="avatar-name">Anamika Limbu</div>
+                        <div class="avatar-role">Full Stack Developer</div>
+                        <div class="avatar-tags">
+                            <span class="atag">React</span>
+                            <span class="atag">Node</span>
+                            <span class="atag">MongoDB</span>
+                        </div>
+                    </div>
+
+                    <!-- Floating code snippets -->
+                    <div class="float-chip chip-1 mono">
+                        <span class="chip-kw">const</span> dev = <span class="chip-str">"creative"</span>;
+                    </div>
+                    <div class="float-chip chip-2 mono">
+                        npm run <span class="chip-kw">build</span> ✓
+                    </div>
+                    <div class="float-chip chip-3 mono">
+                        git push origin <span class="chip-str">main</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+            <span>Scroll down</span>
+        </div>
+    </section>
+
+    <!--  ABOUT  -->
+    <section class="section about-section" id="about">
+        <div class="section-container">
+            <div class="section-label reveal">WHO I AM</div>
+            <h2 class="section-title reveal">About <span class="gradient-text">Me</span></h2>
+
+            <div class="about-grid">
+                <div class="about-image-col reveal">
+                    <div class="about-img-frame">
+                        <div class="about-img-inner">
+                            <img src="./images/img1.png" alt="Anamika Limbu"
+                                style="width:100%;height:100%;object-fit:cover;border-radius:20px;display:block;" />
+                        </div>
+                        <div class="img-decoration img-dec-1"></div>
+                        <div class="img-decoration img-dec-2"></div>
+                    </div>
+                </div>
+
+                <div class="about-text-col reveal reveal-right">
+                    <h3 class="about-heading">Passionate Developer & Lifelong Learner</h3>
+                    <p class="about-bio">
+                        I'm a Computer Science student at Itahari International College, Nepal, passionate about
+                        building elegant, efficient, and user-focused web applications. My journey in tech started with
+                        curiosity and has grown into a deep love for problem-solving and creative coding.
+                    </p>
+                    <p class="about-bio">
+                        When I'm not writing code, I'm exploring new technologies, or designing interfaces that blend
+                        function with beauty. I believe great software is both technically sound and visually
+                        compelling.
+                    </p>
+                    <div class="about-info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Location</span>
+                            <span class="info-value">Nepal 🇳🇵</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Degree</span>
+                            <span class="info-value">Bachelor of (hons) Computing</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Focus</span>
+                            <span class="info-value">MERN Stack</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Status</span>
+                            <span class="info-value" style="color:var(--accent-green)">● Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  SKILLS  -->
+    <section class="section skills-section" id="skills">
+        <div class="section-container">
+            <div class="section-label reveal">WHAT I KNOW</div>
+            <h2 class="section-title reveal">Technical <span class="gradient-text">Skills</span></h2>
+
+            <div class="skill-cards-grid">
+
+                <!-- JavaScript -->
+                <div class="skill-card reveal">
+                    <div class="skill-card-icon skill-icon-js">
+                        <i class="fa-brands fa-js fa-2x"></i>
+                    </div>
+                    <h3 class="skill-card-title">JavaScript</h3>
+                    <p class="skill-card-desc">Building dynamic, interactive experiences with modern ES6+ features,
+                        async patterns, and DOM mastery.</p>
+                </div>
+
+                <!-- React -->
+                <div class="skill-card reveal">
+                    <div class="skill-card-icon skill-icon-react">
+                        <i class="fa-brands fa-react fa-2x"></i>
+                    </div>
+                    <h3 class="skill-card-title">React</h3>
+                    <p class="skill-card-desc">Crafting component-driven UIs with hooks, state management, and efficient
+                        rendering techniques.</p>
+                </div>
+
+                <!-- HTML & CSS -->
+                <div class="skill-card reveal">
+                    <div class="skill-card-icon skill-icon-html">
+                        <i class="fa-brands fa-html5 fa-2x"></i>
+                    </div>
+                    <h3 class="skill-card-title">HTML &amp; CSS</h3>
+                    <p class="skill-card-desc">Expertise in building responsive, accessible, and visually stunning web
+                        interfaces using modern CSS.</p>
+                </div>
+
+                <!-- Node.js -->
+                <div class="skill-card reveal">
+                    <div class="skill-card-icon skill-icon-node">
+                        <i class="fa-brands fa-node-js fa-2x"></i>
+                    </div>
+                    <h3 class="skill-card-title">Node.js</h3>
+                    <p class="skill-card-desc">Developing scalable server-side applications with Express, REST APIs, and
+                        real-time features.</p>
+                </div>
+
+                <!-- Express.js -->
+                <div class="skill-card reveal">
+                    <div class="skill-card-icon skill-icon-express">
+                        <i class="fa-solid fa-server fa-2x"></i>
+                    </div>
+                    <h3 class="skill-card-title">Express.js</h3>
+                    <p class="skill-card-desc">Building fast, minimal REST APIs and web servers with Express middleware,
+                        routing, and authentication.</p>
+                </div>
+
+                <!-- MongoDB -->
+                <div class="skill-card reveal">
+                    <div class="skill-card-icon skill-icon-mongo">
+                        <i class="fa-solid fa-database fa-2x"></i>
+                    </div>
+                    <h3 class="skill-card-title">MongoDB</h3>
+                    <p class="skill-card-desc">Designing and querying NoSQL databases with Mongoose for flexible,
+                        high-performance data storage.</p>
+                </div>
+
+                <!-- Python -->
+                <div class="skill-card reveal">
+                    <div class="skill-card-icon skill-icon-python">
+                        <i class="fa-brands fa-python fa-2x"></i>
+                    </div>
+                    <h3 class="skill-card-title">Python</h3>
+                    <p class="skill-card-desc">Data analysis, task automation, and developing robust backend logic for
+                        modern applications.</p>
+                </div>
+
+                <!-- Java -->
+                <div class="skill-card reveal">
+                    <div class="skill-card-icon skill-icon-java">
+                        <i class="fa-brands fa-java fa-2x"></i>
+                    </div>
+                    <h3 class="skill-card-title">Java</h3>
+                    <p class="skill-card-desc">Object-oriented programming, data structures, and building robust,
+                        platform-independent applications.</p>
+                </div>
+
+                <!-- C Language -->
+                <div class="skill-card reveal">
+                    <div class="skill-card-icon skill-icon-c">
+                        <i class="fa-solid fa-code fa-2x"></i>
+                    </div>
+                    <h3 class="skill-card-title">C Language</h3>
+                    <p class="skill-card-desc">Strong foundation in low-level programming, memory management, and
+                        algorithmic problem solving.</p>
+                </div>
+
+                <!-- Git & GitHub -->
+                <div class="skill-card reveal">
+                    <div class="skill-card-icon skill-icon-git">
+                        <i class="fa-brands fa-git-alt fa-2x"></i>
+                    </div>
+                    <h3 class="skill-card-title">Git &amp; GitHub</h3>
+                    <p class="skill-card-desc">Version control, branching strategies, and collaborative workflows for
+                        professional development.</p>
+                </div>
+
+                <!-- VS Code -->
+                <div class="skill-card reveal">
+                    <div class="skill-card-icon skill-icon-vscode">
+                        <i class="fa-solid fa-terminal fa-2x"></i>
+                    </div>
+                    <h3 class="skill-card-title">VS Code</h3>
+                    <p class="skill-card-desc">Highly productive in VS Code with extensions, debugging tools, and
+                        customized workflows for efficient coding.</p>
+                </div>
+
+                <!-- Postman -->
+                <div class="skill-card reveal">
+                    <div class="skill-card-icon skill-icon-postman">
+                        <i class="fa-solid fa-paper-plane fa-2x"></i>
+                    </div>
+                    <h3 class="skill-card-title">Postman</h3>
+                    <p class="skill-card-desc">Testing and documenting REST APIs efficiently with Postman — from request
+                        building to automated test collections.</p>
+                </div>
+
+            </div>
+
+            <!-- Soft Skills -->
+            <div class="soft-skills-wrap reveal">
+                <div class="soft-skills-header">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Soft Skills</span>
+                </div>
+                <div class="soft-skills-pills">
+                    <span class="soft-pill"><i class="fa-solid fa-handshake"></i> Teamwork</span>
+                    <span class="soft-pill"><i class="fa-solid fa-clock"></i> Time Management</span>
+                    <span class="soft-pill"><i class="fa-solid fa-puzzle-piece"></i> Problem Solving</span>
+                    <span class="soft-pill"><i class="fa-solid fa-arrows-rotate"></i> Adaptability</span>
+                    <span class="soft-pill"><i class="fa-solid fa-comments"></i> Communication</span>
+                    <span class="soft-pill"><i class="fa-solid fa-bullseye"></i> Focus &amp; Discipline</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!--  PROJECTS  -->
+    <section class="section projects-section" id="projects">
+        <div class="section-container">
+            <div class="section-label reveal">WHAT I BUILT</div>
+            <h2 class="section-title reveal">Featured <span class="gradient-text">Projects</span></h2>
+
+            <div class="projects-grid">
+
+                <!-- Project 1 -->
+                <div class="project-card reveal">
+                    <div class="project-card-inner">
+                        <div class="project-header">
+                            <div class="project-num mono">01</div>
+                            <div class="project-links-top">
+                                <a href="https://github.com/Anamikalimbu" target="_blank" class="proj-icon-link"
+                                    aria-label="GitHub">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                                <a href="#" target="_blank" class="proj-icon-link" aria-label="Live Demo">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="project-thumb project-thumb-1">
+                            <svg width="100%" height="140" viewBox="0 0 300 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="300" height="140" fill="url(#p1g)" />
+                                <circle cx="150" cy="55" r="35" fill="rgba(255,255,255,0.15)" />
+                                <text x="150" y="62" text-anchor="middle" font-size="28" fill="white">☁</text>
+                                <text x="150" y="105" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.7)"
+                                    font-family="JetBrains Mono">24°C · Cloudy</text>
+                                <defs>
+                                    <linearGradient id="p1g" x1="0" y1="0" x2="300" y2="140">
+                                        <stop stop-color="#3b82f6" />
+                                        <stop offset="1" stop-color="#1d4ed8" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="project-body">
+                            <h3 class="project-title">Weather App</h3>
+                            <p class="project-desc">A real-time weather application that fetches live data using the
+                                OpenWeather API, displaying temperature, humidity, and forecasts with a clean animated
+                                UI.</p>
+                            <div class="project-techs">
+                                <span class="tech-tag">HTML</span>
+                                <span class="tech-tag">CSS</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">REST API</span>
+                            </div>
+                        </div>
+                        <div class="project-footer">
+                            <a href="https://github.com/Anamikalimbu/weather" target="_blank"
+                                class="btn btn-sm btn-ghost-sm">
+                                <i class="fa-brands fa-github"></i> GitHub
+                            </a>
+                            <a href="https://weatherwebsitess.netlify.app/" target="_blank"
+                                class="btn btn-sm btn-primary-sm">
+                                Live Demo <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card reveal">
+                    <div class="project-card-inner">
+                        <div class="project-header">
+                            <div class="project-num mono">02</div>
+                            <div class="project-links-top">
+                                <a href="https://github.com/Anamikalimbu" target="_blank" class="proj-icon-link"
+                                    aria-label="GitHub">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                                <a href="#" target="_blank" class="proj-icon-link" aria-label="Live Demo">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="project-thumb project-thumb-2">
+                            <svg width="100%" height="140" viewBox="0 0 300 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="300" height="140" fill="url(#p2g)" />
+                                <text x="150" y="62" text-anchor="middle" font-size="32" fill="white">🍜</text>
+                                <text x="150" y="90" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.8)"
+                                    font-family="JetBrains Mono">Search Recipes</text>
+                                <rect x="80" y="100" width="140" height="20" rx="10" fill="rgba(255,255,255,0.2)" />
+                                <text x="150" y="114" text-anchor="middle" font-size="10" fill="white"
+                                    font-family="JetBrains Mono">pasta, chicken, salad...</text>
+                                <defs>
+                                    <linearGradient id="p2g" x1="0" y1="0" x2="300" y2="140">
+                                        <stop stop-color="#10b981" />
+                                        <stop offset="1" stop-color="#059669" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="project-body">
+                            <h3 class="project-title">Recipe App</h3>
+                            <p class="project-desc">Discover and explore thousands of recipes by searching ingredients
+                                or meal names. Integrates with the MealDB API, with filtering by category and beautiful
+                                card layouts.</p>
+                            <div class="project-techs">
+                                <span class="tech-tag">HTML</span>
+                                <span class="tech-tag">CSS</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">MealDB API</span>
+                            </div>
+                        </div>
+                        <div class="project-footer">
+                            <a href="https://github.com/Anamikalimbu/Recipe.project" target="_blank"
+                                class="btn btn-sm btn-ghost-sm">
+                                <i class="fa-brands fa-github"></i> GitHub
+                            </a>
+                            <a href="https://recipewebsiteprojectwork.netlify.app/" target="_blank"
+                                class="btn btn-sm btn-primary-sm">
+                                Live Demo <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card reveal">
+                    <div class="project-card-inner">
+                        <div class="project-header">
+                            <div class="project-num mono">03</div>
+                            <div class="project-links-top">
+                                <a href="https://github.com/Anamikalimbu" target="_blank" class="proj-icon-link"
+                                    aria-label="GitHub">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                                <a href="#" target="_blank" class="proj-icon-link" aria-label="Live Demo">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="project-thumb project-thumb-3">
+                            <svg width="100%" height="140" viewBox="0 0 300 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="300" height="140" fill="url(#p3g)" />
+                                <rect x="75" y="25" width="150" height="35" rx="8" fill="rgba(255,255,255,0.15)" />
+                                <text x="150" y="49" text-anchor="middle" font-size="18" fill="white"
+                                    font-family="JetBrains Mono">42 + 8 = 50</text>
+                                <rect x="75" y="70" width="30" height="25" rx="5" fill="rgba(255,255,255,0.3)" /><text
+                                    x="90" y="87" text-anchor="middle" font-size="14" fill="white">7</text>
+                                <rect x="115" y="70" width="30" height="25" rx="5" fill="rgba(255,255,255,0.3)" /><text
+                                    x="130" y="87" text-anchor="middle" font-size="14" fill="white">8</text>
+                                <rect x="155" y="70" width="30" height="25" rx="5" fill="rgba(255,255,255,0.3)" /><text
+                                    x="170" y="87" text-anchor="middle" font-size="14" fill="white">9</text>
+                                <rect x="195" y="70" width="30" height="25" rx="5" fill="rgba(255,255,255,0.5)" /><text
+                                    x="210" y="87" text-anchor="middle" font-size="14" fill="white">×</text>
+                                <defs>
+                                    <linearGradient id="p3g" x1="0" y1="0" x2="300" y2="140">
+                                        <stop stop-color="#8b5cf6" />
+                                        <stop offset="1" stop-color="#6d28d9" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="project-body">
+                            <h3 class="project-title">Calculator App</h3>
+                            <p class="project-desc">A fully functional scientific calculator with keyboard support,
+                                history log, and smooth animations. Handles complex expressions with proper operator
+                                precedence.</p>
+                            <div class="project-techs">
+                                <span class="tech-tag">HTML</span>
+                                <span class="tech-tag">CSS</span>
+                                <span class="tech-tag">JavaScript</span>
+                            </div>
+                        </div>
+                        <div class="project-footer">
+                            <a href="https://github.com/Anamikalimbu/calculator" target="_blank"
+                                class="btn btn-sm btn-ghost-sm">
+                                <i class="fa-brands fa-github"></i> GitHub
+                            </a>
+                            <a href="https://calculatorwebsitess.netlify.app/" target="_blank"
+                                class="btn btn-sm btn-primary-sm">
+                                Live Demo <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card reveal">
+                    <div class="project-card-inner">
+                        <div class="project-header">
+                            <div class="project-num mono">04</div>
+                            <div class="project-links-top">
+                                <a href="https://github.com/Anamikalimbu" target="_blank" class="proj-icon-link"
+                                    aria-label="GitHub">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                                <a href="#" target="_blank" class="proj-icon-link" aria-label="Live Demo">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="project-thumb project-thumb-1">
+                            <svg width="100%" height="140" viewBox="0 0 300 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="300" height="140" fill="url(#p4g)" />
+                                <circle cx="150" cy="55" r="35" fill="rgba(255,255,255,0.15)" />
+                                <text x="150" y="62" text-anchor="middle" font-size="28" fill="white">🌐🛒</text>
+                                <text x="150" y="105" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.7)"
+                                    font-family="JetBrains Mono">E-COMMERCE</text>
+                                <defs>
+                                    <linearGradient id="p4g" x1="0" y1="0" x2="300" y2="140">
+                                        <stop stop-color="#3b82f6" />
+                                        <stop offset="1" stop-color="#1d4ed8" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div class="project-body">
+                            <h3 class="project-title">Eco-Mart</h3>
+                            <p class="project-desc">An e-commerce platform for selling eco-friendly products with a
+                                focus on sustainability and user experience.</p>
+                            <div class="project-techs">
+                                <span class="tech-tag">HTML</span>
+                                <span class="tech-tag">CSS</span>
+                                <span class="tech-tag">JavaScript</span>
+                            </div>
+                        </div>
+                        <div class="project-footer">
+                            <a href="https://github.com/Anamikalimbu/EcoMart" target="_blank"
+                                class="btn btn-sm btn-ghost-sm">
+                                <i class="fa-brands fa-github"></i> GitHub
+                            </a>
+                            <a href="https://ecomart-icc-is.netlify.app/" target="_blank"
+                                class="btn btn-sm btn-primary-sm">
+                                Live Demo <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!--  EDUCATION  -->
+    <section class="section education-section" id="education">
+        <div class="section-container">
+            <div class="section-label reveal">MY JOURNEY</div>
+            <h2 class="section-title reveal">Education <span class="gradient-text">Timeline</span></h2>
+
+            <div class="timeline">
+
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-line"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-badge">2025 - Present</div>
+                        <h3 class="timeline-title">Bachelor's Degree</h3>
+                        <p class="timeline-inst">Itahari International College</p>
+                        <p class="timeline-detail">B.Sc. Computer Science & Information Technology (CSIT)</p>
+                        <div class="timeline-tag">Currently Enrolled</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-line"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-badge">2023/25</div>
+                        <h3 class="timeline-title">Higher Secondary (+2)</h3>
+                        <p class="timeline-inst">Depot Secondary School</p>
+                        <p class="timeline-detail">Science stream with Computer Science</p>
+                        <div class="timeline-gpa">GPA <strong>3.37</strong></div>
+                    </div>
+                </div>
+
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-badge">2022/23</div>
+                        <h3 class="timeline-title">Secondary Education (SEE)</h3>
+                        <p class="timeline-inst">Depot Secondary School</p>
+                        <p class="timeline-detail">Secondary Education Examination with distinction</p>
+                        <div class="timeline-gpa">GPA <strong>3.70</strong></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!--  HOBBIES  -->
+    <section class="section hobbies-section" id="hobbies">
+        <div class="section-container">
+            <div class="section-label reveal">BEYOND CODE</div>
+            <h2 class="section-title reveal">Hobbies &amp; <span class="gradient-text">Interests</span></h2>
+
+            <div class="hobby-cards-grid">
+
+                <div class="hobby-card reveal">
+                    <div class="hobby-card-icon">
+                        <i class="fa-solid fa-person-hiking fa-2x"></i>
+                    </div>
+                    <h3 class="hobby-card-title">Hiking</h3>
+                    <p class="hobby-card-desc">Exploring nature trails and enjoying the great outdoors is a great way to
+                        unwind and stay active.</p>
+                </div>
+
+                <div class="hobby-card reveal">
+                    <div class="hobby-card-icon">
+                        <i class="fa-solid fa-book-open fa-2x"></i>
+                    </div>
+                    <h3 class="hobby-card-title">Reading</h3>
+                    <p class="hobby-card-desc">Books open worlds that expand my thinking. I enjoy diving into tech,
+                        self-development, and fiction — each page bringing a new perspective that fuels both my
+                        creativity and curiosity.</p>
+                </div>
+
+                <div class="hobby-card reveal">
+                    <div class="hobby-card-icon">
+                        <i class="fa-solid fa-pen-nib fa-2x"></i>
+                    </div>
+                    <h3 class="hobby-card-title">Watching Stories</h3>
+                    <p class="hobby-card-desc">I love watching and reading stories which transport me to fictional
+                        worlds, compelling characters, and plot twists that keep you hooked. Writing stories helps me
+                        think creatively and express emotions beyond code.</p>
+                </div>
+
+                <div class="hobby-card reveal">
+                    <div class="hobby-card-icon">
+                        <i class="fa-solid fa-film fa-2x"></i>
+                    </div>
+                    <h3 class="hobby-card-title">Movies &amp; Series</h3>
+                    <p class="hobby-card-desc">Fascinated by high-quality storytelling and cinematography. I enjoy
+                        analyzing complex narratives and character development in modern cinema and binge-worthy series.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!--  RESUME  -->
+    <section class="section resume-section" id="resume">
+        <div class="section-container">
+            <div class="section-label reveal">MY CV</div>
+            <h2 class="section-title reveal">Download <span class="gradient-text">Resume</span></h2>
+
+            <div class="resume-wrapper reveal">
+                <div class="resume-preview">
+                    <div class="resume-preview-inner">
+                        <svg width="100%" height="100%" viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="240" height="320" fill="#0f0f1a" rx="8" />
+                            <rect x="20" y="20" width="200" height="40" rx="4" fill="url(#rg)" />
+                            <rect x="20" y="75" width="200" height="8" rx="2" fill="rgba(255,255,255,0.1)" />
+                            <rect x="20" y="91" width="150" height="6" rx="2" fill="rgba(255,255,255,0.07)" />
+                            <rect x="20" y="115" width="80" height="6" rx="2" fill="rgba(129,140,248,0.5)" />
+                            <rect x="20" y="130" width="200" height="5" rx="2" fill="rgba(255,255,255,0.08)" />
+                            <rect x="20" y="143" width="180" height="5" rx="2" fill="rgba(255,255,255,0.06)" />
+                            <rect x="20" y="156" width="190" height="5" rx="2" fill="rgba(255,255,255,0.07)" />
+                            <rect x="20" y="180" width="80" height="6" rx="2" fill="rgba(129,140,248,0.5)" />
+                            <rect x="20" y="195" width="200" height="5" rx="2" fill="rgba(255,255,255,0.08)" />
+                            <rect x="20" y="208" width="170" height="5" rx="2" fill="rgba(255,255,255,0.06)" />
+                            <rect x="20" y="232" width="80" height="6" rx="2" fill="rgba(129,140,248,0.5)" />
+                            <rect x="20" y="247" width="60" height="20" rx="4" fill="rgba(99,102,241,0.3)" />
+                            <rect x="90" y="247" width="60" height="20" rx="4" fill="rgba(99,102,241,0.3)" />
+                            <rect x="160" y="247" width="60" height="20" rx="4" fill="rgba(99,102,241,0.3)" />
+                            <defs>
+                                <linearGradient id="rg" x1="0" y1="0" x2="200" y2="40">
+                                    <stop stop-color="#6366f1" />
+                                    <stop offset="1" stop-color="#8b5cf6" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="resume-preview-overlay">
+                        <span>Preview</span>
+                    </div>
+                </div>
+
+                <div class="resume-info">
+                    <h3 class="resume-name">Anamika Limbu</h3>
+                    <p class="resume-role">Full Stack Developer · MERN Stack</p>
+                    <ul class="resume-highlights">
+                        <li><i class="fa-solid fa-check"></i> Academic achievements &amp; GPA</li>
+                        <li><i class="fa-solid fa-check"></i> Project portfolio &amp; tech stack</li>
+                        <li><i class="fa-solid fa-check"></i> Skills &amp; certifications</li>
+                        <li><i class="fa-solid fa-check"></i> Contact &amp; social links</li>
+                    </ul>
+                    <a href="https://drive.google.com/file/d/1VN3uyHzF-eeTXfV07eZa78xHGoFuSWyH/view?usp=sharing"
+                        download class="btn btn-primary btn-lg">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Download Resume</span>
+                    </a>
+                    <p class="resume-hint mono">PDF · Last updated 2025</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  CONTACT  -->
+    <section class="section contact-section" id="contact">
+        <div class="section-container">
+            <div class="section-label reveal">GET IN TOUCH</div>
+            <h2 class="section-title reveal">Let's <span class="gradient-text">Connect</span></h2>
+
+            <div class="contact-wrapper">
+                <div class="contact-info reveal">
+                    <p class="contact-tagline">Have a project in mind or just want to chat about tech? Feel free to
+                        reach out — I'm always open to new opportunities and conversations.</p>
+
+                    <div class="contact-links">
+                        <a href="mailto:anamikalimbu8@email.com" class="contact-link">
+                            <div class="contact-link-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <div class="clink-label">Email</div>
+                                <div class="clink-value">anamikalimbu8@email.com</div>
+                            </div>
+                        </a>
+                        <a href="https://github.com/Anamikalimbu" target="_blank" class="contact-link">
+                            <div class="contact-link-icon">
+                                <i class="fa-brands fa-github"></i>
+                            </div>
+                            <div>
+                                <div class="clink-label">GitHub</div>
+                                <div class="clink-value">github.com/Anamikalimbu</div>
+                            </div>
+                        </a>
+                        <a href="https://linkedin.com/" target="_blank" class="contact-link">
+                            <div class="contact-link-icon">
+                                <i class="fa-brands fa-linkedin-in"></i>
+                            </div>
+                            <div>
+                                <div class="clink-label">LinkedIn</div>
+                                <div class="clink-value">linkedin.com/in/Anamikalimbu</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrap reveal reveal-right">
+                    <div class="contact-form-card" id="contactFormCard">
+                        <div class="success-message" id="successMsg">
+                            <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+                            <h3>Message Sent!</h3>
+                            <p>Thanks for reaching out. I'll get back to you shortly.</p>
+                        </div>
+                        <div id="formContent">
+                            <h3 class="form-title">Send a Message</h3>
+                            <div class="form-group">
+                                <label class="form-label" for="name">Name</label>
+                                <input type="text" id="name" class="form-input" placeholder="Your full name"
+                                    autocomplete="off" />
+                                <span class="form-error" id="nameErr"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email</label>
+                                <input type="email" id="email" class="form-input" placeholder="your@gmail.com"
+                                    autocomplete="off" />
+                                <span class="form-error" id="emailErr"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="message">Message</label>
+                                <textarea id="message" class="form-input form-textarea"
+                                    placeholder="What's on your mind?" rows="5"></textarea>
+                                <span class="form-error" id="msgErr"></span>
+                            </div>
+                            <button class="btn btn-primary btn-full" id="submitBtn" onclick="handleFormSubmit()">
+                                <span>Send Message</span>
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  FOOTER  -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="#hero" class="nav-logo">
+                    <span class="logo-bracket">&lt;</span>Anamika<span class="logo-slash">/</span><span
+                        class="logo-bracket">&gt;</span>
+                </a>
+                <p class="footer-tagline">Building the future, one line at a time.</p>
+            </div>
+
+            <div class="footer-nav">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+
+            <div class="footer-socials">
+                <a href="https://github.com/Anamikalimbu" target="_blank" class="social-btn" aria-label="GitHub">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/anamika-limbu-b01238340/" target="_blank" class="social-btn"
+                    aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+                <a href="mailto:anamikalimbu8@gmail.com" class="social-btn" aria-label="Email">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Anamika Limbu · Crafted with <span style="color:var(--primary)">♥</span> in Nepal</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
