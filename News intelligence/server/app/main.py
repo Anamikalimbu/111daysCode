@@ -12,7 +12,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
-from app.api.routes import router
+from app.api.news import router as news_router
+from app.api.routes import router as core_router
 from app.database.connection import get_mongo_connection
 from app.utils.logger import get_logger
 
@@ -46,7 +47,8 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-app.include_router(router)
+app.include_router(core_router)
+app.include_router(news_router)
 
 
 @app.exception_handler(Exception)

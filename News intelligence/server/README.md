@@ -4,8 +4,9 @@ A modular Python backend that collects news articles from trusted RSS sources,
 enriches them with full-article content, and stores them in MongoDB with a
 FastAPI layer for retrieval.
 
-> **Status:** Day 1 complete — env setup, DB layer, data model, scraper,
-> full-article enrichment, storage, API, and logging are all in place.
+> **Status:** Day 1 + Day 2 complete — scraping, storage, and API from
+> Day 1, plus a full NLP pipeline (cleaning, duplicate detection,
+> summarization, sentiment, keywords, entities) from Day 2.
 
 ## Tech Stack
 
@@ -14,6 +15,7 @@ FastAPI layer for retrieval.
 - MongoDB + PyMongo
 - Pydantic v2
 - BeautifulSoup4 / Requests / Feedparser / Newspaper3k
+- spaCy, Hugging Face Transformers, scikit-learn, TextBlob, VADER, NLTK
 - python-dotenv
 
 ## Project Structure
@@ -23,23 +25,35 @@ backend/
 │
 ├── app/
 │   ├── api/
-│   │   └── routes.py          # GET /, /articles, /health
+│   │   ├── routes.py           # GET /, /articles, /health
+│   │   └── news.py             # GET /processed, /summary/{id}, /sentiment, /keywords, /entities
 │   ├── database/
-│   │   └── connection.py      # Singleton MongoDB connection
+│   │   └── connection.py       # Singleton MongoDB connection
 │   ├── models/
-│   │   └── article.py         # Article / ArticleCreate Pydantic models
+│   │   └── article.py          # Article / ArticleCreate / ProcessedArticle models
 │   ├── scraper/
-│   │   ├── rss_scraper.py     # RSS feed parsing (BBC, CNN, Reuters, Guardian)
-│   │   └── full_article.py    # Full-article content/author/image enrichment
+│   │   ├── rss_scraper.py      # RSS feed parsing (BBC, CNN, Reuters, Guardian)
+│   │   └── full_article.py     # Full-article content/author/image enrichment
+│   ├── nlp/
+│   │   ├── cleaner.py          # HTML/boilerplate/emoji removal -> clean_content
+│   │   ├── duplicate_detector.py  # URL / title / TF-IDF cosine-similarity dedup
+│   │   ├── summarizer.py       # BART abstractive summary, extractive fallback
+│   │   ├── sentiment.py        # VADER + TextBlob -> final sentiment verdict
+│   │   ├── keywords.py         # spaCy noun-chunk/entity keyword extraction
+│   │   ├── entities.py         # spaCy NER (people, orgs, places, products...)
+│   │   ├── processor.py        # Orchestrates the full pipeline per batch
+│   │   └── utils.py            # Shared text stats + cached spaCy model loader
 │   ├── services/
-│   │   └── article_service.py # Dedup + storage + scrape orchestration
+│   │   ├── article_service.py     # Dedup-on-insert + scrape orchestration
+│   │   └── processing_service.py  # Fetch unprocessed -> run pipeline -> $set update
 │   ├── utils/
-│   │   ├── config.py          # Settings loaded from .env
-│   │   └── logger.py          # Centralized logging config
-│   └── main.py                 # FastAPI app entrypoint
+│   │   ├── config.py           # Settings loaded from .env
+│   │   └── logger.py           # Centralized logging config
+│   └── main.py                  # FastAPI app entrypoint
 │
 ├── scripts/
-│   └── run_scraper.py          # CLI: run a scrape-and-store cycle
+│   ├── run_scraper.py           # CLI: run a scrape-and-store cycle
+│   └── run_processor.py         # CLI: run an NLP processing batch
 │
 ├── .env                 # Local environment variables (gitignored)
 ├── .env.example          # Template for environment variables
@@ -67,6 +81,7 @@ backend/
 
    ```bash
    pip install -r requirements.txt
+   python -m spacy download en_core_web_sm
    ```
 
 4. **Configure environment variables**
@@ -102,6 +117,21 @@ backend/
    Guardian, fetches full article content for each, and stores new
    articles in MongoDB (duplicates by `article_url` are skipped).
 
+8. **Run the NLP processing pipeline** (cleans, deduplicates, summarizes,
+   scores sentiment, and extracts keywords/entities for any unprocessed
+   articles)
+
+   ```bash
+   python -m scripts.run_processor
+   # or, to control how many articles are pulled per run:
+   python -m scripts.run_processor --batch-size 50
+   ```
+
+   The first run downloads the `facebook/bart-large-cnn` summarization
+   model from Hugging Face (a few GB) — this can take a while. If the
+   model can't be loaded (no network, low memory, etc.) the pipeline
+   automatically falls back to extractive summaries and logs why.
+
 ## Environment Variables
 
 See `.env.example` for the full list. Key variables:
@@ -114,16 +144,22 @@ See `.env.example` for the full list. Key variables:
 | `MAX_ARTICLES_PER_SOURCE`        | Cap on articles pulled per RSS feed run  |
 | `LOG_LEVEL`                        | Python logging level                    |
 
-## Endpoints (Day 1)
+## Endpoints
 
-| Method | Path         | Description                                  |
-|--------|--------------|-----------------------------------------------|
-| GET    | `/`          | API welcome message                          |
-| GET    | `/articles`  | List stored articles                         |
-| GET    | `/health`    | API + MongoDB health, total article count    |
+| Method | Path                 | Description                                     |
+|--------|----------------------|--------------------------------------------------|
+| GET    | `/`                  | API welcome message                              |
+| GET    | `/articles`          | List raw stored articles                         |
+| GET    | `/health`            | API + MongoDB health, total article count        |
+| GET    | `/processed`         | List processed (cleaned, enriched) articles      |
+| GET    | `/summary/{id}`      | Title, AI summary, and reading time for one article |
+| GET    | `/sentiment`         | Sentiment distribution (% positive/neutral/negative) |
+| GET    | `/keywords`          | Trending keywords across processed articles      |
+| GET    | `/entities`          | Most-mentioned people, organisations, countries  |
 
 ## Roadmap
 
 - [x] Day 1: Foundation — DB layer, model, scraper, storage, API, logging
-- [ ] Day 2+: Categorization, deduplication by content similarity, search,
-      pagination/filtering, scheduled scraping, auth
+- [x] Day 2: NLP pipeline — cleaning, duplicate detection, AI summarization,
+      sentiment analysis, keyword extraction, named entity recognition
+- [ ] Day 3+: Search, pagination/filtering, scheduled scraping/processing, auth

@@ -18,7 +18,7 @@ class ArticleBase(BaseModel):
         default=None, description="Short summary / dek from the RSS feed"
     )
     content: Optional[str] = Field(
-        default=None, description="Full cleaned article body text"
+        default=None, description="Full raw article body text as scraped"
     )
     source: str = Field(..., min_length=1, description="Publisher, e.g. 'BBC News'")
     author: Optional[str] = Field(default=None, description="Byline, if available")
@@ -70,3 +70,61 @@ class Article(ArticleBase):
     def to_mongo_dict(self) -> dict:
         """Serialize to a plain dict suitable for MongoDB insertion."""
         return self.model_dump(exclude_none=False)
+
+
+class ProcessedArticle(Article):
+    """Article shape after the NLP pipeline has run.
+
+    Every field here is additive on top of `Article` — original fields
+    (`content`, `title`, etc.) are never overwritten by processing.
+    All processing fields are optional so partially-processed articles
+    (e.g. a step failed) still validate.
+    """
+
+    # --- Cleaning ---
+    clean_content: Optional[str] = Field(
+        default=None, description="HTML/boilerplate-stripped article text"
+    )
+
+    # --- Duplicate detection ---
+    is_duplicate: bool = Field(
+        default=False, description="Whether this article was flagged as a duplicate"
+    )
+    duplicate_of: Optional[str] = Field(
+        default=None, description="article_url of the original this duplicates"
+    )
+    similarity_score: Optional[float] = Field(
+        default=None, ge=0.0, le=1.0, description="Similarity score vs. duplicate_of"
+    )
+
+    # --- Summarization ---
+    summary: Optional[str] = Field(default=None, description="AI-generated summary")
+    word_count: Optional[int] = Field(
+        default=None, ge=0, description="Word count of clean_content"
+    )
+    character_count: Optional[int] = Field(
+        default=None, ge=0, description="Character count of clean_content"
+    )
+    reading_time: Optional[int] = Field(
+        default=None, ge=0, description="Estimated reading time in minutes"
+    )
+
+    # --- Sentiment ---
+    sentiment: Optional[str] = Field(
+        default=None, description="'positive' | 'neutral' | 'negative'"
+    )
+    sentiment_score: Optional[float] = Field(
+        default=None, ge=-1.0, le=1.0, description="VADER compound score"
+    )
+    positive_score: Optional[float] = Field(default=None, ge=0.0, le=1.0)
+    neutral_score: Optional[float] = Field(default=None, ge=0.0, le=1.0)
+    negative_score: Optional[float] = Field(default=None, ge=0.0, le=1.0)
+
+    # --- Keywords & entities ---
+    keywords: list[str] = Field(default_factory=list)
+    entities: dict[str, list[str]] = Field(default_factory=dict)
+
+    # --- Pipeline metadata ---
+    processed_at: Optional[datetime] = Field(
+        default=None, description="Timestamp when NLP processing completed"
+    )
