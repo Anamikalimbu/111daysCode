@@ -12,8 +12,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
+from app.api.analytics import router as analytics_router
 from app.api.news import router as news_router
 from app.api.routes import router as core_router
+from app.api.topics import router as topics_router
 from app.database.connection import get_mongo_connection
 from app.utils.logger import get_logger
 
@@ -49,6 +51,8 @@ app = FastAPI(
 
 app.include_router(core_router)
 app.include_router(news_router)
+app.include_router(topics_router)
+app.include_router(analytics_router)
 
 
 @app.exception_handler(Exception)
