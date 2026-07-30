@@ -128,3 +128,31 @@ class ProcessedArticle(Article):
     processed_at: Optional[datetime] = Field(
         default=None, description="Timestamp when NLP processing completed"
     )
+
+    # --- Clustering & topics (Day 3) ---
+    cluster_id: Optional[str] = Field(
+        default=None, description="Stable ID of the topic cluster this article belongs to"
+    )
+    topic_name: Optional[str] = Field(
+        default=None, description="Human-readable topic name, e.g. 'Tesla Earnings'"
+    )
+    cluster_size: Optional[int] = Field(
+        default=None, ge=0, description="Number of articles in this article's cluster"
+    )
+    cluster_score: Optional[float] = Field(
+        default=None,
+        ge=-1.0,
+        le=1.0,
+        description="This article's cosine similarity to its cluster's centroid",
+    )
+    related_articles: list[dict] = Field(
+        default_factory=list,
+        description="Up to 5 most similar articles from the same cluster "
+        "(each: article_id, title, similarity_score)",
+    )
+    trending_score: Optional[float] = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        description="Trending score of this article's cluster (0-1)",
+    )
