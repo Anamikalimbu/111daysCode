@@ -35,6 +35,25 @@ def get_processed_articles(
         ) from exc
 
 
+@router.get("/article/{article_id}")
+def get_article(article_id: str) -> dict:
+    """Return the full processed article (all NLP + clustering fields).
+
+    Added to support the frontend's Article Details page, which needs
+    more than the title/summary/reading_time that `/summary/{id}` exposes.
+    """
+    try:
+        service = get_processing_service()
+        article = service.get_article_by_id(article_id)
+    except Exception as exc:
+        logger.error("Error fetching article %s: %s", article_id, exc)
+        raise HTTPException(status_code=500, detail="Failed to fetch article") from exc
+
+    if article is None:
+        raise HTTPException(status_code=404, detail="Article not found")
+    return article
+
+
 @router.get("/summary/{article_id}")
 def get_article_summary(article_id: str) -> dict:
     """Return the title, AI summary, and reading time for one article."""

@@ -29,7 +29,7 @@ backend/
 ├── app/
 │   ├── api/
 │   │   ├── routes.py           # GET /, /articles, /health
-│   │   ├── news.py             # GET /processed, /summary/{id}, /sentiment, /keywords, /entities
+│   │   ├── news.py             # GET /processed, /article/{id}, /summary/{id}, /sentiment, /keywords, /entities
 │   │   ├── topics.py           # GET /topics, /topics/{cluster_id}, /trending, /related/{id}
 │   │   └── analytics.py        # GET /analytics
 │   ├── database/
@@ -174,6 +174,7 @@ See `.env.example` for the full list. Key variables:
 | GET    | `/articles`          | List raw stored articles                         |
 | GET    | `/health`            | API + MongoDB health, total article count        |
 | GET    | `/processed`         | List processed (cleaned, enriched) articles      |
+| GET    | `/article/{id}`      | Full processed article (all NLP + clustering fields) |
 | GET    | `/summary/{id}`      | Title, AI summary, and reading time for one article |
 | GET    | `/sentiment`         | Sentiment distribution (% positive/neutral/negative) |
 | GET    | `/keywords`          | Trending keywords across processed articles      |
@@ -191,5 +192,7 @@ See `.env.example` for the full list. Key variables:
       sentiment analysis, keyword extraction, named entity recognition
 - [x] Day 3: AI story clustering, topic naming, related stories, trending
       topics, and a full analytics engine
-- [ ] Day 4+: Search, pagination/filtering, scheduled scraping/processing/
+- [x] Day 4: `GET /article/{id}` — full processed article, added to
+      support the React frontend's Article Details page
+- [ ] Day 5+: Full-text search endpoint, scheduled scraping/processing/
       clustering, auth
